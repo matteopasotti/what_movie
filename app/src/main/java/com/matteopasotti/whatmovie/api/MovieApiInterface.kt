@@ -9,10 +9,10 @@ import retrofit2.http.Query
 interface MovieApiInterface {
 
     @GET("movie/popular")
-    fun getPopularMovies(
+    suspend fun getPopularMovies(
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
         @Query("page") page: Int
-    ) : Deferred<Response<MovieResponse>>
+    ) : Response<MovieResponse>
 
 }
