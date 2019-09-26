@@ -8,7 +8,7 @@
         motion:duration="1000">
 
         <OnSwipe
-            motion:touchAnchorId="@+id/button"
+            motion:touchAnchorId="@+id/man_image"
             motion:touchAnchorSide="right"
             motion:dragDirection="dragRight" />
 
@@ -18,13 +18,13 @@
                 android:scaleX="2"
                 android:scaleY="2"
                 motion:framePosition="50"
-                motion:motionTarget="@id/button" />
+                motion:motionTarget="@id/man_image" />
 
             <KeyAttribute
                 android:scaleX="2"
                 android:scaleY="2"
                 motion:framePosition="50"
-                motion:motionTarget="@id/button_2" />
+                motion:motionTarget="@id/woman_image" />
 
         </KeyFrameSet>
 
@@ -32,21 +32,36 @@
 
     <ConstraintSet android:id="@+id/start">
         <Constraint
-            android:id="@+id/button"
+            android:id="@+id/man_image"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:alpha="0"
+            android:elevation="2dp"
             android:layout_marginStart="8dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintStart_toStartOf="parent">
         </Constraint>
 
         <Constraint
-            android:id="@+id/button_2"
+        android:id="@+id/view_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        motion:layout_constraintTop_toTopOf="parent"
+        motion:layout_constraintBottom_toBottomOf="parent"
+        motion:layout_constraintStart_toStartOf="parent"
+        motion:layout_constraintEnd_toEndOf="parent">
+            <CustomAttribute
+                    motion:attributeName="backgroundColor"
+                    motion:customColorValue="#D81B60" />
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/woman_image"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:alpha="0"
-            android:layout_marginStart="8dp"
+            android:elevation="2dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"/>
 
@@ -62,32 +77,48 @@
 
     <ConstraintSet android:id="@+id/end">
         <Constraint
-            android:id="@+id/button"
+            android:id="@+id/man_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:alpha="1"
+            android:elevation="2dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toStartOf="@+id/button_2"
+            motion:layout_constraintEnd_toStartOf="@+id/woman_image"
             motion:layout_constraintTop_toTopOf="parent"/>
 
         <Constraint
-            android:id="@+id/button_2"
+                android:id="@+id/view_background"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                motion:layout_constraintTop_toTopOf="parent"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent">
+            <CustomAttribute
+                    motion:attributeName="backgroundColor"
+                    motion:customColorValue="@android:color/holo_blue_bright" />
+
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/woman_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:alpha="1"
+            android:elevation="2dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toEndOf="@+id/button"
+            motion:layout_constraintStart_toEndOf="@+id/man_image"
             motion:layout_constraintTop_toTopOf="parent"/>
 
         <Constraint
             android:id="@+id/match_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            motion:layout_constraintStart_toStartOf="@+id/button"
-            motion:layout_constraintEnd_toEndOf="@+id/button_2"
-            motion:layout_constraintTop_toBottomOf="@+id/button"
+            motion:layout_constraintStart_toStartOf="@+id/man_image"
+            motion:layout_constraintEnd_toEndOf="@+id/woman_image"
+            motion:layout_constraintTop_toBottomOf="@+id/man_image"
             android:layout_marginTop="30dp"
             android:alpha="1"/>
 
