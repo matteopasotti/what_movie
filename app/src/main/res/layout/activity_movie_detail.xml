@@ -1,45 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                      xmlns:tools="http://schemas.android.com/tools"
-                                                      xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                      android:id="@+id/motionLayout"
-                                                      android:orientation="vertical"
-                                                      app:layoutDescription="@xml/motion_scene_match"
-                                                      android:layout_width="match_parent"
-                                                      android:layout_height="match_parent"
-                                                      app:showPaths="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/motionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layoutDescription="@xml/motion_scene_match"
+    app:showPaths="true">
 
     <View
-            android:id="@+id/view_background"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccent"/>
+        android:id="@+id/view_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent" />
+
 
     <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/man_image"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:src="@drawable/man_profile"
-            app:civ_border_width="2dp"
-            android:elevation="2dp"
-            app:civ_border_color="#FF000000"/>
+        android:id="@+id/man_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:elevation="2dp"
+        android:src="@drawable/man_profile"
+        app:civ_border_color="#FFFFFFFF"
+        app:civ_border_width="2dp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/woman_image"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:src="@drawable/woman_profile"
-            app:civ_border_width="2dp"
-            android:elevation="2dp"
-            app:civ_border_color="#FF000000"/>
+        android:id="@+id/woman_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:elevation="2dp"
+        android:src="@drawable/woman_profile"
+        app:civ_border_color="#FFFFFFFF"
+        app:civ_border_width="2dp" />
+
 
     <TextView
-            android:id="@+id/match_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="IT'S A MATCH!!"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif"/>
+        android:id="@+id/match_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/dancing_script_bold"
+        android:text="It's a Match!!"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/heart_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_heart"/>
+
+    <ImageView
+        android:id="@+id/heart_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_heart"/>
+
+    <ImageView
+        android:id="@+id/heart_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_heart"/>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

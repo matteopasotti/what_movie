@@ -14,23 +14,114 @@
 
         <KeyFrameSet>
 
-            <KeyAttribute
-                android:scaleX="2"
-                android:scaleY="2"
+            <KeyPosition
+                motion:keyPositionType="pathRelative"
+                motion:percentY="-0.3"
+                motion:framePosition="25"
+                motion:motionTarget="@id/heart_3"/>
+
+            <KeyPosition
+                motion:keyPositionType="pathRelative"
+                motion:percentY="0.3"
                 motion:framePosition="50"
+                motion:motionTarget="@id/heart_3"/>
+
+            <KeyPosition
+                motion:keyPositionType="pathRelative"
+                motion:percentY="-0.25"
+                motion:framePosition="75"
+                motion:motionTarget="@id/heart_3"/>
+
+            <KeyPosition
+                motion:keyPositionType="pathRelative"
+                motion:percentY="-0.25"
+                motion:framePosition="25"
+                motion:motionTarget="@id/heart_2"/>
+
+            <KeyPosition
+                motion:keyPositionType="pathRelative"
+                motion:percentY="0.1"
+                motion:framePosition="50"
+                motion:motionTarget="@id/heart_2"/>
+
+            <KeyPosition
+                motion:keyPositionType="pathRelative"
+                motion:percentY="-0.3"
+                motion:framePosition="75"
+                motion:motionTarget="@id/heart_2"/>
+
+            <KeyPosition
+                motion:keyPositionType="pathRelative"
+                motion:percentY="0.5"
+                motion:framePosition="25"
+                motion:motionTarget="@id/heart_1"/>
+
+            <KeyPosition
+                motion:keyPositionType="pathRelative"
+                motion:percentY="-0.1"
+                motion:framePosition="50"
+                motion:motionTarget="@id/heart_1"/>
+
+            <KeyPosition
+                motion:keyPositionType="pathRelative"
+                motion:percentY="0.3"
+                motion:framePosition="75"
+                motion:motionTarget="@id/heart_1"/>
+
+            <KeyAttribute
+                android:scaleX="3"
+                android:scaleY="3"
+                motion:framePosition="100"
                 motion:motionTarget="@id/man_image" />
+
+            <KeyAttribute
+                android:scaleX="3"
+                android:scaleY="3"
+                motion:framePosition="100"
+                motion:motionTarget="@id/woman_image" />
 
             <KeyAttribute
                 android:scaleX="2"
                 android:scaleY="2"
-                motion:framePosition="50"
-                motion:motionTarget="@id/woman_image" />
+                motion:framePosition="100"
+                motion:motionTarget="@id/match_text"/>
+
 
         </KeyFrameSet>
 
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
+
+        <Constraint
+            android:id="@+id/heart_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:alpha="0"
+            android:layout_marginBottom="20dp"/>
+
+        <Constraint
+            android:id="@+id/heart_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintStart_toEndOf="@+id/heart_1"
+            android:layout_marginStart="20dp"
+            android:alpha="0"
+            android:layout_marginBottom="20dp"/>
+
+        <Constraint
+            android:id="@+id/heart_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="20dp"
+            android:alpha="0"
+            android:layout_marginBottom="20dp"/>
+
         <Constraint
             android:id="@+id/man_image"
             android:layout_width="64dp"
@@ -52,7 +143,7 @@
         motion:layout_constraintEnd_toEndOf="parent">
             <CustomAttribute
                     motion:attributeName="backgroundColor"
-                    motion:customColorValue="#D81B60" />
+                    motion:customColorValue="@android:color/holo_blue_dark" />
 
         </Constraint>
 
@@ -69,17 +160,52 @@
             android:id="@+id/match_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             android:alpha="0"/>
+
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
+
+
+        <Constraint
+            android:id="@+id/heart_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toTopOf="@+id/man_image"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="@+id/man_image"
+            android:alpha="1"
+            android:layout_marginTop="150dp" />
+
+        <Constraint
+            android:id="@+id/heart_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toTopOf="@+id/woman_image"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="@+id/woman_image"
+            android:layout_marginStart="20dp"
+            android:alpha="1"
+            android:layout_marginTop="160dp"/>
+
+        <Constraint
+            android:id="@+id/heart_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toTopOf="@+id/woman_image"
+            motion:layout_constraintEnd_toEndOf="@+id/woman_image"
+            motion:layout_constraintStart_toStartOf="@+id/woman_image"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="220dp"
+            android:alpha="1" />
+
         <Constraint
             android:id="@+id/man_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:alpha="1"
             android:elevation="2dp"
             motion:layout_constraintBottom_toBottomOf="parent"
@@ -103,8 +229,8 @@
 
         <Constraint
             android:id="@+id/woman_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:alpha="1"
             android:elevation="2dp"
             motion:layout_constraintBottom_toBottomOf="parent"
@@ -116,10 +242,10 @@
             android:id="@+id/match_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            motion:layout_constraintStart_toStartOf="@+id/man_image"
-            motion:layout_constraintEnd_toEndOf="@+id/woman_image"
-            motion:layout_constraintTop_toBottomOf="@+id/man_image"
-            android:layout_marginTop="30dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="100dp"
             android:alpha="1"/>
 
 
