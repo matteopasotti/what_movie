@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Whatmovie</string>
+    <string name="movie_cover">Movie Cover</string>
 </resources>
