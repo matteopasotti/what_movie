@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.FragmentMovieGalleryBinding
 import com.matteopasotti.whatmovie.model.Movie
+import com.matteopasotti.whatmovie.util.MoviesUtils
 import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeMoviesGallery : Fragment(), MovieViewHolder.Delegate {
+class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
 
     private lateinit var binding: FragmentMovieGalleryBinding
 
@@ -24,16 +25,16 @@ class HomeMoviesGallery : Fragment(), MovieViewHolder.Delegate {
 
     private val viewModel: HomeGalleryMoviesViewModel by viewModel()
 
-    private var section: String? = null
+    private var section: Int? = null
 
     companion object {
 
         private const val HOME_CATEGORY = "home_category"
 
-        fun newInstance(homeCategory: HomeMovieCategoryConstants): HomeMoviesGallery{
+        fun newInstance(homeCategory: Int): HomeMoviesGalleryFragment{
             val args = Bundle()
-            args.putString(HOME_CATEGORY, homeCategory.toString())
-            val fragment = HomeMoviesGallery()
+            args.putInt(HOME_CATEGORY, homeCategory)
+            val fragment = HomeMoviesGalleryFragment()
             fragment.arguments = args
             return fragment
         }
@@ -60,10 +61,11 @@ class HomeMoviesGallery : Fragment(), MovieViewHolder.Delegate {
         adapter = MoviesAdapter(this)
         val linearLayoutManager = LinearLayoutManager( context, LinearLayoutManager.HORIZONTAL, false)
         binding.movieList.layoutManager = linearLayoutManager
+        binding.movieList.adapter = adapter
 
-        section = arguments?.getString(HOME_CATEGORY)
-        binding.movieCategoryNameBg.text = section
-        binding.movieCategoryNameTop.text = section
+        section = arguments?.getInt(HOME_CATEGORY)
+        binding.movieCategoryNameBg.text = MoviesUtils.getHomeSectionNameByCategory(section)
+        binding.movieCategoryNameTop.text = MoviesUtils.getHomeSectionNameByCategory(section)
     }
 
     private fun observeViewModel() {

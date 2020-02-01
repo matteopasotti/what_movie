@@ -5,23 +5,20 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.matteopasotti.whatmovie.R
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.matteopasotti.whatmovie.view.ui.HomeMovieCategoryConstants
+import com.matteopasotti.whatmovie.view.ui.HomeMoviesGalleryFragment
 
 class MainActivity : AppCompatActivity() {
-
-    private val viewModel : MainActivityViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        viewModel.movies.observe(this , Observer { response ->
-            if(response != null) {
-                Log.d("" , "")
-            }
-        })
-
-        viewModel.getPopularMovies()
+        val popularMoviesGalleryFragment =
+            HomeMoviesGalleryFragment.newInstance(HomeMovieCategoryConstants.POPULARS)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.popular_movies_sections, popularMoviesGalleryFragment)
+            .commit()
     }
 }

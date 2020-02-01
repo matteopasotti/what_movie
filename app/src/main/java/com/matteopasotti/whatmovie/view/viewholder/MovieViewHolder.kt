@@ -4,6 +4,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.matteopasotti.whatmovie.databinding.MovieVerticalLayoutBinding
 import com.matteopasotti.whatmovie.model.Movie
+import com.matteopasotti.whatmovie.util.MoviesUtils
 
 class MovieViewHolder(view: View, val delegate: Delegate) : BaseViewHolder(view) {
 
@@ -20,6 +21,7 @@ class MovieViewHolder(view: View, val delegate: Delegate) : BaseViewHolder(view)
             movie = data
             binding.apply {
                 binding?.movie = data
+                binding?.image = MoviesUtils.getMovieImageUrl(data.poster_path)
                 binding?.executePendingBindings()
             }
         }

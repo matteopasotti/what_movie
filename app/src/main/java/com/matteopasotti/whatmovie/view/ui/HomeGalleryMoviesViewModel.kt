@@ -13,11 +13,11 @@ class HomeGalleryMoviesViewModel(private val movieRepository: MovieRepository) :
     private val _movies = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>> = _movies
 
-    fun getMovies(category: String?) {
+    fun getMovies(category: Int?) {
         viewModelScope.launch {
             _movies.postValue(
                 when (category) {
-                    "popular" -> movieRepository.getPopularMovies()
+                    HomeMovieCategoryConstants.POPULARS -> movieRepository.getPopularMovies()
                     else -> movieRepository.getPopularMovies()
                 }
             )
