@@ -69,6 +69,13 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
     }
 
     private fun observeViewModel() {
+
+        viewModel.isLoading().observe(this, Observer { isLoading ->
+            isLoading?.let {
+                binding.progress.visibility = if(isLoading) View.VISIBLE else View.GONE
+            }
+        })
+
         viewModel.movies.observe(this, Observer {
             it?.let {
                 adapter.updateItems(it)

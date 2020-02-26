@@ -28,7 +28,7 @@
                 android:layout_width="140dp"
                 android:layout_height="200dp"
                 android:contentDescription="@string/movie_cover"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 app:imageUrl="@{image}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
