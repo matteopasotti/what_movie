@@ -104,6 +104,7 @@ dependencies {
     // or Koin for Android Architecture ViewModel
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
+    testImplementation 'org.robolectric:robolectric:4.1'
     testImplementation "org.mockito:mockito-core:$mockito_version"
 
     implementation "androidx.appcompat:appcompat:$support_version"
