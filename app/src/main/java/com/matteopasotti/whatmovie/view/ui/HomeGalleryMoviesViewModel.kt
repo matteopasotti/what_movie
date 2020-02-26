@@ -1,17 +1,28 @@
 package com.matteopasotti.whatmovie.view.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.matteopasotti.whatmovie.model.Movie
 import com.matteopasotti.whatmovie.repository.MovieRepository
 import kotlinx.coroutines.launch
 
-class HomeGalleryMoviesViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+open class HomeGalleryMoviesViewModel(private val movieRepository: MovieRepository) : ViewModel() {
 
-    private val _movies = MutableLiveData<List<Movie>>()
-    val movies: LiveData<List<Movie>> = _movies
+   /* private val _movies = MutableLiveData<List<Movie>>()
+    val movies: LiveData<List<Movie>> = _movies*/
+
+    open val popularMovies: LiveData<List<Movie>> = Transformations.map(movieRepository.popularMovies) {
+        movies ->
+        if(movies.isNullOrEmpty()) {
+            //we do not have popular movies in db
+            getPopularMovies(category)
+        } else {
+            isLoadingLiveData.value = false
+        }
+
+        return@map movies
+    }
+
+    var category: Int? = null
 
     private lateinit var isLoadingLiveData: MutableLiveData<Boolean>
 
@@ -35,7 +46,21 @@ class HomeGalleryMoviesViewModel(private val movieRepository: MovieRepository) :
         return isErrorLiveData
     }
 
-    fun getMovies(category: Int?) {
+    fun getPopularMovies(category: Int?) {
+        viewModelScope.launch {
+            try {
+                isLoadingLiveData.value = true
+                when (category) {
+                    HomeMovieCategoryConstants.POPULARS -> movieRepository.getPopMovies()
+                    else -> movieRepository.getPopMovies()
+                }
+            } finally {
+                isLoadingLiveData.value = false
+            }
+        }
+    }
+
+    /*fun getMovies(category: Int?) {
         viewModelScope.launch {
             try {
                 isLoadingLiveData.value = true
@@ -50,5 +75,5 @@ class HomeGalleryMoviesViewModel(private val movieRepository: MovieRepository) :
             }
 
         }
-    }
+    }*/
 }

@@ -64,6 +64,7 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
         binding.movieList.adapter = adapter
 
         section = arguments?.getInt(HOME_CATEGORY)
+        viewModel.category = section
         binding.movieCategoryNameBg.text = MoviesUtils.getHomeSectionNameByCategory(section)
         binding.movieCategoryNameTop.text = MoviesUtils.getHomeSectionNameByCategory(section)
     }
@@ -76,13 +77,11 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
             }
         })
 
-        viewModel.movies.observe(this, Observer {
+        viewModel.popularMovies.observe(this, Observer {
             it?.let {
                 adapter.updateItems(it)
             }
         })
-
-        viewModel.getMovies(section)
     }
 
     override fun onItemClick(movie: Movie) {
