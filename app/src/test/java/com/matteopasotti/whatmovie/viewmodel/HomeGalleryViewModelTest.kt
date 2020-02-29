@@ -7,6 +7,8 @@ import com.matteopasotti.whatmovie.repository.MovieRepository
 import com.matteopasotti.whatmovie.view.ui.HomeGalleryMoviesViewModel
 import com.matteopasotti.whatmovie.view.ui.HomeMovieCategoryConstants
 import com.nhaarman.mockitokotlin2.verify
+import junit.framework.Assert.assertFalse
+import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -104,5 +106,20 @@ class HomeGalleryViewModelTest {
             return@runBlocking
         }
 
+    }
+
+    @Test
+    fun `call get popular movies if not locally present`() = runBlocking {
+        popularMoviesLiveData.value = listOf()
+
+        viewModel.popularMovies.observeForever{}
+
+        verify(movieRepository).getPopMovies()
+
+        val isLoading = isLoadingLiveData.value
+        assertNotNull(isLoading)
+        isLoading?.let { assertFalse(it) }
+
+        return@runBlocking
     }
 }
