@@ -12,28 +12,9 @@ abstract class BaseAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<B
 
     val items = ArrayList<Any?>()
 
-    fun items() : ArrayList<Any?> {
-        return items
-    }
-
-    fun clearItems() {
-        items.clear()
-    }
-
-    fun removeItem(item : Any?) {
-        items.remove(item)
-    }
-
-    fun <T> addItem(item: T) {
-        items.add(item)
-    }
 
     fun <T> addItems(list : List<T>) {
         items.addAll(ArrayList<Any>(list))
-    }
-
-    fun <T> removeSection(location: Int) {
-        items.removeAt(location)
     }
 
     /**
