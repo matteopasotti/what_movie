@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.FragmentMovieGalleryBinding
 import com.matteopasotti.whatmovie.model.Movie
+import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.util.MoviesUtils
 import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
@@ -85,7 +86,7 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
         viewModel.getPopularMovies()
     }
 
-    override fun onItemClick(movie: Movie) {
+    override fun onItemClick(movie: MovieDomainModel) {
         Log.d("", "")
     }
 }

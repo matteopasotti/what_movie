@@ -22,3 +22,18 @@ data class Movie(
     val video: Boolean,
     val vote_average: Double
 ) : Parcelable
+
+fun Movie.toDomainModel(): MovieDomainModel {
+
+    return MovieDomainModel(
+        id = this.id,
+        poster_path = this.poster_path,
+        title = this.title
+    )
+}
+
+data class MovieDomainModel(
+    val id: Int,
+    val poster_path: String?,
+    val title: String?
+)

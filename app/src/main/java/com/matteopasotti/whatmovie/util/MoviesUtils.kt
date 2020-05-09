@@ -13,14 +13,6 @@ class MoviesUtils {
 
             return "Category not founded"
         }
-
-        fun getMovieImageUrl(poster: String?): String {
-            if(poster != null) {
-                return "http://image.tmdb.org/t/p/w185$poster"
-            }
-
-            return ""
-        }
     }
 
 }

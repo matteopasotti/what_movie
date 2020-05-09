@@ -4,24 +4,25 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.matteopasotti.whatmovie.databinding.MovieVerticalLayoutBinding
 import com.matteopasotti.whatmovie.model.Movie
+import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.util.MoviesUtils
 
 class MovieViewHolder(view: View, val delegate: Delegate) : BaseViewHolder(view) {
 
     private val binding by lazy { DataBindingUtil.bind<MovieVerticalLayoutBinding>(view) }
 
-    private lateinit var movie: Movie
+    private lateinit var movie: MovieDomainModel
 
     interface Delegate {
-        fun onItemClick(movie: Movie)
+        fun onItemClick(movie: MovieDomainModel)
     }
 
     override fun bindData(data: Any?) {
-        if(data is Movie) {
+        if(data is MovieDomainModel) {
             movie = data
             binding.apply {
                 binding?.movie = data
-                binding?.image = MoviesUtils.getMovieImageUrl(data.poster_path)
+                binding?.image = movie.poster_path
                 binding?.executePendingBindings()
             }
         }

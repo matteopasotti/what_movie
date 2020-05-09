@@ -3,16 +3,17 @@ package com.matteopasotti.whatmovie.view.adapter
 import android.view.View
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.model.Movie
+import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.view.viewholder.BaseViewHolder
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 
 class MoviesAdapter(val delegate: MovieViewHolder.Delegate): BaseAdapter() {
 
     init {
-        addItems(ArrayList<Movie>())
+        addItems(ArrayList<MovieDomainModel>())
     }
 
-    fun updateItems(movies: List<Movie>){
+    fun updateItems(movies: List<MovieDomainModel>){
         addItems(movies)
         notifyItemInserted(items.size)
     }

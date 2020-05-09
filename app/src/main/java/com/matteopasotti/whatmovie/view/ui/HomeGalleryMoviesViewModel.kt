@@ -2,17 +2,18 @@ package com.matteopasotti.whatmovie.view.ui
 
 import androidx.lifecycle.*
 import com.matteopasotti.whatmovie.model.Movie
+import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
 import kotlinx.coroutines.launch
 
-open class HomeGalleryMoviesViewModel(
+class HomeGalleryMoviesViewModel(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase) : ViewModel() {
 
     private lateinit var isLoadingLiveData: MutableLiveData<Boolean>
 
     private lateinit var isErrorLiveData: MutableLiveData<Boolean>
 
-    private lateinit var popularMoviesLiveData: MutableLiveData<List<Movie>>
+    private lateinit var popularMoviesLiveData: MutableLiveData<List<MovieDomainModel>>
 
     fun isLoading(): LiveData<Boolean> {
         if(!::isLoadingLiveData.isInitialized) {
@@ -32,7 +33,7 @@ open class HomeGalleryMoviesViewModel(
         return isErrorLiveData
     }
 
-    fun getMovies(): LiveData<List<Movie>> {
+    fun getMovies(): LiveData<List<MovieDomainModel>> {
         if(!::popularMoviesLiveData.isInitialized) {
             popularMoviesLiveData = MutableLiveData()
             popularMoviesLiveData.value = null
