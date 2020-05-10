@@ -25,9 +25,14 @@ data class Movie(
 
 fun Movie.toDomainModel(): MovieDomainModel {
 
+    var image : String? = null
+    if(this.poster_path != null) {
+        image = "http://image.tmdb.org/t/p/w185$poster_path"
+
+    }
     return MovieDomainModel(
         id = this.id,
-        poster_path = this.poster_path,
+        poster_path = image,
         title = this.title
     )
 }
