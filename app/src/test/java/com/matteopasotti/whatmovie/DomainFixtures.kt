@@ -20,8 +20,5 @@ object DomainFixtures {
         video: Boolean = false,
         vote_average: Double = 8.0
     ): MovieDomainModel = MovieDomainModel(
-        id,
-        poster_path,
-        title
-    )
+        id, poster_path, backdrop_path, title, overview, release_date)
 }

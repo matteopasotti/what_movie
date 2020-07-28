@@ -5,10 +5,10 @@ import com.matteopasotti.whatmovie.api.MovieApiInterface
 import com.matteopasotti.whatmovie.model.toDomainModel
 
 internal class MovieRepositoryImpl(
-    private val movieApi: MovieApiInterface) : MovieRepository {
+    private val movieApi: MovieApiInterface) : MovieRepository, BaseRepository() {
 
     override suspend fun getPopularMovies() =
         movieApi.getPopularMovies(BuildConfig.API_KEY , "en-US", 1)
             .results
-            .map { it.toDomainModel() }
+            ?.map { it.toDomainModel() }
 }

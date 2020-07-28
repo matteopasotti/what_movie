@@ -4,5 +4,5 @@ import com.matteopasotti.whatmovie.model.MovieDomainModel
 
 interface MovieRepository {
 
-    suspend fun getPopularMovies(): List<MovieDomainModel>
+    suspend fun getPopularMovies(): List<MovieDomainModel>?
 }

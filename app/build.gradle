@@ -106,6 +106,9 @@ dependencies {
     // or Koin for Android Architecture ViewModel
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
+    //LOTTIE
+    implementation "com.airbnb.android:lottie:$lottie"
+
     implementation "androidx.appcompat:appcompat:$support_version"
     implementation "com.google.android.material:material:$support_version"
     implementation "com.android.support:palette-v7:$support_version"

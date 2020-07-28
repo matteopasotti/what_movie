@@ -68,7 +68,7 @@ class HomeGalleryMoviesViewModelTest {
 
         runBlocking {
 
-            given(mockGetPopularMoviesUseCase.execute()).willReturn(listOf(DomainFixtures.getMovie()))
+            given(mockGetPopularMoviesUseCase.execute()).willReturn(GetPopularMoviesUseCase.Result.Success(listOf(DomainFixtures.getMovie())))
 
             var isLoading = isLoadingLiveData.value
             Assert.assertNotNull(isLoading)

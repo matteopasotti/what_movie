@@ -25,20 +25,35 @@ data class Movie(
 
 fun Movie.toDomainModel(): MovieDomainModel {
 
-    var image : String? = null
+    var imagePosterPath : String? = null
     if(this.poster_path != null) {
-        image = "http://image.tmdb.org/t/p/w185$poster_path"
+        imagePosterPath = "http://image.tmdb.org/t/p/w185$poster_path"
 
     }
+
+
+    var imageBackdropPath : String? = null
+    if(this.backdrop_path != null) {
+        imageBackdropPath = "http://image.tmdb.org/t/p/w500$backdrop_path"
+
+    }
+
     return MovieDomainModel(
         id = this.id,
-        poster_path = image,
-        title = this.title
+        poster_path = imagePosterPath,
+        backdrop_path = imageBackdropPath,
+        title = this.title,
+        overview = this.overview,
+        release_date = this.release_date
     )
 }
 
+@Parcelize
 data class MovieDomainModel(
     val id: Int,
     val poster_path: String?,
-    val title: String?
-)
+    val backdrop_path: String?,
+    val title: String?,
+    val overview: String?,
+    val release_date: String?
+):Parcelable

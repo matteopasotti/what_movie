@@ -1,7 +1,9 @@
 package com.matteopasotti.whatmovie.view.ui
 
-import androidx.lifecycle.*
-import com.matteopasotti.whatmovie.model.Movie
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
 import kotlinx.coroutines.launch
@@ -45,12 +47,25 @@ class HomeGalleryMoviesViewModel(
     fun getPopularMovies() {
         viewModelScope.launch {
             getPopularMoviesUseCase.execute().also {
-                if(it.isNotEmpty()) {
-                    isLoadingLiveData.value = false
-                    popularMoviesLiveData.value = it
-                } else {
-                    isLoadingLiveData.value = false
+                result ->
+                when(result) {
+                    is GetPopularMoviesUseCase.Result.Success -> {
+                        if (result.data.isEmpty()) {
+                            isLoadingLiveData.value = false
+                            isErrorLiveData.value = true
+                        } else {
+                            isLoadingLiveData.value = false
+                            popularMoviesLiveData.value = result.data
+                        }
+                    }
+
+                    is GetPopularMoviesUseCase.Result.Error -> {
+                        isLoadingLiveData.value = false
+                        isErrorLiveData.value = true
+                    }
                 }
+
+
             }
         }
     }

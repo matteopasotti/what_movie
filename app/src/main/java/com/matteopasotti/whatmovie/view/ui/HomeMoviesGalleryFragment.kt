@@ -1,6 +1,8 @@
 package com.matteopasotti.whatmovie.view.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +10,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.FragmentMovieGalleryBinding
-import com.matteopasotti.whatmovie.model.Movie
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.util.MoviesUtils
+import com.matteopasotti.whatmovie.view.adapter.GridAutofitLayoutManager
 import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
+import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,7 +24,7 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
 
     private lateinit var binding: FragmentMovieGalleryBinding
 
-    private lateinit var adapter: MoviesAdapter
+    private lateinit var moviesAdapter: MoviesAdapter
 
     private val viewModel: HomeGalleryMoviesViewModel by viewModel()
 
@@ -59,10 +61,19 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
     }
 
     private fun initView() {
-        adapter = MoviesAdapter(this)
-        val linearLayoutManager = LinearLayoutManager( context, LinearLayoutManager.HORIZONTAL, false)
-        binding.movieList.layoutManager = linearLayoutManager
-        binding.movieList.adapter = adapter
+        moviesAdapter = MoviesAdapter(this)
+
+        binding.movieList.apply {
+            setHasFixedSize(true)
+            val columnWidth = context.resources.getDimension(R.dimen.image_width).toInt()
+            layoutManager =
+                GridAutofitLayoutManager(
+                    context,
+                    columnWidth
+                )
+            adapter = moviesAdapter
+        }
+
 
         section = arguments?.getInt(HOME_CATEGORY)
         binding.movieCategoryNameBg.text = MoviesUtils.getHomeSectionNameByCategory(section)
@@ -73,13 +84,20 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
 
         viewModel.isLoading().observe(this, Observer { isLoading ->
             isLoading?.let {
-                binding.progress.visibility = if(isLoading) View.VISIBLE else View.GONE
+                binding.progressAnimation.visibility = if(isLoading) View.VISIBLE else View.GONE
             }
         })
 
         viewModel.getMovies().observe(this, Observer {
             it?.let {
-                adapter.updateItems(it)
+                binding.movieList.visibility = View.VISIBLE
+                moviesAdapter.updateItems(it)
+            }
+        })
+
+        viewModel.isError().observe(this, Observer {
+            if(it) {
+                //error
             }
         })
 
@@ -87,6 +105,8 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
     }
 
     override fun onItemClick(movie: MovieDomainModel) {
-        Log.d("", "")
+        val intent = Intent(context, MovieDetailActivity::class.java)
+        intent.putExtra(MovieDetailActivity.MOVIE, movie as Parcelable)
+        startActivity(intent)
     }
 }

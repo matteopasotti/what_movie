@@ -41,7 +41,7 @@ class MovieRepositoryImplTest {
 
             val result = repository.getPopularMovies()
 
-            assertEquals(result.first(), DataFixtures.getMovie().toDomainModel())
+            assertEquals(result!!.first(), DataFixtures.getMovie().toDomainModel())
         }
     }
 }
