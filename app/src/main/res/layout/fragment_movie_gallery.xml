@@ -68,27 +68,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/movie_category_name_top"
                 tools:listitem="@layout/movie_vertical_layout" />
 
-        <LinearLayout
-                android:id="@+id/progressAnimation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-            <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/loadingAnimation"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:lottie_autoPlay="true"
-                    app:lottie_fileName="lottie_loading.json"
-                    app:lottie_loop="true" />
-
-
-        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

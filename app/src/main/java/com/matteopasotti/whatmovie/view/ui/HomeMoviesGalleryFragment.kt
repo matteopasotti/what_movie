@@ -84,7 +84,7 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
 
         viewModel.isLoading().observe(this, Observer { isLoading ->
             isLoading?.let {
-                binding.progressAnimation.visibility = if(isLoading) View.VISIBLE else View.GONE
+                //binding.progressAnimation.visibility = if(isLoading) View.VISIBLE else View.GONE
             }
         })
 

@@ -19,18 +19,17 @@
                 android:id="@+id/view_background"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                tools:background="@android:color/holo_blue_bright"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@android:color/holo_blue_bright" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:elevation="1dp">
 
-            <!-- app:imageUrl="@{movie.backdrop_path}" -->
             <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/backdrop_image"
                     android:layout_width="match_parent"
@@ -39,6 +38,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:background="@color/amber" />
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:background="@color/black60"
+                    app:layout_constraintBottom_toBottomOf="@+id/backdrop_image"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             <View
                     android:id="@+id/line"
@@ -51,11 +59,13 @@
 
             <!-- poster path image -->
             <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/movie_poster_image"
                     android:layout_width="@dimen/image_width"
                     android:layout_height="@dimen/image_height"
                     android:layout_marginStart="24dp"
                     app:cardBackgroundColor="#24282B"
                     app:cardElevation="0dp"
+                    android:layout_marginTop="50dp"
                     app:layout_constraintBottom_toBottomOf="@+id/line"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/line">
@@ -70,9 +80,24 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <TextView
+                    android:id="@+id/movie_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/line"
+                    app:layout_constraintStart_toEndOf="@+id/movie_poster_image"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="9dp"
+                    android:fontFamily="@font/product_sans_bold"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="@{movie.title}"
+                    tools:text="Title"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

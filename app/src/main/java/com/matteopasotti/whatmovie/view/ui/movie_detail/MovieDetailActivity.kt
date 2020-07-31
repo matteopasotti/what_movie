@@ -2,11 +2,9 @@ package com.matteopasotti.whatmovie.view.ui.movie_detail
 
 import android.graphics.Bitmap
 import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
