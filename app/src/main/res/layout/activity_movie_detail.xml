@@ -11,48 +11,68 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/detail_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/backdrop_image"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                app:imageUrl="@{movie.backdrop_path}"
+        <View
+                android:id="@+id/view_background"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                tools:background="@android:color/holo_blue_bright"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:background="@color/amber" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-                android:id="@+id/line"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="@android:color/transparent"
-                app:layout_constraintTop_toBottomOf="@+id/backdrop_image"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="1dp">
 
-        <!-- poster path image -->
-        <com.google.android.material.card.MaterialCardView
-                android:layout_width="@dimen/image_width"
-                android:layout_height="@dimen/image_height"
-                app:cardBackgroundColor="#24282B"
-                app:cardElevation="0dp"
-                app:layout_constraintTop_toTopOf="@+id/line"
-                app:layout_constraintBottom_toBottomOf="@+id/line"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp">
-
+            <!-- app:imageUrl="@{movie.backdrop_path}" -->
             <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/movie_cover"
+                    android:id="@+id/backdrop_image"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:imageUrl="@{movie.poster_path}"
-                    tools:background="@drawable/venom_cover" />
+                    android:layout_height="300dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:background="@color/amber" />
+
+            <View
+                    android:id="@+id/line"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/backdrop_image" />
+
+            <!-- poster path image -->
+            <com.google.android.material.card.MaterialCardView
+                    android:layout_width="@dimen/image_width"
+                    android:layout_height="@dimen/image_height"
+                    android:layout_marginStart="24dp"
+                    app:cardBackgroundColor="#24282B"
+                    app:cardElevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/line">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/movie_cover"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:imageUrl="@{movie.poster_path}"
+                        tools:background="@drawable/venom_cover" />
 
 
-        </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
