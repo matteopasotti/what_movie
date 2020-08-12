@@ -3,9 +3,7 @@ package com.matteopasotti.whatmovie.view.viewholder
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.matteopasotti.whatmovie.databinding.MovieVerticalLayoutBinding
-import com.matteopasotti.whatmovie.model.Movie
 import com.matteopasotti.whatmovie.model.MovieDomainModel
-import com.matteopasotti.whatmovie.util.MoviesUtils
 
 class MovieViewHolder(view: View, val delegate: Delegate) : BaseViewHolder(view) {
 

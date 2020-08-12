@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.FragmentMovieGalleryBinding
 import com.matteopasotti.whatmovie.model.MovieDomainModel
-import com.matteopasotti.whatmovie.util.MoviesUtils
+import com.matteopasotti.whatmovie.util.Utils
 import com.matteopasotti.whatmovie.view.adapter.GridAutofitLayoutManager
 import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
 import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
@@ -66,18 +66,20 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
         binding.movieList.apply {
             setHasFixedSize(true)
             val columnWidth = context.resources.getDimension(R.dimen.image_width).toInt()
-            layoutManager =
-                GridAutofitLayoutManager(
-                    context,
-                    columnWidth
-                )
+            val manager = GridAutofitLayoutManager(
+                context,
+                columnWidth
+            )
+            layoutManager = manager
             adapter = moviesAdapter
         }
 
+        binding.nestedScrollView.setOnScrollChangeListener(Utils.NestedInfiniteScrollListener {
+            viewModel.getPopularMovies()
+        })
+
 
         section = arguments?.getInt(HOME_CATEGORY)
-        binding.movieCategoryNameBg.text = MoviesUtils.getHomeSectionNameByCategory(section)
-        binding.movieCategoryNameTop.text = MoviesUtils.getHomeSectionNameByCategory(section)
     }
 
     private fun observeViewModel() {

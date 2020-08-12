@@ -8,6 +8,8 @@ import java.lang.RuntimeException
 class GetPopularMoviesUseCase (
     private val movieRepository: MovieRepository) {
 
+    private var page: Int = 0
+
 
     sealed class Result {
         data class Success(val data: List<MovieDomainModel>): Result()
@@ -16,7 +18,8 @@ class GetPopularMoviesUseCase (
 
     suspend fun execute(): Result {
         return try {
-            movieRepository.getPopularMovies()?.let {
+            page++
+            movieRepository.getPopularMovies(page)?.let {
                 Result.Success(it.filter { it.poster_path != null })
             } ?: Result.Error(RuntimeException("No Data"))
         } catch (e: IOException) {

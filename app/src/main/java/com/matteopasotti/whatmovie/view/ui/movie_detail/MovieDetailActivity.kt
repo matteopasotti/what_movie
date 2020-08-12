@@ -14,8 +14,7 @@ import com.bumptech.glide.request.target.Target
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.ActivityMovieDetailBinding
 import com.matteopasotti.whatmovie.model.MovieDomainModel
-import com.matteopasotti.whatmovie.util.ColorUtils
-import com.matteopasotti.whatmovie.util.ColorUtils.Companion.GradientBackgroundCallkback
+import com.matteopasotti.whatmovie.util.Utils
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap> {
@@ -74,8 +73,8 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap> {
         dataSource: DataSource?,
         isFirstResource: Boolean
     ): Boolean {
-        ColorUtils.getGradientColor(resources, resource!!, callkback = object :
-            GradientBackgroundCallkback {
+        Utils.getGradientColor(resources, resource!!, callkback = object :
+            Utils.GradientBackgroundCallkback {
             override fun backgroundReady(bg: GradientDrawable) {
                 binding.viewBackground.background = bg
             }

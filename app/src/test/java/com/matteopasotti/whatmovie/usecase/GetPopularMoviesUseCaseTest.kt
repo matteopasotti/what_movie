@@ -31,7 +31,7 @@ class GetPopularMoviesUseCaseTest {
         runBlocking {
             val movies = listOf(DomainFixtures.getMovie(), DomainFixtures.getMovie())
 
-            given(mockMovieRepository.getPopularMovies()).willReturn(movies)
+            given(mockMovieRepository.getPopularMovies(1)).willReturn(movies)
 
             val result = useCase.execute()
 
@@ -46,7 +46,7 @@ class GetPopularMoviesUseCaseTest {
             val movieWithoutImage = DomainFixtures.getMovie(poster_path = null)
             val movies = listOf(movieWithImage)
 
-            given(mockMovieRepository.getPopularMovies()).willReturn(listOf(movieWithImage, movieWithoutImage))
+            given(mockMovieRepository.getPopularMovies(1)).willReturn(listOf(movieWithImage, movieWithoutImage))
 
             val result = useCase.execute()
 

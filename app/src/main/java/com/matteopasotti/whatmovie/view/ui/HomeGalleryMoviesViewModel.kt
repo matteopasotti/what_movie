@@ -17,6 +17,10 @@ class HomeGalleryMoviesViewModel(
 
     private lateinit var popularMoviesLiveData: MutableLiveData<List<MovieDomainModel>>
 
+    //var page: Int = 1
+
+
+
     fun isLoading(): LiveData<Boolean> {
         if(!::isLoadingLiveData.isInitialized) {
             isLoadingLiveData = MutableLiveData()
