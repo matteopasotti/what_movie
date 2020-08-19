@@ -3,8 +3,11 @@ package com.matteopasotti.whatmovie.view.ui.movie_detail
 import android.graphics.Bitmap
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -15,9 +18,11 @@ import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.ActivityMovieDetailBinding
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.util.Utils
+import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
+import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap> {
+class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieViewHolder.Delegate {
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMovieDetailBinding>(
@@ -27,6 +32,8 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap> {
     }
 
     private val viewModel: MovieDetailViewModel by viewModel()
+
+    private lateinit var moviesAdapter: MoviesAdapter
 
     companion object {
         const val MOVIE = "movie"
@@ -39,11 +46,38 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap> {
             viewModel.movie = intent.getParcelableExtra<MovieDomainModel>(MOVIE)
             viewModel.movie?.let {
                 binding.movie = viewModel.movie
-                applyGradientBgColor()
+                initView()
+                observeViewModel()
             }
 
         }
 
+    }
+
+    private fun observeViewModel() {
+        viewModel.recommendedMovies.observe(this , Observer {
+            it?.let {
+                binding.recommendedLayout.visibility = View.VISIBLE
+                moviesAdapter.updateItems(it)
+            }
+        })
+
+        viewModel.getData()
+    }
+
+
+    private fun initView() {
+
+        moviesAdapter = MoviesAdapter(this)
+
+        binding.rvRecommendedMovies.apply {
+            setHasFixedSize(true)
+            val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = manager
+            adapter = moviesAdapter
+        }
+
+        applyGradientBgColor()
     }
 
     private fun applyGradientBgColor() {
@@ -81,5 +115,9 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap> {
         })
 
         return false
+    }
+
+    override fun onItemClick(movie: MovieDomainModel) {
+        //todo
     }
 }

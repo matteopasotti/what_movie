@@ -11,5 +11,5 @@ val mainModule = module {
 
     viewModel { HomeGalleryMoviesViewModel(getPopularMoviesUseCase = get()) }
 
-    viewModel { MovieDetailViewModel() }
+    viewModel { MovieDetailViewModel(getMovieDetailsUseCase = get()) }
 }

@@ -39,7 +39,7 @@ class MovieRepositoryImplTest {
             given(mockService.getPopularMovies(api_key, language, page))
                 .willReturn(PopularMovieResponse(page = 1, results = listOf(DataFixtures.getMovie())))
 
-            val result = repository.getPopularMovies()
+            val result = repository.getPopularMovies(1)
 
             assertEquals(result!!.first(), DataFixtures.getMovie().toDomainModel())
         }

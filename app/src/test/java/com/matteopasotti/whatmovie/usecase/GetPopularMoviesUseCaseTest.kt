@@ -10,6 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import java.lang.RuntimeException
 
 
 @RunWith(MockitoJUnitRunner::class)
@@ -35,7 +36,18 @@ class GetPopularMoviesUseCaseTest {
 
             val result = useCase.execute()
 
-            assertEquals(result, movies)
+            assertEquals(result, GetPopularMoviesUseCase.Result.Success(movies))
+        }
+    }
+
+    @Test
+    fun `return an error`(){
+        runBlocking {
+            given(mockMovieRepository.getPopularMovies(1)).willReturn(null)
+
+            val result = useCase.execute()
+
+            assertEquals(result, GetPopularMoviesUseCase.Result.Error(RuntimeException("No Data")))
         }
     }
 
@@ -50,7 +62,7 @@ class GetPopularMoviesUseCaseTest {
 
             val result = useCase.execute()
 
-            assertEquals(result, movies)
+            assertEquals(result, GetPopularMoviesUseCase.Result.Success(movies))
         }
     }
 }

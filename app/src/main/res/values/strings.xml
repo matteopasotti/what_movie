@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Whatmovie</string>
     <string name="movie_cover">Movie Cover</string>
+    <string name="storyline">Storyline</string>
+    <string name="recommended_movies">Recommended Movies</string>
 </resources>
