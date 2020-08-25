@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.matteopasotti.whatmovie.DomainFixtures
+import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
 import com.matteopasotti.whatmovie.util.CoroutineRule
@@ -36,6 +37,8 @@ class HomeGalleryMoviesViewModelTest {
 
     private lateinit var isLoadingLiveData: LiveData<Boolean>
 
+    private lateinit var isErrorLiveData: LiveData<Boolean>
+
     @Mock
     internal lateinit var mockGetPopularMoviesUseCase: GetPopularMoviesUseCase
 
@@ -46,7 +49,7 @@ class HomeGalleryMoviesViewModelTest {
 
         isLoadingLiveData = viewModel.isLoading()
 
-
+        isErrorLiveData = viewModel.isError()
 
     }
 
@@ -68,10 +71,10 @@ class HomeGalleryMoviesViewModelTest {
 
         runBlocking {
 
-            given(mockGetPopularMoviesUseCase.execute()).willReturn(GetPopularMoviesUseCase.Result.Success(listOf(DomainFixtures.getMovie())))
+            given(mockGetPopularMoviesUseCase.execute()).willReturn(Result.Success(listOf(DomainFixtures.getMovie())))
 
             var isLoading = isLoadingLiveData.value
-            Assert.assertNotNull(isLoading)
+            assertNotNull(isLoading)
             isLoading?.let { Assert.assertTrue(it) }
 
             viewModel.getPopularMovies()
@@ -80,6 +83,29 @@ class HomeGalleryMoviesViewModelTest {
             isLoading = isLoadingLiveData.value
             Assert.assertNotNull(isLoading)
             isLoading?.let { Assert.assertFalse(it) }
+
+            return@runBlocking
+        }
+    }
+
+    @Test
+    fun `GetPopularMovies show error dialog when we get an error from api`() {
+        viewModel.getMovies()
+
+        runBlocking {
+            given(mockGetPopularMoviesUseCase.execute()).willReturn(Result.Error("Error"))
+
+            var isError = isErrorLiveData.value
+            assertNotNull(isError)
+
+            isError?.let { assertFalse(it) }
+
+            viewModel.getPopularMovies()
+            verify(mockGetPopularMoviesUseCase).execute()
+
+            isError = isErrorLiveData.value
+            assertNotNull(isError)
+            isError?.let { assertTrue(it) }
 
             return@runBlocking
         }

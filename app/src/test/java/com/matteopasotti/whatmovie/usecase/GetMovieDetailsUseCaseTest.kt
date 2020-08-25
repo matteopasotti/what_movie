@@ -1,6 +1,7 @@
 package com.matteopasotti.whatmovie.usecase
 
 import com.matteopasotti.whatmovie.DomainFixtures
+import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.repository.MovieDetailRepositoryImpl
 import com.nhaarman.mockitokotlin2.given
 import kotlinx.coroutines.runBlocking
@@ -33,7 +34,18 @@ class GetMovieDetailsUseCaseTest {
 
             val result = movieDetailsUseCase.getRecommendedMovie(123)
 
-            assertEquals(result, GetMovieDetailsUseCase.Result.Success(movies))
+            assertEquals(result, Result.Success(movies))
+        }
+    }
+
+    @Test
+    fun `return an error when get recommended movies fails`() {
+        runBlocking {
+            given(mockMovieDetailRepository.getRecommendedMovies(123)).willReturn(null)
+
+            val result = movieDetailsUseCase.getRecommendedMovie(123)
+
+            assertEquals(result, Result.Error("No Data"))
         }
     }
 }

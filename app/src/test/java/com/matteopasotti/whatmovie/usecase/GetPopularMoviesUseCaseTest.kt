@@ -1,6 +1,7 @@
 package com.matteopasotti.whatmovie.usecase
 
 import com.matteopasotti.whatmovie.DomainFixtures
+import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.repository.MovieRepositoryImpl
 import com.nhaarman.mockitokotlin2.given
 import kotlinx.coroutines.runBlocking
@@ -36,7 +37,7 @@ class GetPopularMoviesUseCaseTest {
 
             val result = useCase.execute()
 
-            assertEquals(result, GetPopularMoviesUseCase.Result.Success(movies))
+            assertEquals(result, Result.Success(movies))
         }
     }
 
@@ -47,7 +48,7 @@ class GetPopularMoviesUseCaseTest {
 
             val result = useCase.execute()
 
-            assertEquals(result, GetPopularMoviesUseCase.Result.Error(RuntimeException("No Data")))
+            assertEquals(result, Result.Error("No Data"))
         }
     }
 
@@ -62,7 +63,7 @@ class GetPopularMoviesUseCaseTest {
 
             val result = useCase.execute()
 
-            assertEquals(result, GetPopularMoviesUseCase.Result.Success(movies))
+            assertEquals(result, Result.Success(movies))
         }
     }
 }

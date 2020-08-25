@@ -3,7 +3,7 @@ package com.matteopasotti.whatmovie.repository
 import com.matteopasotti.whatmovie.BuildConfig
 import com.matteopasotti.whatmovie.DataFixtures
 import com.matteopasotti.whatmovie.api.MovieApiInterface
-import com.matteopasotti.whatmovie.model.PopularMovieResponse
+import com.matteopasotti.whatmovie.model.response.PopularMovieResponse
 import com.matteopasotti.whatmovie.model.toDomainModel
 import com.nhaarman.mockitokotlin2.given
 import kotlinx.coroutines.runBlocking
@@ -37,7 +37,12 @@ class MovieRepositoryImplTest {
     fun `getPopularMovies fetches Movie and maps to Model`() {
         runBlocking {
             given(mockService.getPopularMovies(api_key, language, page))
-                .willReturn(PopularMovieResponse(page = 1, results = listOf(DataFixtures.getMovie())))
+                .willReturn(
+                    PopularMovieResponse(
+                        page = 1,
+                        results = listOf(DataFixtures.getMovie())
+                    )
+                )
 
             val result = repository.getPopularMovies(1)
 

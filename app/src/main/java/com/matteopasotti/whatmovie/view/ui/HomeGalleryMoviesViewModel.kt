@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
 import kotlinx.coroutines.launch
@@ -53,20 +54,21 @@ class HomeGalleryMoviesViewModel(
             getPopularMoviesUseCase.execute().also {
                 result ->
                 when(result) {
-                    is GetPopularMoviesUseCase.Result.Success -> {
-                        if (result.data.isEmpty()) {
+                    is Result.Success -> {
+                        val movies: List<MovieDomainModel>?  = result.data as List<MovieDomainModel>?
+                        if(movies.isNullOrEmpty()) {
                             isLoadingLiveData.value = false
                             isErrorLiveData.value = true
                         } else {
                             isLoadingLiveData.value = false
-                            popularMoviesLiveData.value = result.data
+                            popularMoviesLiveData.value = movies
                         }
                     }
 
-                    is GetPopularMoviesUseCase.Result.Error -> {
-                        isLoadingLiveData.value = false
-                        isErrorLiveData.value = true
-                    }
+                   is Result.Error -> {
+                       isLoadingLiveData.value = false
+                       isErrorLiveData.value = true
+                   }
                 }
 
 

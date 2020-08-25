@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.usecase.GetMovieDetailsUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.jetbrains.annotations.TestOnly
 
 class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUseCase): ViewModel() {
 
@@ -15,6 +17,12 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
 
     private val _recommendedMovies = MutableLiveData<List<MovieDomainModel>>()
     val recommendedMovies: LiveData<List<MovieDomainModel>> = _recommendedMovies
+
+    private lateinit var isLoadingLiveData: MutableLiveData<Boolean>
+
+    private lateinit var isErrorLiveData: MutableLiveData<Boolean>
+
+
 
     fun getData() {
         movie?.let {
@@ -25,7 +33,25 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
 
     }
 
-    suspend fun getMovieDetails(movieId: Int) {
+    fun isLoading(): LiveData<Boolean> {
+        if(!::isLoadingLiveData.isInitialized) {
+            isLoadingLiveData = MutableLiveData()
+            isLoadingLiveData.value = true
+        }
+
+        return isLoadingLiveData
+    }
+
+    fun isError(): LiveData<Boolean> {
+        if(!::isErrorLiveData.isInitialized) {
+            isErrorLiveData = MutableLiveData()
+            isErrorLiveData.value = false
+        }
+
+        return isErrorLiveData
+    }
+
+    private suspend fun getMovieDetails(movieId: Int) {
         try {
             val recommendedMovieResponse = viewModelScope.async {
                 getMovieDetailsUseCase.getRecommendedMovie(movieId)
@@ -34,21 +60,28 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
             updateUI(recommendedMovieResponse.await())
         } catch (e: Throwable) {
             //TODO update status and show error
+            isLoadingLiveData.value = false
+            isErrorLiveData.value = true
         }
     }
 
-    private fun updateUI(recommendedMovieResponse: GetMovieDetailsUseCase.Result) {
-        when(recommendedMovieResponse) {
-            is GetMovieDetailsUseCase.Result.Success -> {
-                if(recommendedMovieResponse.data.isEmpty()) {
+    private fun updateUI(recommendedMoviesResponse: Result<Any>) {
+        when(recommendedMoviesResponse) {
+            is Result.Success -> {
+                val movies: List<MovieDomainModel>?  = recommendedMoviesResponse.data as List<MovieDomainModel>?
+                if(movies.isNullOrEmpty()) {
                     //TODO no recommended movies received, handle this scenario too
-                    //isLoadingLiveData.value = false
-                    //isErrorLiveData.value = true
+                    isLoadingLiveData.value = false
+                    isErrorLiveData.value = true
                 } else {
-                    //isLoadingLiveData.value = false
-                    //popularMoviesLiveData.value = result.data
-                    _recommendedMovies.postValue(recommendedMovieResponse.data)
+                    isLoadingLiveData.value = false
+                    _recommendedMovies.postValue(movies)
                 }
+            }
+
+            is Result.Error -> {
+                isLoadingLiveData.value = false
+                isErrorLiveData.value = true
             }
         }
     }
