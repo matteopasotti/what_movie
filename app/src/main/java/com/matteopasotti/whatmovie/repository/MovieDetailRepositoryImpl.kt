@@ -3,6 +3,7 @@ package com.matteopasotti.whatmovie.repository
 import com.matteopasotti.whatmovie.BuildConfig
 import com.matteopasotti.whatmovie.api.MovieApiInterface
 import com.matteopasotti.whatmovie.model.Actor
+import com.matteopasotti.whatmovie.model.ActorDomainModel
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.model.toDomainModel
 
@@ -14,7 +15,8 @@ internal class MovieDetailRepositoryImpl(
             .results
             ?.map { it.toDomainModel()}
 
-    override suspend fun getMovieCredits(movieId: Int): List<Actor>? =
+    override suspend fun getMovieCredits(movieId: Int): List<ActorDomainModel>? =
         movieApi.getMovieCredits(movieId, BuildConfig.API_KEY)
             .cast
+            .map { it.toDomainModel() }
 }

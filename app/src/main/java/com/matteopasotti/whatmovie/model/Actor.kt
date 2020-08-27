@@ -8,3 +8,13 @@ data class Actor(
     val name: String,
     val profile_path: String
 )
+
+fun Actor.toDomainModel(): ActorDomainModel {
+    val image : String = "http://image.tmdb.org/t/p/w185${this.profile_path}"
+    return ActorDomainModel(this.name, image)
+}
+
+data class ActorDomainModel(
+    val name: String,
+    val profileImage: String?
+)

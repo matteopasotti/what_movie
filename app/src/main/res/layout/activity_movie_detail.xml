@@ -108,6 +108,36 @@
                         app:layout_constraintTop_toBottomOf="@+id/line"
                         tools:text="Title" />
 
+                <LinearLayout
+                        android:id="@+id/cast_layout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/movie_poster_image"
+                        app:layout_constraintTop_toBottomOf="@+id/movie_poster_image">
+
+
+                    <TextView
+                            android:id="@+id/cast_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/product_sans_bold"
+                            android:text="@string/the_cast"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_cast"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                </LinearLayout>
+
                 <TextView
                         android:id="@+id/storyline_label"
                         android:layout_width="0dp"
@@ -118,7 +148,7 @@
                         android:textColor="@android:color/white"
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="@+id/movie_poster_image"
-                        app:layout_constraintTop_toBottomOf="@+id/movie_poster_image" />
+                        app:layout_constraintTop_toBottomOf="@+id/cast_layout" />
 
                 <TextView
                         android:id="@+id/movie_overview"

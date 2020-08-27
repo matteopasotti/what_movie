@@ -18,6 +18,7 @@ import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.ActivityMovieDetailBinding
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.util.Utils
+import com.matteopasotti.whatmovie.view.adapter.MovieCastAdapter
 import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,6 +35,7 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieV
     private val viewModel: MovieDetailViewModel by viewModel()
 
     private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var castAdapter: MovieCastAdapter
 
     companion object {
         const val MOVIE = "movie"
@@ -55,10 +57,30 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieV
     }
 
     private fun observeViewModel() {
+
+        viewModel.isLoading().observe(this, Observer { isLoading ->
+            isLoading?.let {
+                //binding.progressAnimation.visibility = if(isLoading) View.VISIBLE else View.GONE
+            }
+        })
+
+        viewModel.isError().observe(this, Observer {
+            if(it) {
+                //error
+            }
+        })
+
         viewModel.recommendedMovies.observe(this , Observer {
             it?.let {
                 binding.recommendedLayout.visibility = View.VISIBLE
                 moviesAdapter.updateItems(it)
+            }
+        })
+
+        viewModel.cast.observe(this, Observer {
+            it?.let {
+                binding.castLayout.visibility = View.VISIBLE
+                castAdapter.updateItems(it)
             }
         })
 
@@ -75,6 +97,14 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieV
             val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             layoutManager = manager
             adapter = moviesAdapter
+        }
+
+        castAdapter = MovieCastAdapter()
+        binding.rvCast.apply {
+            setHasFixedSize(true)
+            val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = manager
+            adapter = castAdapter
         }
 
         applyGradientBgColor()
