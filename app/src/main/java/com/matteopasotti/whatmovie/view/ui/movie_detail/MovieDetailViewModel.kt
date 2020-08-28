@@ -13,7 +13,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.jetbrains.annotations.TestOnly
 
-class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUseCase): ViewModel() {
+class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUseCase) :
+    ViewModel() {
 
     var movie: MovieDomainModel? = null
 
@@ -28,18 +29,15 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
     private lateinit var isErrorLiveData: MutableLiveData<Boolean>
 
 
-
     fun getData() {
         movie?.let {
-            viewModelScope.launch {
-                getMovieDetails(movieId = it.id)
-            }
+            getMovieDetails(movieId = it.id)
         }
 
     }
 
     fun isLoading(): LiveData<Boolean> {
-        if(!::isLoadingLiveData.isInitialized) {
+        if (!::isLoadingLiveData.isInitialized) {
             isLoadingLiveData = MutableLiveData()
             isLoadingLiveData.value = true
         }
@@ -48,7 +46,7 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
     }
 
     fun isError(): LiveData<Boolean> {
-        if(!::isErrorLiveData.isInitialized) {
+        if (!::isErrorLiveData.isInitialized) {
             isErrorLiveData = MutableLiveData()
             isErrorLiveData.value = false
         }
@@ -56,29 +54,34 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
         return isErrorLiveData
     }
 
-    private suspend fun getMovieDetails(movieId: Int) {
-        try {
-            val recommendedMovieResponse = viewModelScope.async {
-                getMovieDetailsUseCase.getRecommendedMovie(movieId)
-            }
+    private fun getMovieDetails(movieId: Int) {
 
-            val creditResponse = viewModelScope.async {
-                getMovieDetailsUseCase.getMovieCredits(movieId)
-            }
+        viewModelScope.launch {
+            try {
+                val recommendedMovieResponse = viewModelScope.async {
+                    getMovieDetailsUseCase.getRecommendedMovie(movieId)
+                }
 
-            updateUI(recommendedMovieResponse.await(), creditResponse.await())
-        } catch (e: Throwable) {
-            //TODO update status and show error
-            isLoadingLiveData.value = false
-            isErrorLiveData.value = true
+                val creditResponse = viewModelScope.async {
+                    getMovieDetailsUseCase.getMovieCredits(movieId)
+                }
+
+                updateUI(recommendedMovieResponse.await(), creditResponse.await())
+            } catch (e: Throwable) {
+                //TODO update status and show error
+                isLoadingLiveData.value = false
+                isErrorLiveData.value = true
+            }
         }
+
     }
 
     private fun updateUI(recommendedMoviesResponse: Result<Any>, creditResponse: Result<Any>) {
-        when(recommendedMoviesResponse) {
+        when (recommendedMoviesResponse) {
             is Result.Success -> {
-                val movies: List<MovieDomainModel>?  = recommendedMoviesResponse.data as List<MovieDomainModel>?
-                if(movies.isNullOrEmpty()) {
+                val movies: List<MovieDomainModel>? =
+                    recommendedMoviesResponse.data as List<MovieDomainModel>?
+                if (movies.isNullOrEmpty()) {
                     //TODO no recommended movies received, handle this scenario too
                     isLoadingLiveData.value = false
                     isErrorLiveData.value = true
@@ -94,10 +97,10 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
             }
         }
 
-        when(creditResponse) {
+        when (creditResponse) {
             is Result.Success -> {
                 val cast: List<ActorDomainModel> = creditResponse.data as List<ActorDomainModel>
-                if(cast.isNullOrEmpty()) {
+                if (cast.isNullOrEmpty()) {
                     isLoadingLiveData.value = false
                     isErrorLiveData.value = true
                 } else {

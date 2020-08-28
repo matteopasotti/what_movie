@@ -1,5 +1,6 @@
 package com.matteopasotti.whatmovie
 
+import com.matteopasotti.whatmovie.model.ActorDomainModel
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 
 object DomainFixtures {
@@ -21,4 +22,13 @@ object DomainFixtures {
         vote_average: Double = 8.0
     ): MovieDomainModel = MovieDomainModel(
         id, poster_path, backdrop_path, title, overview, release_date)
+
+    internal fun getActor(
+        cast_id: Int = 123,
+        character: String = "abc",
+        credit_id: String = "credit_id",
+        gender: Int = 0,
+        name: String = "name",
+        profile_path: String = "image"
+    ): ActorDomainModel = ActorDomainModel(name, profile_path)
 }

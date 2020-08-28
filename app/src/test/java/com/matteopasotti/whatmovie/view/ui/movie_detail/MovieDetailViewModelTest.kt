@@ -9,7 +9,9 @@ import com.matteopasotti.whatmovie.util.CoroutineRule
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
@@ -17,6 +19,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -59,24 +62,105 @@ class MovieDetailViewModelTest {
 
     }
 
-//    @Test
-//    fun `getData show and hide progress bar`() {
-//        viewModel.getData()
-//
-//        runBlocking {
-//            given(useCase.getRecommendedMovie(123)).willReturn(Result.Success(listOf(DomainFixtures.getMovie())))
-//
-//            var isLoading = isLoadingLiveData.value
-//            assertNotNull(isLoading)
-//            isLoading?.let { Assert.assertTrue(it) }
-//
-//            verify(useCase).getRecommendedMovie(123)
-//
-//            isLoading = isLoadingLiveData.value
-//            assertNotNull(isLoading)
-//            isLoading?.let { assertFalse(it) }
-//
-//            return@runBlocking
-//        }
-//    }
+    @Test
+    fun `getData show and hide progress bar when get recommended movies succeed`() {
+
+        runBlocking {
+
+            given(useCase.getRecommendedMovie(123)).willReturn(Result.Success(listOf(DomainFixtures.getMovie())))
+
+            var isLoading = isLoadingLiveData.value
+            assertNotNull(isLoading)
+            isLoading?.let { Assert.assertTrue(it) }
+
+            viewModel.getData()
+            verify(useCase).getRecommendedMovie(123)
+
+            isLoading = isLoadingLiveData.value
+            assertNotNull(isLoading)
+            isLoading?.let { assertFalse(it) }
+
+            return@runBlocking
+        }
+    }
+
+    @Test
+    fun `getData show and hide progress bar when get credits succeed`() {
+
+        runBlocking {
+
+            given(useCase.getMovieCredits(123)).willReturn(Result.Success(listOf(DomainFixtures.getActor())))
+
+            var isLoading = isLoadingLiveData.value
+            assertNotNull(isLoading)
+            isLoading?.let { Assert.assertTrue(it) }
+
+            viewModel.getData()
+            verify(useCase).getMovieCredits(123)
+
+            isLoading = isLoadingLiveData.value
+            assertNotNull(isLoading)
+            isLoading?.let { assertFalse(it) }
+
+            return@runBlocking
+        }
+    }
+
+    @Test
+    fun `getData show error when get credits fails`() {
+        runBlocking {
+
+            given(useCase.getMovieCredits(123)).willReturn(Result.Error("Error"))
+
+            var isLoading = isLoadingLiveData.value
+            assertNotNull(isLoading)
+            isLoading?.let { Assert.assertTrue(it) }
+
+            var isError = isErrorLiveData.value
+            assertNotNull(isError)
+            isError?.let { assertFalse(it) }
+
+            viewModel.getData()
+            verify(useCase).getRecommendedMovie(123)
+
+            isLoading = isLoadingLiveData.value
+            assertNotNull(isLoading)
+            isLoading?.let { assertFalse(it) }
+
+            isError = isErrorLiveData.value
+            assertNotNull(isError)
+            isError?.let { assertTrue(it) }
+
+            return@runBlocking
+        }
+    }
+
+    @Test
+    fun `getData show error when get recommended movies fails`() {
+        runBlocking {
+
+            given(useCase.getRecommendedMovie(123)).willReturn(Result.Error("Error"))
+
+            var isLoading = isLoadingLiveData.value
+            assertNotNull(isLoading)
+            isLoading?.let { Assert.assertTrue(it) }
+
+            var isError = isErrorLiveData.value
+            assertNotNull(isError)
+            isError?.let { assertFalse(it) }
+
+            viewModel.getData()
+            verify(useCase).getRecommendedMovie(123)
+
+            isLoading = isLoadingLiveData.value
+            assertNotNull(isLoading)
+            isLoading?.let { assertFalse(it) }
+
+            isError = isErrorLiveData.value
+            assertNotNull(isError)
+            isError?.let { assertTrue(it) }
+
+            return@runBlocking
+        }
+    }
 }
