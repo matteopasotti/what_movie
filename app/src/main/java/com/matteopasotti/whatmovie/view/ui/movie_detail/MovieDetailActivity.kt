@@ -1,8 +1,10 @@
 package com.matteopasotti.whatmovie.view.ui.movie_detail
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -84,6 +86,12 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieV
             }
         })
 
+        viewModel.movieDetails.observe(this, Observer {
+            it?.let {
+                binding.movieDetailLayout.detail = it
+            }
+        })
+
         viewModel.getData()
     }
 
@@ -148,6 +156,8 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieV
     }
 
     override fun onItemClick(movie: MovieDomainModel) {
-        //todo
+        val intent = Intent(this, MovieDetailActivity::class.java)
+        intent.putExtra(MovieDetailActivity.MOVIE, movie as Parcelable)
+        startActivity(intent)
     }
 }

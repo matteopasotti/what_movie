@@ -138,30 +138,16 @@
 
                 </LinearLayout>
 
-                <TextView
-                        android:id="@+id/storyline_label"
+                <include
+                        android:id="@+id/movie_detail_layout"
+                        layout="@layout/about_movie_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:fontFamily="@font/product_sans_bold"
-                        android:text="@string/storyline"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        app:layout_constraintStart_toStartOf="@+id/movie_poster_image"
-                        app:layout_constraintTop_toBottomOf="@+id/cast_layout" />
-
-                <TextView
-                        android:id="@+id/movie_overview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:layout_marginEnd="@dimen/margin_medium"
-                        android:fontFamily="@font/product_sans_bold"
-                        android:text="@{movie.overview}"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/storyline_label"
-                        app:layout_constraintTop_toBottomOf="@+id/storyline_label"
-                        tools:text="Hello World" />
+                        app:layout_constraintStart_toStartOf="@+id/movie_poster_image"
+                        app:layout_constraintTop_toBottomOf="@+id/cast_layout"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:visibility="visible"/>
 
                 <LinearLayout
                         android:id="@+id/recommended_layout"
@@ -171,8 +157,8 @@
                         android:orientation="vertical"
                         android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/storyline_label"
-                        app:layout_constraintTop_toBottomOf="@+id/movie_overview">
+                        app:layout_constraintStart_toStartOf="@+id/movie_detail_layout"
+                        app:layout_constraintTop_toBottomOf="@+id/movie_detail_layout">
 
 
                     <TextView

@@ -44,7 +44,9 @@ fun Movie.toDomainModel(): MovieDomainModel {
         backdrop_path = imageBackdropPath,
         title = this.title,
         overview = this.overview,
-        release_date = this.release_date
+        release_date = this.release_date,
+        vote_average = this.vote_average,
+        vote_count = this.vote_count
     )
 }
 
@@ -55,5 +57,7 @@ data class MovieDomainModel(
     val backdrop_path: String?,
     val title: String?,
     val overview: String?,
-    val release_date: String?
+    val release_date: String?,
+    val vote_average: Double,
+    val vote_count: Int
 ):Parcelable

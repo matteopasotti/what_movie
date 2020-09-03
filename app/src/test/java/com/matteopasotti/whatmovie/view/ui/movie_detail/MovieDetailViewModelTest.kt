@@ -9,9 +9,7 @@ import com.matteopasotti.whatmovie.util.CoroutineRule
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
@@ -19,7 +17,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -89,7 +86,7 @@ class MovieDetailViewModelTest {
 
         runBlocking {
 
-            given(useCase.getMovieCredits(123)).willReturn(Result.Success(listOf(DomainFixtures.getActor())))
+            given(useCase.getMovieCredits(123)).willReturn(Result.Success(listOf(DomainFixtures.getActorDomainModel())))
 
             var isLoading = isLoadingLiveData.value
             assertNotNull(isLoading)

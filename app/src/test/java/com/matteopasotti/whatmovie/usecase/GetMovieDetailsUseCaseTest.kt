@@ -41,7 +41,7 @@ class GetMovieDetailsUseCaseTest {
     @Test
     fun `return a list of actors`() {
         runBlocking {
-            val actors = listOf(DomainFixtures.getActor(), DomainFixtures.getActor())
+            val actors = listOf(DomainFixtures.getActorDomainModel(), DomainFixtures.getActorDomainModel())
 
             given(mockMovieDetailRepository.getMovieCredits(123)).willReturn(actors)
 

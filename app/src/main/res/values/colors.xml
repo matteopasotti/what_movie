@@ -9,4 +9,6 @@
 
     <color name="black60">#40000000</color>
     <color name="black">#000000</color>
+    <color name="grey">#455a64</color>
+    <color name="grey_dark">#37474f</color>
 </resources>

@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.model.ActorDomainModel
+import com.matteopasotti.whatmovie.model.MovieDetailDomainModel
 import com.matteopasotti.whatmovie.model.MovieDomainModel
-import com.matteopasotti.whatmovie.model.response.MovieCreditResponse
 import com.matteopasotti.whatmovie.usecase.GetMovieDetailsUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import org.jetbrains.annotations.TestOnly
 
 class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUseCase) :
     ViewModel() {
@@ -23,6 +22,9 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
 
     private val _cast = MutableLiveData<List<ActorDomainModel>>()
     val cast: LiveData<List<ActorDomainModel>> = _cast
+
+    private val _movieDetail = MutableLiveData<MovieDetailDomainModel>()
+    val movieDetails: LiveData<MovieDetailDomainModel> = _movieDetail
 
     private lateinit var isLoadingLiveData: MutableLiveData<Boolean>
 
@@ -66,7 +68,11 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
                     getMovieDetailsUseCase.getMovieCredits(movieId)
                 }
 
-                updateUI(recommendedMovieResponse.await(), creditResponse.await())
+                val movieDetailResponse = viewModelScope.async {
+                    getMovieDetailsUseCase.getMovieDetail(movieId)
+                }
+
+                updateUI(recommendedMovieResponse.await(), creditResponse.await(), movieDetailResponse.await())
             } catch (e: Throwable) {
                 //TODO update status and show error
                 isLoadingLiveData.value = false
@@ -76,11 +82,25 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
 
     }
 
-    private fun updateUI(recommendedMoviesResponse: Result<Any>, creditResponse: Result<Any>) {
-        when (recommendedMoviesResponse) {
+    private fun updateUI(
+        recommendedMoviesResponse: Result<Any>,
+        creditResponse: Result<Any>,
+        movieDetailResponse: Result<Any>
+    ) {
+
+        handleRecommendedMoviesResponse(recommendedMoviesResponse)
+
+        handleCreditResponse(creditResponse)
+
+        handleMovieDetailResponse(movieDetailResponse)
+    }
+
+
+    private fun handleRecommendedMoviesResponse(response: Result<Any>) {
+        when (response) {
             is Result.Success -> {
                 val movies: List<MovieDomainModel>? =
-                    recommendedMoviesResponse.data as List<MovieDomainModel>?
+                    response.data as List<MovieDomainModel>?
                 if (movies.isNullOrEmpty()) {
                     //TODO no recommended movies received, handle this scenario too
                     isLoadingLiveData.value = false
@@ -96,10 +116,12 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
                 isErrorLiveData.value = true
             }
         }
+    }
 
-        when (creditResponse) {
+    private fun handleCreditResponse(response: Result<Any>) {
+        when (response) {
             is Result.Success -> {
-                val cast: List<ActorDomainModel> = creditResponse.data as List<ActorDomainModel>
+                val cast: List<ActorDomainModel> = response.data as List<ActorDomainModel>
                 if (cast.isNullOrEmpty()) {
                     isLoadingLiveData.value = false
                     isErrorLiveData.value = true
@@ -107,6 +129,21 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
                     isLoadingLiveData.value = false
                     _cast.postValue(cast)
                 }
+            }
+
+            is Result.Error -> {
+                isLoadingLiveData.value = false
+                isErrorLiveData.value = true
+            }
+        }
+    }
+
+    private fun handleMovieDetailResponse(response: Result<Any>) {
+        when(response) {
+            is Result.Success -> {
+                val detail: MovieDetailDomainModel = response.data as MovieDetailDomainModel
+                isLoadingLiveData.value = false
+                _movieDetail.postValue(detail)
             }
 
             is Result.Error -> {

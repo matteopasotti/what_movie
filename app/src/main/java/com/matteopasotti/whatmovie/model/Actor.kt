@@ -1,6 +1,7 @@
 package com.matteopasotti.whatmovie.model
 
 data class Actor(
+    val id: Int,
     val cast_id: Int,
     val character: String,
     val credit_id: String,
@@ -11,10 +12,11 @@ data class Actor(
 
 fun Actor.toDomainModel(): ActorDomainModel {
     val image : String = "http://image.tmdb.org/t/p/w185${this.profile_path}"
-    return ActorDomainModel(this.name, image)
+    return ActorDomainModel(this.id ,this.name, image)
 }
 
 data class ActorDomainModel(
+    val id: Int,
     val name: String,
     val profileImage: String?
 )

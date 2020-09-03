@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Whatmovie</string>
     <string name="movie_cover">Movie Cover</string>
-    <string name="storyline">Storyline</string>
+    <string name="storyline">Storyline:</string>
     <string name="recommended_movies">Recommended Movies</string>
     <string name="the_cast">The Cast</string>
+    <string name="about_film">About Film</string>
+    <string name="original_title">Original Title:</string>
+    <string name="type">Type:</string>
+    <string name="language">Language:</string>
+    <string name="production">Production:</string>
+    <string name="premiere">Premiere:</string>
 </resources>

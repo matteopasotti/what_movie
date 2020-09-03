@@ -2,10 +2,7 @@ package com.matteopasotti.whatmovie.repository
 
 import com.matteopasotti.whatmovie.BuildConfig
 import com.matteopasotti.whatmovie.api.MovieApiInterface
-import com.matteopasotti.whatmovie.model.Actor
-import com.matteopasotti.whatmovie.model.ActorDomainModel
-import com.matteopasotti.whatmovie.model.MovieDomainModel
-import com.matteopasotti.whatmovie.model.toDomainModel
+import com.matteopasotti.whatmovie.model.*
 
 internal class MovieDetailRepositoryImpl(
     private val movieApi: MovieApiInterface): MovieDetailRepository {
@@ -19,4 +16,8 @@ internal class MovieDetailRepositoryImpl(
         movieApi.getMovieCredits(movieId, BuildConfig.API_KEY)
             .cast
             .map { it.toDomainModel() }
+
+    override suspend fun getMovieDetail(movieId: Int): MovieDetailDomainModel =
+        movieApi.getMovieDetail(movieId, BuildConfig.API_KEY , "en-US").toDomainModel()
+
 }

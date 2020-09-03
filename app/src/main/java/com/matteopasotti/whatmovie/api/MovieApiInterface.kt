@@ -1,5 +1,6 @@
 package com.matteopasotti.whatmovie.api
 
+import com.matteopasotti.whatmovie.model.MovieDetail
 import com.matteopasotti.whatmovie.model.response.MovieCreditResponse
 import com.matteopasotti.whatmovie.model.response.PopularMovieResponse
 import com.matteopasotti.whatmovie.model.response.RecommendedMovieResponse
@@ -29,5 +30,12 @@ internal interface MovieApiInterface {
         @Path("movieId") movieId: Int,
         @Query("api_key") apiKey: String
     ) : MovieCreditResponse
+
+    @GET("movie/{movieId}")
+    suspend fun getMovieDetail(
+        @Path("movieId") movieId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ) : MovieDetail
 
 }
