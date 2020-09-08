@@ -66,6 +66,7 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
         binding.movieList.apply {
             setHasFixedSize(true)
             val columnWidth = context.resources.getDimension(R.dimen.image_width).toInt()
+
             val manager = GridAutofitLayoutManager(
                 context,
                 columnWidth

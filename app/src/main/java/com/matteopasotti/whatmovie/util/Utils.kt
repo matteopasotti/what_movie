@@ -4,16 +4,56 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
-import android.util.Log
 import androidx.core.widget.NestedScrollView
 import androidx.palette.graphics.Palette
 import com.matteopasotti.whatmovie.R
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 object Utils {
 
     interface GradientBackgroundCallkback {
         fun backgroundReady(bg: GradientDrawable)
+    }
+
+    fun getCurrentDate(): String {
+        val c: Date = Calendar.getInstance().time
+
+        val df = SimpleDateFormat("dd/MM/yyyy", Locale.UK)
+
+        return df.format(c)
+    }
+
+    /**
+     * d1 could be lastDateSynch
+     * d2 could be the current date
+     */
+    fun getDifferenceBetweenDates(d1: String, d2: String): Long {
+        val df = SimpleDateFormat("dd/MM/yyyy", Locale.UK)
+
+        try {
+            val date1 = df.parse(d1)
+            val date2 = df.parse(d2)
+
+            //calculate difference
+
+            val difference = date2.time - date1.time
+
+            val secondsInMilli = 1000
+            val minutesInMilli = secondsInMilli * 60
+            val hoursInMilli = minutesInMilli * 60
+            val daysInMilli = hoursInMilli * 24
+
+            return difference / daysInMilli
+
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+        return 0L
+
     }
 
     fun getGradientColor(res: Resources, bitmap: Bitmap, callkback: GradientBackgroundCallkback) {

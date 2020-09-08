@@ -15,6 +15,7 @@ internal class MovieDetailRepositoryImpl(
     override suspend fun getMovieCredits(movieId: Int): List<ActorDomainModel>? =
         movieApi.getMovieCredits(movieId, BuildConfig.API_KEY)
             .cast
+            .filter { it.profile_path != null }
             .map { it.toDomainModel() }
 
     override suspend fun getMovieDetail(movieId: Int): MovieDetailDomainModel =

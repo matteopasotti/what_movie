@@ -7,7 +7,7 @@ data class Actor(
     val credit_id: String,
     val gender: Int,
     val name: String,
-    val profile_path: String
+    val profile_path: String?
 )
 
 fun Actor.toDomainModel(): ActorDomainModel {
