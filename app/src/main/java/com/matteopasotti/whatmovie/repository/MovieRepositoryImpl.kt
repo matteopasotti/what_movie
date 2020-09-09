@@ -11,18 +11,17 @@ import com.matteopasotti.whatmovie.util.Utils
 internal class MovieRepositoryImpl(
     private val movieApi: MovieApiInterface,
     private val movieDao: MovieDao,
-    private val dbRepository: DataSyncRepository
+    private val syncRepository: SyncRepoImpl
 ) : MovieRepository, BaseRepository() {
 
     override suspend fun getPopularMovies(page: Int) =
-        if(!dbRepository.areDataUpdated()) {
+        if(!syncRepository.areDataUpdated()) {
             getPopularMoviesFromApi(page)
         } else {
             getPopularMoviesFromDb()
         }
 
-    private suspend fun getPopularMoviesFromApi(page: Int): List<MovieDomainModel>? {
-
+    override suspend fun getPopularMoviesFromApi(page: Int): List<MovieDomainModel>? {
         val movies = movieApi.getPopularMovies(BuildConfig.API_KEY, "en-US", page).results
 
         movies?.let {
@@ -32,11 +31,12 @@ internal class MovieRepositoryImpl(
         return movies?.map { it.toDomainModel() }
     }
 
-    private suspend fun getPopularMoviesFromDb() = movieDao.getMovies()
-        ?.map { it.toDomainModel() }
+    override suspend fun getPopularMoviesFromDb(): List<MovieDomainModel>? =
+        movieDao.getMovies().map { it.toDomainModel() }
 
     private suspend fun saveMovies(movies: List<Movie>) {
-        dbRepository.saveSyncDate(Utils.getCurrentDate())
+        syncRepository.saveSyncDate(Utils.getCurrentDate())
         movieDao.insertMovies(movies)
     }
+
 }

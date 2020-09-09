@@ -1,10 +1,7 @@
 package com.matteopasotti.whatmovie
 
 import android.app.Application
-import com.matteopasotti.whatmovie.di.dbModule
-import com.matteopasotti.whatmovie.di.mainModule
-import com.matteopasotti.whatmovie.di.netModule
-import com.matteopasotti.whatmovie.di.useCasesModule
+import com.matteopasotti.whatmovie.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
@@ -23,7 +20,7 @@ class MyApplication : Application() {
             androidLogger()
             // use properties from assets/koin.properties
             androidFileProperties()
-            modules(listOf(mainModule, netModule, dbModule, useCasesModule))
+            modules(listOf(mainModule, netModule, dbModule, useCasesModule, prefModule, repoModule))
         }
     }
 }

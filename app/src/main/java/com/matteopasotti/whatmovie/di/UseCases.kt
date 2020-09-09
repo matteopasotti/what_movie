@@ -1,6 +1,5 @@
 package com.matteopasotti.whatmovie.di
 
-import com.matteopasotti.whatmovie.repository.DataSyncRepositoryImpl
 import com.matteopasotti.whatmovie.repository.MovieDetailRepositoryImpl
 import com.matteopasotti.whatmovie.repository.MovieRepositoryImpl
 import com.matteopasotti.whatmovie.usecase.GetMovieDetailsUseCase
@@ -14,10 +13,10 @@ val useCasesModule = module {
             movieRepository = MovieRepositoryImpl(
                 movieApi = get(),
                 movieDao = get(),
-                dbRepository = DataSyncRepositoryImpl(preferenceManager = get())
+                syncRepository = get()
             )
         )
     }
 
-    single { GetMovieDetailsUseCase(movieDetailRepository = MovieDetailRepositoryImpl(get())) }
+    single { GetMovieDetailsUseCase(movieDetailRepository = MovieDetailRepositoryImpl(movieApi = get())) }
 }

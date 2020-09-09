@@ -7,4 +7,6 @@ interface DataSyncRepository {
     fun lastSyncDate(): String?
 
     fun areDataUpdated(): Boolean
+
+    fun getCurrentDate(): String
 }
