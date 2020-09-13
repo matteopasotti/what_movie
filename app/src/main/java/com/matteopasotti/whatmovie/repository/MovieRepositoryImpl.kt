@@ -14,25 +14,38 @@ internal class MovieRepositoryImpl(
     private val syncRepository: SyncRepoImpl
 ) : MovieRepository, BaseRepository() {
 
-    override suspend fun getPopularMovies(page: Int) =
+    override suspend fun getPopularMovies(page: Int): List<MovieDomainModel>? {
         if(!syncRepository.areDataUpdated()) {
-            getPopularMoviesFromApi(page)
+            return getPopularMoviesFromApi(page)
         } else {
-            getPopularMoviesFromDb()
+            var movies: List<MovieDomainModel>? = getPopularMoviesFromDb(page)
+            movies.also {
+                if( it.isNullOrEmpty()) {
+                    movies = getPopularMoviesFromApi(page)
+                }
+
+                return movies
+            }
+
         }
+    }
+
 
     override suspend fun getPopularMoviesFromApi(page: Int): List<MovieDomainModel>? {
-        val movies = movieApi.getPopularMovies(BuildConfig.API_KEY, "en-US", page).results
+        val movies = movieApi
+            .getPopularMovies(BuildConfig.API_KEY, "en-US", page)
+            .results
 
-        movies?.let {
-            saveMovies(it)
+        movies?.let { list ->
+            list.forEach { it.page = page }
+            saveMovies(list)
         }
 
         return movies?.map { it.toDomainModel() }
     }
 
-    override suspend fun getPopularMoviesFromDb(): List<MovieDomainModel>? =
-        movieDao.getMovies().map { it.toDomainModel() }
+    override suspend fun getPopularMoviesFromDb(page: Int): List<MovieDomainModel>? =
+        movieDao.getMoviesByPage(page).map { it.toDomainModel() }
 
     private suspend fun saveMovies(movies: List<Movie>) {
         syncRepository.saveSyncDate(Utils.getCurrentDate())

@@ -8,5 +8,5 @@ interface MovieRepository {
 
     suspend fun getPopularMoviesFromApi(page: Int): List<MovieDomainModel>?
 
-    suspend fun getPopularMoviesFromDb(): List<MovieDomainModel>?
+    suspend fun getPopularMoviesFromDb(page: Int): List<MovieDomainModel>?
 }

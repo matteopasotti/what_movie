@@ -34,14 +34,10 @@ fun setCircularImageUrl(imageView: ImageView, url : String) {
     val requestOptions = RequestOptions()
     requestOptions.circleCrop()
 
-    val context = imageView.context
-    val cd = ColorDrawable(context.resources.getColor(R.color.grey, null))
-
     Glide
         .with(imageView.context)
         .load(url)
         .apply(requestOptions)
-        .placeholder(cd)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(imageView)
 }

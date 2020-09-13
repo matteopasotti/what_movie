@@ -144,7 +144,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/movie_poster_image"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cast_layout"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:visibility="visible"/>
@@ -165,6 +165,7 @@
                             android:id="@+id/recommended_movies_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_medium"
                             android:fontFamily="@font/product_sans_bold"
                             android:text="@string/recommended_movies"
                             android:textColor="@android:color/white"
