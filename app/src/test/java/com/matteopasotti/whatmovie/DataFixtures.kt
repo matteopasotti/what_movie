@@ -18,8 +18,10 @@ object DataFixtures {
         popularity: Double = 100.2,
         vote_count: Int = 10,
         video: Boolean = false,
-        vote_average: Double = 8.0
-    ): Movie = Movie(id,
+        vote_average: Double = 8.0,
+        page: Int = 1
+    ): Movie = Movie(
+        id,
         poster_path,
         adult,
         overview,
@@ -32,7 +34,9 @@ object DataFixtures {
         popularity,
         vote_count,
         video,
-        vote_average)
+        vote_average,
+        page
+    )
 
 
 }

@@ -12,8 +12,8 @@ class GetPopularMoviesUseCase (
     suspend fun execute(): Result<Any> {
         return try {
             page++
-            movieRepository.getPopularMovies(page)?.let {
-                Result.Success(it.filter { it.poster_path != null })
+            movieRepository.getPopularMovies(page)?.let { list ->
+                Result.Success(list.filter { it.poster_path != null })
             } ?: Result.Error("No Data")
         } catch (e: IOException) {
             Result.Error("getPopularMovies error")

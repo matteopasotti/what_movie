@@ -1,5 +1,6 @@
 package com.matteopasotti.whatmovie.repository
 
+import androidx.annotation.VisibleForTesting
 import com.matteopasotti.whatmovie.BuildConfig
 import com.matteopasotti.whatmovie.api.MovieApiInterface
 import com.matteopasotti.whatmovie.db.MovieDao
@@ -14,19 +15,27 @@ internal class MovieRepositoryImpl(
     private val syncRepository: SyncRepoImpl
 ) : MovieRepository, BaseRepository() {
 
+
+    var firstAccess = true
+
     override suspend fun getPopularMovies(page: Int): List<MovieDomainModel>? {
         if(!syncRepository.areDataUpdated()) {
             return getPopularMoviesFromApi(page)
         } else {
-            var movies: List<MovieDomainModel>? = getPopularMoviesFromDb(page)
-            movies.also {
-                if( it.isNullOrEmpty()) {
-                    movies = getPopularMoviesFromApi(page)
+            var movies: List<MovieDomainModel>?
+            if(firstAccess) {
+                firstAccess = false
+                movies = getAllPopularMoviesFromDb()
+            } else {
+                movies = getPopularMoviesFromDb(page)
+                movies.also {
+                    if( it.isNullOrEmpty()) {
+                        movies = getPopularMoviesFromApi(page)
+                    }
                 }
-
-                return movies
             }
 
+            return movies
         }
     }
 
@@ -46,6 +55,9 @@ internal class MovieRepositoryImpl(
 
     override suspend fun getPopularMoviesFromDb(page: Int): List<MovieDomainModel>? =
         movieDao.getMoviesByPage(page).map { it.toDomainModel() }
+
+    override suspend fun getAllPopularMoviesFromDb(): List<MovieDomainModel>? =
+        movieDao.getMovies().map { it.toDomainModel() }
 
     private suspend fun saveMovies(movies: List<Movie>) {
         syncRepository.saveSyncDate(Utils.getCurrentDate())

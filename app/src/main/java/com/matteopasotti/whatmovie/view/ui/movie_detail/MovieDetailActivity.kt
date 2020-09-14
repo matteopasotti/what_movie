@@ -125,7 +125,7 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieV
         Glide.with(this)
             .asBitmap()
             .apply(centerCrop)
-            .load(viewModel.movie!!.backdrop_path)
+            .load(viewModel.movie!!.poster_path)
             .listener(this).into(binding.backdropImage)
     }
 
