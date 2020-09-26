@@ -9,6 +9,8 @@ interface MovieDetailRepository {
 
     suspend fun getRecommendedMovies(movieId: Int): List<MovieDomainModel>?
 
+    suspend fun getSimilarMovies(movieId: Int): List<MovieDomainModel>?
+
     suspend fun getMovieCredits(movieId: Int): List<ActorDomainModel>?
 
     suspend fun getMovieDetail(movieId: Int): MovieDetailDomainModel

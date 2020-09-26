@@ -10,4 +10,5 @@
     <string name="language">Language:</string>
     <string name="production">Production:</string>
     <string name="premiere">Premiere:</string>
+    <string name="similar_movies">Similar Movies</string>
 </resources>

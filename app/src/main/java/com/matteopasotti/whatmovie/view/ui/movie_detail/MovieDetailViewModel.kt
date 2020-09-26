@@ -20,6 +20,9 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
     private val _recommendedMovies = MutableLiveData<List<MovieDomainModel>>()
     val recommendedMovies: LiveData<List<MovieDomainModel>> = _recommendedMovies
 
+    private val _similarMovies = MutableLiveData<List<MovieDomainModel>>()
+    val similarMovies: LiveData<List<MovieDomainModel>> = _similarMovies
+
     private val _cast = MutableLiveData<List<ActorDomainModel>>()
     val cast: LiveData<List<ActorDomainModel>> = _cast
 
@@ -64,6 +67,10 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
                     getMovieDetailsUseCase.getRecommendedMovie(movieId)
                 }
 
+                val similarMoviesResponse = viewModelScope.async {
+                    getMovieDetailsUseCase.getSimilarMovies(movieId)
+                }
+
                 val creditResponse = viewModelScope.async {
                     getMovieDetailsUseCase.getMovieCredits(movieId)
                 }
@@ -72,7 +79,12 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
                     getMovieDetailsUseCase.getMovieDetail(movieId)
                 }
 
-                updateUI(recommendedMovieResponse.await(), creditResponse.await(), movieDetailResponse.await())
+                updateUI(
+                    recommendedMovieResponse.await(),
+                    similarMoviesResponse.await(),
+                    creditResponse.await(),
+                    movieDetailResponse.await()
+                )
             } catch (e: Throwable) {
                 //TODO update status and show error
                 isLoadingLiveData.value = false
@@ -84,11 +96,14 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
 
     private fun updateUI(
         recommendedMoviesResponse: Result<Any>,
+        similarMoviesResponse: Result<Any>,
         creditResponse: Result<Any>,
         movieDetailResponse: Result<Any>
     ) {
 
         handleRecommendedMoviesResponse(recommendedMoviesResponse)
+
+        handleSimilarMoviesResponse(similarMoviesResponse)
 
         handleCreditResponse(creditResponse)
 
@@ -108,6 +123,28 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
                 } else {
                     isLoadingLiveData.value = false
                     _recommendedMovies.postValue(movies)
+                }
+            }
+
+            is Result.Error -> {
+                isLoadingLiveData.value = false
+                isErrorLiveData.value = true
+            }
+        }
+    }
+
+    private fun handleSimilarMoviesResponse(response: Result<Any>) {
+        when (response) {
+            is Result.Success -> {
+                val movies: List<MovieDomainModel>? =
+                    response.data as List<MovieDomainModel>?
+                if (movies.isNullOrEmpty()) {
+                    //TODO no similar movies received, handle this scenario too
+                    isLoadingLiveData.value = false
+                    isErrorLiveData.value = true
+                } else {
+                    isLoadingLiveData.value = false
+                    _similarMovies.postValue(movies)
                 }
             }
 
@@ -139,7 +176,7 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
     }
 
     private fun handleMovieDetailResponse(response: Result<Any>) {
-        when(response) {
+        when (response) {
             is Result.Success -> {
                 val detail: MovieDetailDomainModel = response.data as MovieDetailDomainModel
                 isLoadingLiveData.value = false

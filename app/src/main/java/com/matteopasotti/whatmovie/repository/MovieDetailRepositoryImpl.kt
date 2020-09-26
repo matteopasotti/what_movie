@@ -12,6 +12,11 @@ internal class MovieDetailRepositoryImpl(
             .results
             ?.map { it.toDomainModel()}
 
+    override suspend fun getSimilarMovies(movieId: Int): List<MovieDomainModel>? =
+        movieApi.getSimilarMovies(movieId, BuildConfig.API_KEY, "en-US", 1)
+            .results
+            ?.map { it.toDomainModel() }
+
     override suspend fun getMovieCredits(movieId: Int): List<ActorDomainModel>? =
         movieApi.getMovieCredits(movieId, BuildConfig.API_KEY)
             .cast

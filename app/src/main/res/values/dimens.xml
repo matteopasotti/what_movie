@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="image_width">120dp</dimen>
-    <dimen name="image_height">180dp</dimen>
+    <dimen name="image_width">160dp</dimen>
+    <dimen name="image_height">210dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
 </resources>

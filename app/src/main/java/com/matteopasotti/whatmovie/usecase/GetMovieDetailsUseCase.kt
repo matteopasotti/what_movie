@@ -14,9 +14,18 @@ class GetMovieDetailsUseCase(private val movieDetailRepository: MovieDetailRepos
         } catch (e: IOException) {
             Result.Error(e.toString())
         }
-
     }
 
+
+    suspend fun getSimilarMovies(movieId: Int): Result<Any> {
+        return try {
+            movieDetailRepository.getSimilarMovies(movieId)?.let {
+                Result.Success(it.filter { it.poster_path != null })
+            } ?: Result.Error("No Data")
+        } catch (e: IOException) {
+            Result.Error(e.toString())
+        }
+    }
 
     suspend fun getMovieCredits(movieId: Int): Result<Any> {
         return try {

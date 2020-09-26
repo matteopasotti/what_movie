@@ -25,7 +25,7 @@ import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieViewHolder.Delegate {
+class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate {
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMovieDetailBinding>(
@@ -36,7 +36,8 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieV
 
     private val viewModel: MovieDetailViewModel by viewModel()
 
-    private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var recommendedMoviesAdapter: MoviesAdapter
+    private lateinit var similarMoviesAdapter: MoviesAdapter
     private lateinit var castAdapter: MovieCastAdapter
 
     companion object {
@@ -45,6 +46,7 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieV
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         if (savedInstanceState == null) {
             viewModel.movie = intent.getParcelableExtra<MovieDomainModel>(MOVIE)
@@ -75,7 +77,14 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieV
         viewModel.recommendedMovies.observe(this , Observer {
             it?.let {
                 binding.recommendedLayout.visibility = View.VISIBLE
-                moviesAdapter.updateItems(it)
+                recommendedMoviesAdapter.updateItems(it)
+            }
+        })
+
+        viewModel.similarMovies.observe(this , Observer {
+            it?.let {
+                binding.similarMoviesLayout.visibility = View.VISIBLE
+                similarMoviesAdapter.updateItems(it)
             }
         })
 
@@ -98,13 +107,21 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieV
 
     private fun initView() {
 
-        moviesAdapter = MoviesAdapter(this)
+        recommendedMoviesAdapter = MoviesAdapter(this)
 
         binding.rvRecommendedMovies.apply {
             setHasFixedSize(true)
             val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             layoutManager = manager
-            adapter = moviesAdapter
+            adapter = recommendedMoviesAdapter
+        }
+
+        similarMoviesAdapter = MoviesAdapter(this)
+        binding.rvSimilarMovies.apply {
+            setHasFixedSize(true)
+            val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = manager
+            adapter = similarMoviesAdapter
         }
 
         castAdapter = MovieCastAdapter()
@@ -114,45 +131,6 @@ class MovieDetailActivity : AppCompatActivity(), RequestListener<Bitmap>, MovieV
             layoutManager = manager
             adapter = castAdapter
         }
-
-        applyGradientBgColor()
-    }
-
-    private fun applyGradientBgColor() {
-
-        val centerCrop = RequestOptions().centerCrop()
-
-        Glide.with(this)
-            .asBitmap()
-            .apply(centerCrop)
-            .load(viewModel.movie!!.poster_path)
-            .listener(this).into(binding.backdropImage)
-    }
-
-    override fun onLoadFailed(
-        e: GlideException?,
-        model: Any?,
-        target: Target<Bitmap>?,
-        isFirstResource: Boolean
-    ): Boolean {
-        return false
-    }
-
-    override fun onResourceReady(
-        resource: Bitmap?,
-        model: Any?,
-        target: Target<Bitmap>?,
-        dataSource: DataSource?,
-        isFirstResource: Boolean
-    ): Boolean {
-        Utils.getGradientColor(resources, resource!!, callkback = object :
-            Utils.GradientBackgroundCallkback {
-            override fun backgroundReady(bg: GradientDrawable) {
-                binding.viewBackground.background = bg
-            }
-        })
-
-        return false
     }
 
     override fun onItemClick(movie: MovieDomainModel) {

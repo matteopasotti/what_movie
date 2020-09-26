@@ -14,7 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:elevation="1dp">
+            android:elevation="1dp"
+            android:background="@color/colorPrimary">
 
         <androidx.core.widget.NestedScrollView
                 android:layout_width="0dp"
@@ -29,34 +30,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+
                 <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/backdrop_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:background="@color/amber" />
-
-                <View
-                        android:id="@+id/view_background"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/backdrop_image"
-                        tools:background="@android:color/holo_blue_bright" />
-
-
-                <View
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:background="@color/black60"
-                        app:layout_constraintBottom_toBottomOf="@+id/backdrop_image"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:imageUrl="@{movie.poster_path}"
+                        tools:background="@drawable/venom_cover"/>
 
                 <View
                         android:id="@+id/line"
@@ -67,29 +51,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/backdrop_image" />
 
-
-                <!-- poster path image -->
-                <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/movie_poster_image"
-                        android:layout_width="@dimen/image_width"
-                        android:layout_height="@dimen/image_height"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="50dp"
-                        app:cardBackgroundColor="#24282B"
-                        app:cardElevation="0dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/line"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/line">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/movie_cover"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:imageUrl="@{movie.poster_path}"
-                            tools:background="@drawable/venom_cover" />
-
-
-                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                         android:id="@+id/movie_title"
@@ -102,9 +63,9 @@
                         android:maxLines="3"
                         android:text="@{movie.title}"
                         android:textColor="@android:color/white"
-                        android:textSize="18sp"
+                        android:textSize="24sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/movie_poster_image"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/line"
                         tools:text="Title" />
 
@@ -116,8 +77,8 @@
                         android:orientation="vertical"
                         android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/movie_poster_image"
-                        app:layout_constraintTop_toBottomOf="@+id/movie_poster_image">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/movie_title">
 
 
                     <TextView
@@ -150,7 +111,7 @@
                         android:visibility="visible"/>
 
                 <LinearLayout
-                        android:id="@+id/recommended_layout"
+                        android:id="@+id/similar_movies_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_medium"
@@ -159,6 +120,37 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/movie_detail_layout"
                         app:layout_constraintTop_toBottomOf="@+id/movie_detail_layout">
+
+
+                    <TextView
+                            android:id="@+id/similar_movies_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_medium"
+                            android:fontFamily="@font/product_sans_bold"
+                            android:text="@string/similar_movies"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_similar_movies"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/recommended_layout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/similar_movies_layout">
 
 
                     <TextView

@@ -3,7 +3,7 @@ package com.matteopasotti.whatmovie.api
 import com.matteopasotti.whatmovie.model.MovieDetail
 import com.matteopasotti.whatmovie.model.response.MovieCreditResponse
 import com.matteopasotti.whatmovie.model.response.PopularMovieResponse
-import com.matteopasotti.whatmovie.model.response.RecommendedMovieResponse
+import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -23,7 +23,15 @@ internal interface MovieApiInterface {
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
         @Query("page") page: Int
-    ) : RecommendedMovieResponse
+    ) : BasicMovieResponse
+
+    @GET("movie/{movieId}/similar")
+    suspend fun getSimilarMovies(
+        @Path("movieId") movieId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): BasicMovieResponse
 
     @GET("movie/{movieId}/credits")
     suspend fun getMovieCredits(

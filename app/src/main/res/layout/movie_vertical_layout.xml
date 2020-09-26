@@ -20,8 +20,8 @@
             android:id="@+id/container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="6dp"
             android:background="@color/mid_black">
 
@@ -30,18 +30,30 @@
                 android:layout_height="@dimen/image_height"
                 app:cardBackgroundColor="#24282B"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="0dp"
+                app:cardElevation="3dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/movie_cover"
+            <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:imageUrl="@{image}"
-                    tools:background="@drawable/venom_cover" />
+                    android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/movie_cover"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:imageUrl="@{image}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:background="@drawable/venom_cover" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
         </com.google.android.material.card.MaterialCardView>
