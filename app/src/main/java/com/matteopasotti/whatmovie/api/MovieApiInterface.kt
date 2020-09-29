@@ -24,7 +24,7 @@ internal interface MovieApiInterface {
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
         @Query("page") page: Int
-    ) : BasicMovieResponse
+    ) : Response<BasicMovieResponse>
 
     @GET("movie/{movieId}/similar")
     suspend fun getSimilarMovies(
@@ -32,19 +32,19 @@ internal interface MovieApiInterface {
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
         @Query("page") page: Int
-    ): BasicMovieResponse
+    ): Response<BasicMovieResponse>
 
     @GET("movie/{movieId}/credits")
     suspend fun getMovieCredits(
         @Path("movieId") movieId: Int,
         @Query("api_key") apiKey: String
-    ) : MovieCreditResponse
+    ) : Response<MovieCreditResponse>
 
     @GET("movie/{movieId}")
     suspend fun getMovieDetail(
         @Path("movieId") movieId: Int,
         @Query("api_key") apiKey: String,
         @Query("language") language: String
-    ) : MovieDetail
+    ) : Response<MovieDetail>
 
 }

@@ -24,7 +24,7 @@ import org.mockito.Spy
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class HomeGalleryMoviesViewModelTest {
+class  HomeGalleryMoviesViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule

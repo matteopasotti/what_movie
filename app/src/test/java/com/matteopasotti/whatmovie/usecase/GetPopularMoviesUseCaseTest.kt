@@ -51,19 +51,4 @@ class GetPopularMoviesUseCaseTest {
             assertEquals(result, Result.Error("No Data"))
         }
     }
-
-    @Test
-    fun `filter movies without image`() {
-        runBlocking {
-            val movieWithImage = DomainFixtures.getMovie()
-            val movieWithoutImage = DomainFixtures.getMovie(poster_path = null)
-            val movies = listOf(movieWithImage)
-
-            given(mockMovieRepository.getPopularMovies(1)).willReturn(listOf(movieWithImage, movieWithoutImage))
-
-            val result = useCase.execute()
-
-            assertEquals(result, Result.Success(movies))
-        }
-    }
 }

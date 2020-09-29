@@ -72,6 +72,8 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit2_version"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.0")
+
 
     //Okhttp3
     implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"

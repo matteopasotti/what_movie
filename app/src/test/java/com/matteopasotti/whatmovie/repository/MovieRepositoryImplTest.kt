@@ -64,6 +64,26 @@ class MovieRepositoryImplTest {
     }
 
     @Test
+    fun `getPopularMovies fetches Movie and filters out the ones without a poster image`() {
+        val movieWithImage = DataFixtures.getMovie(poster_path = "image")
+        val movieWithoutImage = DataFixtures.getMovie(poster_path = null)
+        runBlocking {
+            given(mockService.getPopularMovies(apiKey, language, page))
+                .willReturn(
+                    Response.success(200, PopularMovieResponse(
+                        page = 1,
+                        results = listOf(movieWithImage, movieWithoutImage)
+                    ))
+                )
+
+            val result = repository.getPopularMovies(1)
+
+            assertTrue(result!!.size == 1)
+            assertEquals(result.first(), movieWithImage.toDomainModel())
+        }
+    }
+
+    @Test
     fun `getPopularMovies returns error and we do not return any movie`() {
         val content = "{\"status_code\":7,\"status_message\":\"Invalid API key: You must be granted a valid key.\",\"success\":false}"
         runBlocking {

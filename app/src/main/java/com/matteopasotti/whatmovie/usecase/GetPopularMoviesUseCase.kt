@@ -13,7 +13,7 @@ class GetPopularMoviesUseCase (
         return try {
             page++
             movieRepository.getPopularMovies(page)?.let { list ->
-                Result.Success(list.filter { it.poster_path != null })
+                Result.Success(list)
             } ?: Result.Error("No Data")
         } catch (e: IOException) {
             Result.Error("getPopularMovies error")

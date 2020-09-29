@@ -13,5 +13,5 @@ interface MovieDetailRepository {
 
     suspend fun getMovieCredits(movieId: Int): List<ActorDomainModel>?
 
-    suspend fun getMovieDetail(movieId: Int): MovieDetailDomainModel
+    suspend fun getMovieDetail(movieId: Int): MovieDetailDomainModel?
 }

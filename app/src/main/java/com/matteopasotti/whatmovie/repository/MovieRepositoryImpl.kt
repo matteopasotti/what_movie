@@ -46,7 +46,7 @@ internal class MovieRepositoryImpl(
         val response = movieApi.getPopularMovies(BuildConfig.API_KEY, "en-US", page)
 
         if(response.isSuccessful) {
-            val results = response.body()?.results
+            val results = response.body()?.results?.filter { it.poster_path != null }
             results?.let {
                     list -> list.forEach { it.page = page }
                 saveMovies(list)

@@ -40,7 +40,7 @@ class GetMovieDetailsUseCase(private val movieDetailRepository: MovieDetailRepos
     suspend fun getMovieDetail(movieId: Int): Result<Any> {
         return try {
             movieDetailRepository.getMovieDetail(movieId).let {
-                Result.Success(it)
+                Result.Success(it!!)
             }
         } catch (e: IOException) {
             Result.Error(e.toString())
