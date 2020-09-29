@@ -3,6 +3,7 @@ package com.matteopasotti.whatmovie.repository
 import androidx.annotation.VisibleForTesting
 import com.matteopasotti.whatmovie.BuildConfig
 import com.matteopasotti.whatmovie.api.MovieApiInterface
+import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.db.MovieDao
 import com.matteopasotti.whatmovie.model.Movie
 import com.matteopasotti.whatmovie.model.MovieDomainModel
@@ -13,7 +14,7 @@ internal class MovieRepositoryImpl(
     private val movieApi: MovieApiInterface,
     private val movieDao: MovieDao,
     private val syncRepository: SyncRepoImpl
-) : MovieRepository, BaseRepository() {
+) : MovieRepository{
 
 
     var firstAccess = true
@@ -41,16 +42,19 @@ internal class MovieRepositoryImpl(
 
 
     override suspend fun getPopularMoviesFromApi(page: Int): List<MovieDomainModel>? {
-        val movies = movieApi
-            .getPopularMovies(BuildConfig.API_KEY, "en-US", page)
-            .results
 
-        movies?.let { list ->
-            list.forEach { it.page = page }
-            saveMovies(list)
+        val response = movieApi.getPopularMovies(BuildConfig.API_KEY, "en-US", page)
+
+        if(response.isSuccessful) {
+            val results = response.body()?.results
+            results?.let {
+                    list -> list.forEach { it.page = page }
+                saveMovies(list)
+                return results?.map { it.toDomainModel() }
+            }
         }
 
-        return movies?.map { it.toDomainModel() }
+        return null
     }
 
     override suspend fun getPopularMoviesFromDb(page: Int): List<MovieDomainModel>? =

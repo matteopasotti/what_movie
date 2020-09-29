@@ -10,6 +10,8 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.runBlocking
+import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -17,6 +19,7 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
 class MovieRepositoryImplTest {
@@ -48,10 +51,10 @@ class MovieRepositoryImplTest {
         runBlocking {
             given(mockService.getPopularMovies(apiKey, language, page))
                 .willReturn(
-                    PopularMovieResponse(
+                    Response.success(200, PopularMovieResponse(
                         page = 1,
                         results = listOf(DataFixtures.getMovie())
-                    )
+                    ))
                 )
 
             val result = repository.getPopularMovies(1)
@@ -61,17 +64,32 @@ class MovieRepositoryImplTest {
     }
 
     @Test
+    fun `getPopularMovies returns error and we do not return any movie`() {
+        val content = "{\"status_code\":7,\"status_message\":\"Invalid API key: You must be granted a valid key.\",\"success\":false}"
+        runBlocking {
+            given(mockService.getPopularMovies(apiKey, language, page))
+                .willReturn(
+                    Response.error(400, content.toResponseBody())
+                )
+
+            val result = repository.getPopularMovies(1)
+
+            assertEquals(result, null)
+        }
+    }
+
+
+
+    @Test
     fun `Given data out of sync, Then we get movies from API`() {
         doReturn(false).`when`(syncRepo).areDataUpdated()
 
         runBlocking {
             given(mockService.getPopularMovies(apiKey, language, page))
-                .willReturn(
-                    PopularMovieResponse(
-                        page = 1,
-                        results = listOf(DataFixtures.getMovie())
-                    )
-                )
+                .willReturn(Response.success(PopularMovieResponse(
+                    page = 1,
+                    results = listOf(DataFixtures.getMovie())
+                )))
 
             val result = repository.getPopularMovies(1)
 
@@ -121,10 +139,13 @@ class MovieRepositoryImplTest {
 
             given(mockService.getPopularMovies(apiKey, language, page))
                 .willReturn(
-                    PopularMovieResponse(
-                        page = 1,
-                        results = listOf(movie)
+                    Response.success(
+                        PopularMovieResponse(
+                            page = 1,
+                            results = listOf(movie)
+                        )
                     )
+
                 )
 
             val result = repository.getPopularMovies(1)
