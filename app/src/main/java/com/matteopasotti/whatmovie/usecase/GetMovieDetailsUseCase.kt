@@ -12,7 +12,7 @@ class GetMovieDetailsUseCase(private val movieDetailRepository: MovieDetailRepos
                 Result.Success(it.filter { it.poster_path != null })
             } ?: Result.Error("No Data")
         } catch (e: IOException) {
-            Result.Error(e.toString())
+            Result.Error("getRecommendedMovie has failed")
         }
     }
 
@@ -23,7 +23,7 @@ class GetMovieDetailsUseCase(private val movieDetailRepository: MovieDetailRepos
                 Result.Success(it.filter { it.poster_path != null })
             } ?: Result.Error("No Data")
         } catch (e: IOException) {
-            Result.Error(e.toString())
+            Result.Error("getSimilarMovies has failed")
         }
     }
 
@@ -33,7 +33,7 @@ class GetMovieDetailsUseCase(private val movieDetailRepository: MovieDetailRepos
                 Result.Success(it)
             }  ?: Result.Error("No Data")
         } catch (e: IOException) {
-            Result.Error(e.toString())
+            Result.Error("getMovieCredits has failed")
         }
     }
 
@@ -43,7 +43,7 @@ class GetMovieDetailsUseCase(private val movieDetailRepository: MovieDetailRepos
                 Result.Success(it!!)
             }
         } catch (e: IOException) {
-            Result.Error(e.toString())
+            Result.Error("getMovieDetail has failed")
         }
     }
 }

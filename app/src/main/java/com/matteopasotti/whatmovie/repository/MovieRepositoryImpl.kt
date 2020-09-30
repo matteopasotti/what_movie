@@ -9,6 +9,7 @@ import com.matteopasotti.whatmovie.model.Movie
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.model.toDomainModel
 import com.matteopasotti.whatmovie.util.Utils
+import java.io.IOException
 
 internal class MovieRepositoryImpl(
     private val movieApi: MovieApiInterface,
@@ -19,6 +20,7 @@ internal class MovieRepositoryImpl(
 
     var firstAccess = true
 
+    @Throws(IOException::class)
     override suspend fun getPopularMovies(page: Int): List<MovieDomainModel>? {
         if(!syncRepository.areDataUpdated()) {
             return getPopularMoviesFromApi(page)
@@ -41,6 +43,7 @@ internal class MovieRepositoryImpl(
     }
 
 
+    @Throws(IOException::class)
     override suspend fun getPopularMoviesFromApi(page: Int): List<MovieDomainModel>? {
 
         val response = movieApi.getPopularMovies(BuildConfig.API_KEY, "en-US", page)

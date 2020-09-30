@@ -3,15 +3,16 @@ package com.matteopasotti.whatmovie.usecase
 import com.matteopasotti.whatmovie.DomainFixtures
 import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.repository.MovieRepositoryImpl
+import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.given
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import java.lang.RuntimeException
+import java.io.IOException
 
 
 @RunWith(MockitoJUnitRunner::class)
@@ -49,6 +50,17 @@ class GetPopularMoviesUseCaseTest {
             val result = useCase.execute()
 
             assertEquals(result, Result.Error("No Data"))
+        }
+    }
+
+    @Test
+    fun `Given getPopularMovies throws an Exception, Then we return Error`(){
+        runBlocking {
+            doThrow(IOException::class).`when`(mockMovieRepository).getPopularMovies(1)
+
+            val result = useCase.execute()
+
+            assertEquals(result, Result.Error("getPopularMovies error"))
         }
     }
 }
