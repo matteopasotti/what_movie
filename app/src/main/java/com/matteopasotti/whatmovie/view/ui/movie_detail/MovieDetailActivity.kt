@@ -98,6 +98,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate {
         viewModel.movieDetails.observe(this, Observer {
             it?.let {
                 binding.movieDetailLayout.detail = it
+                binding.ratingView.setRatingScore(it.vote_average)
             }
         })
 

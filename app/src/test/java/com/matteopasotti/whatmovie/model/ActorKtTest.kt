@@ -14,7 +14,7 @@ class ActorKtTest {
 
         val actor = DomainFixtures.getActor()
 
-        val expected: ActorDomainModel = ActorDomainModel(
+        val expected = ActorDomainModel(
             actor.id, actor.name, "http://image.tmdb.org/t/p/w185${actor.profile_path}"
         )
 

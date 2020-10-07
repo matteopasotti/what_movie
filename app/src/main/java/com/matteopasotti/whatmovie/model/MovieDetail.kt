@@ -6,7 +6,8 @@ data class MovieDetail(
     val original_title: String,
     val overview: String,
     val production_countries: MutableList<ProductionCountry>,
-    val release_date: String
+    val release_date: String,
+    val vote_average: Float
 )
 
 fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
@@ -35,7 +36,8 @@ fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
         this.original_title,
         this.overview,
         prodCountries,
-        this.release_date
+        this.release_date,
+        this.vote_average
     )
 
 }
@@ -46,5 +48,6 @@ data class MovieDetailDomainModel(
     val originalTitle: String,
     val overview: String,
     val productionCountries: String,
-    val releaseDate: String
+    val releaseDate: String,
+    val vote_average: Float
 )

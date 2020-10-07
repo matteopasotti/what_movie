@@ -25,25 +25,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-<!--        <TextView-->
-<!--                android:id="@+id/name"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@{actor.name}"-->
-<!--                tools:text="Name"-->
-<!--                android:maxLines="1"-->
-<!--                android:textColor="@android:color/white"-->
-<!--                android:textSize="13sp"-->
-<!--                android:layout_marginTop="4dp"-->
-<!--                tools:textColor="@android:color/white"-->
-<!--                android:fontFamily="@font/product_sans_bold"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/creator_image"-->
-<!--                app:layout_constraintStart_toStartOf="@+id/creator_image"-->
-<!--                app:layout_constraintEnd_toEndOf="@+id/creator_image"/>-->
-
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

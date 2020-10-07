@@ -14,8 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:elevation="1dp"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            android:elevation="1dp">
 
         <androidx.core.widget.NestedScrollView
                 android:layout_width="0dp"
@@ -35,12 +35,13 @@
                         android:id="@+id/backdrop_image"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        app:layout_constraintDimensionRatio="1:1"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:scaleType="fitXY"
                         app:imageUrl="@{movie.poster_path}"
-                        tools:background="@drawable/venom_cover"/>
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:background="@drawable/venom_cover" />
 
                 <View
                         android:id="@+id/line"
@@ -57,23 +58,32 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_medium"
-                        android:layout_marginTop="@dimen/margin_small"
+                        android:layout_marginTop="@dimen/margin_medium"
                         android:ellipsize="end"
                         android:fontFamily="@font/product_sans_bold"
                         android:maxLines="3"
                         android:text="@{movie.title}"
                         android:textColor="@android:color/white"
-                        android:textSize="24sp"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textSize="28sp"
+                        app:layout_constraintEnd_toStartOf="@+id/rating_view"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/line"
                         tools:text="Title" />
+
+                <com.matteopasotti.whatmovie.util.RatingView
+                        android:id="@+id/rating_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/line" />
 
                 <LinearLayout
                         android:id="@+id/cast_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_big"
                         android:orientation="vertical"
                         android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -87,6 +97,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/product_sans_bold"
                             android:text="@string/the_cast"
+                            android:layout_marginStart="@dimen/margin_medium"
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
@@ -104,11 +115,11 @@
                         layout="@layout/about_movie_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/cast_layout"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:visibility="visible"/>
+                        app:layout_constraintTop_toBottomOf="@+id/cast_layout" />
 
                 <LinearLayout
                         android:id="@+id/similar_movies_layout"

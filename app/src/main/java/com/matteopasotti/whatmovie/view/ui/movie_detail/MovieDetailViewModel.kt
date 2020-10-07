@@ -117,7 +117,6 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
                 val movies: List<MovieDomainModel>? =
                     response.data as List<MovieDomainModel>?
                 if (movies.isNullOrEmpty()) {
-                    //TODO no recommended movies received, handle this scenario too
                     isLoadingLiveData.value = false
                     isErrorLiveData.value = true
                 } else {
@@ -139,7 +138,6 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
                 val movies: List<MovieDomainModel>? =
                     response.data as List<MovieDomainModel>?
                 if (movies.isNullOrEmpty()) {
-                    //TODO no similar movies received, handle this scenario too
                     isLoadingLiveData.value = false
                     isErrorLiveData.value = true
                 } else {
