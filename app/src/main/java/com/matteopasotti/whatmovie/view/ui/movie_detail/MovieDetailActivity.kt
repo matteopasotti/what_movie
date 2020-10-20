@@ -1,31 +1,30 @@
 package com.matteopasotti.whatmovie.view.ui.movie_detail
 
+import android.app.ActivityOptions
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Pair
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.ActivityMovieDetailBinding
+import com.matteopasotti.whatmovie.model.ActorDomainModel
 import com.matteopasotti.whatmovie.model.MovieDomainModel
-import com.matteopasotti.whatmovie.util.Utils
 import com.matteopasotti.whatmovie.view.adapter.MovieCastAdapter
 import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
+import com.matteopasotti.whatmovie.view.ui.actor_detail.ActorDetailActivity
+import com.matteopasotti.whatmovie.view.viewholder.MovieCastViewHolder
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
+import kotlinx.android.synthetic.main.movie_cast_item_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate {
+
+class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate, MovieCastViewHolder.Delegate {
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMovieDetailBinding>(
@@ -76,22 +75,22 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate {
 
         viewModel.recommendedMovies.observe(this , Observer {
             it?.let {
+                binding.recommendedLayout.addItems(it)
                 binding.recommendedLayout.visibility = View.VISIBLE
-                recommendedMoviesAdapter.updateItems(it)
             }
         })
 
         viewModel.similarMovies.observe(this , Observer {
             it?.let {
+                binding.similarMoviesLayout.addItems(it)
                 binding.similarMoviesLayout.visibility = View.VISIBLE
-                similarMoviesAdapter.updateItems(it)
             }
         })
 
         viewModel.cast.observe(this, Observer {
             it?.let {
+                binding.castLayout.addItems(it)
                 binding.castLayout.visibility = View.VISIBLE
-                castAdapter.updateItems(it)
             }
         })
 
@@ -109,34 +108,29 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate {
     private fun initView() {
 
         recommendedMoviesAdapter = MoviesAdapter(this)
-
-        binding.rvRecommendedMovies.apply {
-            setHasFixedSize(true)
-            val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            layoutManager = manager
-            adapter = recommendedMoviesAdapter
-        }
+        binding.recommendedLayout.setCustomLabelListView(getString(R.string.recommended_movies), recommendedMoviesAdapter)
 
         similarMoviesAdapter = MoviesAdapter(this)
-        binding.rvSimilarMovies.apply {
-            setHasFixedSize(true)
-            val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            layoutManager = manager
-            adapter = similarMoviesAdapter
-        }
+        binding.similarMoviesLayout.setCustomLabelListView(getString(R.string.similar_movies), similarMoviesAdapter)
 
-        castAdapter = MovieCastAdapter()
-        binding.rvCast.apply {
-            setHasFixedSize(true)
-            val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            layoutManager = manager
-            adapter = castAdapter
-        }
+        castAdapter = MovieCastAdapter(this)
+        binding.castLayout.setCustomLabelListView(getString(R.string.the_cast), castAdapter)
     }
 
     override fun onItemClick(movie: MovieDomainModel) {
         val intent = Intent(this, MovieDetailActivity::class.java)
         intent.putExtra(MovieDetailActivity.MOVIE, movie as Parcelable)
         startActivity(intent)
+    }
+
+    override fun onActorClicked(actor: ActorDomainModel, view: View) {
+
+        val img = Pair.create(view.actor_image as View, resources.getString(R.string.actor_image_transition))
+
+        val options = ActivityOptions.makeSceneTransitionAnimation(this, img)
+
+        val intent = Intent(this, ActorDetailActivity::class.java)
+        intent.putExtra(ActorDetailActivity.INTENT_ACTOR, actor as Parcelable)
+        startActivity(intent, options.toBundle())
     }
 }

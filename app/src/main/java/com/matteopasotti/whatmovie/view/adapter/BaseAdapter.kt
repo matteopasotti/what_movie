@@ -15,6 +15,7 @@ abstract class BaseAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<B
 
     fun <T> addItems(list : List<T>) {
         items.addAll(ArrayList<Any>(list))
+        notifyItemInserted(items.size)
     }
 
     /**

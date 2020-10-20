@@ -86,7 +86,6 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
                     movieDetailResponse.await()
                 )
             } catch (e: Throwable) {
-                //TODO update status and show error
                 isLoadingLiveData.value = false
                 isErrorLiveData.value = true
             }

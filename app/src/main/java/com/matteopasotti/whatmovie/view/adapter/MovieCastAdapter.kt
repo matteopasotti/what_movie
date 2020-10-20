@@ -6,7 +6,7 @@ import com.matteopasotti.whatmovie.model.ActorDomainModel
 import com.matteopasotti.whatmovie.view.viewholder.BaseViewHolder
 import com.matteopasotti.whatmovie.view.viewholder.MovieCastViewHolder
 
-class MovieCastAdapter(): BaseAdapter() {
+class MovieCastAdapter(private val delegate: MovieCastViewHolder.Delegate): BaseAdapter() {
 
     init {
         addItems(ArrayList<ActorDomainModel>())
@@ -14,7 +14,6 @@ class MovieCastAdapter(): BaseAdapter() {
 
     fun updateItems(actors: List<ActorDomainModel>){
         addItems(actors)
-        notifyItemInserted(items.size)
     }
 
     override fun layout(item: Any?): Int {
@@ -22,6 +21,6 @@ class MovieCastAdapter(): BaseAdapter() {
     }
 
     override fun viewHolder(layout: Int, view: View): BaseViewHolder {
-        return MovieCastViewHolder(view)
+        return MovieCastViewHolder(view, delegate)
     }
 }

@@ -7,7 +7,7 @@ import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.view.viewholder.BaseViewHolder
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 
-class MoviesAdapter(val delegate: MovieViewHolder.Delegate): BaseAdapter() {
+class MoviesAdapter(private val delegate: MovieViewHolder.Delegate): BaseAdapter() {
 
     init {
         addItems(ArrayList<MovieDomainModel>())
@@ -15,7 +15,6 @@ class MoviesAdapter(val delegate: MovieViewHolder.Delegate): BaseAdapter() {
 
     fun updateItems(movies: List<MovieDomainModel>){
         addItems(movies)
-        notifyItemInserted(items.size)
     }
 
 

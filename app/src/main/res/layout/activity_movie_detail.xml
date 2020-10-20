@@ -11,20 +11,15 @@
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:elevation="1dp">
+            android:background="@color/colorPrimary">
 
         <androidx.core.widget.NestedScrollView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:scrollbars="none"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -79,36 +74,15 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/line" />
 
-                <LinearLayout
+                <com.matteopasotti.whatmovie.util.CustomLabelListView
                         android:id="@+id/cast_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_big"
-                        android:orientation="vertical"
                         android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/movie_title">
+                        app:layout_constraintTop_toBottomOf="@+id/movie_title"/>
 
-
-                    <TextView
-                            android:id="@+id/cast_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/product_sans_bold"
-                            android:text="@string/the_cast"
-                            android:layout_marginStart="@dimen/margin_medium"
-                            android:textColor="@android:color/white"
-                            android:textSize="18sp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_cast"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_medium"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                </LinearLayout>
 
                 <include
                         android:id="@+id/movie_detail_layout"
@@ -121,67 +95,25 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cast_layout" />
 
-                <LinearLayout
+                <com.matteopasotti.whatmovie.util.CustomLabelListView
                         android:id="@+id/similar_movies_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:orientation="vertical"
                         android:visibility="gone"
+                        android:layout_marginTop="@dimen/margin_medium"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/movie_detail_layout"
-                        app:layout_constraintTop_toBottomOf="@+id/movie_detail_layout">
+                        app:layout_constraintTop_toBottomOf="@+id/movie_detail_layout"/>
 
-
-                    <TextView
-                            android:id="@+id/similar_movies_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_medium"
-                            android:fontFamily="@font/product_sans_bold"
-                            android:text="@string/similar_movies"
-                            android:textColor="@android:color/white"
-                            android:textSize="18sp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_similar_movies"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_medium"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                </LinearLayout>
-
-                <LinearLayout
+                <com.matteopasotti.whatmovie.util.CustomLabelListView
                         android:id="@+id/recommended_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:orientation="vertical"
                         android:visibility="gone"
+                        android:layout_marginTop="@dimen/margin_medium"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/similar_movies_layout">
-
-
-                    <TextView
-                            android:id="@+id/recommended_movies_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_medium"
-                            android:fontFamily="@font/product_sans_bold"
-                            android:text="@string/recommended_movies"
-                            android:textColor="@android:color/white"
-                            android:textSize="18sp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_recommended_movies"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_medium"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                </LinearLayout>
+                        app:layout_constraintTop_toBottomOf="@+id/similar_movies_layout"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -189,7 +121,7 @@
         </androidx.core.widget.NestedScrollView>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 
 </layout>

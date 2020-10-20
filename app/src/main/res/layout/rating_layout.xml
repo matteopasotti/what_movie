@@ -4,19 +4,16 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+        tools:parentTag="android.widget.FrameLayout">
 
     <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="20dp"
-            android:backgroundTint="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_gravity="center"
+            android:backgroundTint="@android:color/transparent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_rating_view">
@@ -33,13 +30,11 @@
                     android:includeFontPadding="false"
                     android:textColor="@android:color/white"
                     android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="8" />
+                    tools:text="8"
+                    android:layout_gravity="center"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </FrameLayout>
 
 
     </androidx.cardview.widget.CardView>
