@@ -23,7 +23,8 @@
                 tools:background="@drawable/venom_cover"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:transitionName="@string/actor_image_transition"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

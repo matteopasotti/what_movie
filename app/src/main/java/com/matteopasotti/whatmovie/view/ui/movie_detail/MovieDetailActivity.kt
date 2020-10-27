@@ -7,10 +7,8 @@ import android.os.Parcelable
 import android.util.Pair
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.ActivityMovieDetailBinding
 import com.matteopasotti.whatmovie.model.ActorDomainModel

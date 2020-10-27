@@ -1,9 +1,7 @@
 package com.matteopasotti.whatmovie.repository
 
-import androidx.annotation.VisibleForTesting
 import com.matteopasotti.whatmovie.BuildConfig
 import com.matteopasotti.whatmovie.api.MovieApiInterface
-import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.db.MovieDao
 import com.matteopasotti.whatmovie.model.Movie
 import com.matteopasotti.whatmovie.model.MovieDomainModel

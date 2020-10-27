@@ -1,5 +1,8 @@
 package com.matteopasotti.whatmovie.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 data class Actor(
     val id: Int,
     val cast_id: Int,
@@ -15,8 +18,9 @@ fun Actor.toDomainModel(): ActorDomainModel {
     return ActorDomainModel(this.id ,this.name, image)
 }
 
+@Parcelize
 data class ActorDomainModel(
     val id: Int,
     val name: String,
     val profileImage: String?
-)
+) : Parcelable

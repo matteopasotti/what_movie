@@ -5,7 +5,7 @@ import androidx.databinding.DataBindingUtil
 import com.matteopasotti.whatmovie.databinding.MovieVerticalLayoutBinding
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 
-class MovieViewHolder(view: View, val delegate: Delegate) : BaseViewHolder(view) {
+class MovieViewHolder(view: View, private val delegate: Delegate) : BaseViewHolder(view) {
 
     private val binding by lazy { DataBindingUtil.bind<MovieVerticalLayoutBinding>(view) }
 

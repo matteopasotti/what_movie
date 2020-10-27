@@ -2,10 +2,8 @@ package com.matteopasotti.whatmovie.view.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.matteopasotti.whatmovie.DomainFixtures
 import com.matteopasotti.whatmovie.api.Result
-import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
 import com.matteopasotti.whatmovie.util.CoroutineRule
 import com.nhaarman.mockitokotlin2.given
@@ -19,8 +17,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.MockitoAnnotations.initMocks
-import org.mockito.Spy
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)

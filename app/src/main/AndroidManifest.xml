@@ -27,5 +27,8 @@
         <activity android:name=".view.ui.movie_detail.MovieDetailActivity"
                 android:screenOrientation="portrait"/>
 
+        <activity android:name=".view.ui.actor_detail.ActorDetailActivity"
+                android:screenOrientation="portrait"/>
+
     </application>
 </manifest>

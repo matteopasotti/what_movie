@@ -50,21 +50,26 @@ object DataFixtures {
         id, cast_id, character, credit_id, gender, name, profile_path
     )
 
-    /*
-    val genres: MutableList<Genre>,
-    val original_language: String,
-    val original_title: String,
-    val overview: String,
-    val production_countries: MutableList<ProductionCountry>,
-    val release_date: String
-     */
+    internal fun getActorDetail(
+        id: Int = 1,
+        name: String = "Leonardo",
+        biography: String = "biography",
+        place_of_birth: String = "place",
+        profile_path: String = "profile_path",
+        birthday: String = "date",
+        deathday: String? = null,
+        movieCredits: MovieCredits? = null,
+        images: ActorImages? = ActorImages(profiles = listOf(ActorImage(file_path = "file_path", vote_count = 5, vote_average = 3.0)))
+    ): ActorDetailResponse = ActorDetailResponse(id, name, biography, place_of_birth, profile_path, birthday, deathday, movieCredits, images)
+
     internal fun getMovieDetailResponse(
         genres: MutableList<Genre> = mutableListOf(),
         original_language: String = "original_language",
         original_title: String = "original_title",
         overview: String = "overview",
         production_countries: MutableList<ProductionCountry> = mutableListOf(),
-        release_date: String = "date"
-    ): MovieDetail = MovieDetail(genres, original_language, original_title, overview, production_countries, release_date)
+        release_date: String = "date",
+        vote_average: Float = 2.0F
+    ): MovieDetail = MovieDetail(genres, original_language, original_title, overview, production_countries, release_date, vote_average)
 
 }

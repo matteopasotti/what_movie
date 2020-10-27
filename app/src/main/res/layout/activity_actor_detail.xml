@@ -7,7 +7,7 @@
 
         <variable
                 name="actor"
-                type="com.matteopasotti.whatmovie.model.ActorDomainModel" />
+                type="com.matteopasotti.whatmovie.model.ActorDetailDomainModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,15 +15,29 @@
             android:layout_height="match_parent">
 
         <ImageView
-                android:id="@+id/actor_image"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                app:circularImageUrl="@{actor.profileImage}"
+                android:id="@+id/actor_img"
+                android:layout_width="0dp"
+                android:layout_height="180dp"
                 app:layout_constraintBottom_toBottomOf="@+id/guideline1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toTopOf="@+id/guideline1"
-                tools:background="@drawable/venom_cover" />
+                tools:background="@drawable/venom_cover"
+                android:transitionName="@string/actor_image_transition"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.75" />
 
 
         <androidx.constraintlayout.widget.Guideline
@@ -40,12 +54,14 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lora_classic"
                 android:maxLines="3"
+                android:text="@{actor.name}"
                 android:textColor="@android:color/white"
-                android:textSize="24sp"
+                android:textSize="32sp"
                 android:includeFontPadding="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/actor_image"
+                app:layout_constraintTop_toBottomOf="@+id/actor_img"
+                android:layout_marginTop="@dimen/margin_medium"
                 tools:text="Leonardo" />
 
         <TextView
@@ -54,9 +70,10 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lora_bold"
                 android:maxLines="3"
+                android:text="@{actor.surname}"
                 android:includeFontPadding="false"
                 android:textColor="@android:color/white"
-                android:textSize="32sp"
+                android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/actor_name"

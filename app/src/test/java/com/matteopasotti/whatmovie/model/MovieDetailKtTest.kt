@@ -86,7 +86,8 @@ class MovieDetailKtTest {
             originalTitle = "title",
             overview = "overview",
             productionCountries = "United States,Italy",
-            releaseDate = "date"
+            releaseDate = "date",
+            vote_average = 2.0F
         )
 
         assertEquals(result, expected)

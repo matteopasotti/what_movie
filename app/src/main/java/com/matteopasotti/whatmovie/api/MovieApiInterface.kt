@@ -1,5 +1,6 @@
 package com.matteopasotti.whatmovie.api
 
+import com.matteopasotti.whatmovie.model.ActorDetailResponse
 import com.matteopasotti.whatmovie.model.MovieDetail
 import com.matteopasotti.whatmovie.model.response.MovieCreditResponse
 import com.matteopasotti.whatmovie.model.response.PopularMovieResponse
@@ -46,5 +47,11 @@ internal interface MovieApiInterface {
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ) : Response<MovieDetail>
+
+    @GET("person/{personId}")
+    suspend fun getActorDetails(@Path("personId") personId: Int,
+                                @Query("api_key") apiKey: String,
+                                @Query("language") language: String,
+                                @Query("append_to_response") append: String = "movie_credits,images") : Response<ActorDetailResponse>
 
 }

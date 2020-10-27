@@ -2,6 +2,7 @@ package com.matteopasotti.whatmovie.usecase
 
 import com.matteopasotti.whatmovie.DomainFixtures
 import com.matteopasotti.whatmovie.api.Result
+import com.matteopasotti.whatmovie.repository.MovieDetailRepository
 import com.matteopasotti.whatmovie.repository.MovieDetailRepositoryImpl
 import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.given

@@ -1,5 +1,6 @@
 package com.matteopasotti.whatmovie.di
 
+import com.matteopasotti.whatmovie.repository.ActorDetailRepositoryImpl
 import com.matteopasotti.whatmovie.repository.MovieDetailRepositoryImpl
 import com.matteopasotti.whatmovie.repository.MovieRepositoryImpl
 import com.matteopasotti.whatmovie.repository.SyncRepoImpl
@@ -13,6 +14,8 @@ val repoModule = module {
         movieDao = get(), syncRepository = get()) }
 
     single { MovieDetailRepositoryImpl(movieApi = get()) }
+
+    single { ActorDetailRepositoryImpl(movieApi = get()) }
 
     single { SyncRepoImpl(preference = PreferenceContractImpl(providePreferences(androidApplication()))) }
 }
