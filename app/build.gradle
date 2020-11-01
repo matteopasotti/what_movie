@@ -117,7 +117,8 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "com.android.support:design:$support_version"
 
-    
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0' // For lifecycleScope
+
 
 
     // TEST DEPENDENCIES
