@@ -123,12 +123,12 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate, Movie
 
     override fun onActorClicked(actor: ActorDomainModel, view: View) {
 
-//        val img = Pair.create(view.actor_image as View, resources.getString(R.string.actor_image_transition))
-//
-//        val options = ActivityOptions.makeSceneTransitionAnimation(this, img)
+        val img = Pair.create(view.actor_image as View, resources.getString(R.string.actor_image_transition))
+
+        val options = ActivityOptions.makeSceneTransitionAnimation(this, img)
 
         val intent = Intent(this, ActorDetailActivity::class.java)
         intent.putExtra(ActorDetailActivity.INTENT_ACTOR, actor as Parcelable)
-        startActivity(intent)
+        startActivity(intent, options.toBundle())
     }
 }

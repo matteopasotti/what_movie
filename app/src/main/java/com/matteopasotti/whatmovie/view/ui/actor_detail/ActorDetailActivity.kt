@@ -33,26 +33,26 @@ class ActorDetailActivity: AppCompatActivity() {
 
             binding.customLayout.initView(actor.profileImage!!)
 
-//            val requestOptions = RequestOptions()
-////            requestOptions.circleCrop()
-////
-////            Glide.with(this)
-////                .asBitmap()
-////                .apply(requestOptions)
-////                .load(actor.profileImage)
-////                .listener(object : RequestListener<Bitmap> {
-////                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
-////                        supportStartPostponedEnterTransition()
-////                        //observeViewModel()
-////                        return false
-////                    }
-////
-////                    override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-////                        supportStartPostponedEnterTransition()
-////
-////                        return false
-////                    }
-////                }).into(binding.actorImg)
+            val requestOptions = RequestOptions()
+//            requestOptions.circleCrop()
+//
+//            Glide.with(this)
+//                .asBitmap()
+//                .apply(requestOptions)
+//                .load(actor.profileImage)
+//                .listener(object : RequestListener<Bitmap> {
+//                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+//                        supportStartPostponedEnterTransition()
+//                        //observeViewModel()
+//                        return false
+//                    }
+//
+//                    override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+//                        supportStartPostponedEnterTransition()
+//
+//                        return false
+//                    }
+//                }).into(binding.actorImg)
 
             observeViewModel()
         }
@@ -62,6 +62,7 @@ class ActorDetailActivity: AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.actorDetail.observe(this, Observer {
             binding.actor = it
+            binding.customLayout.updateView(it)
             binding.customLayout.startAnimation()
         })
 

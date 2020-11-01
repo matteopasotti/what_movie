@@ -5,7 +5,22 @@
     <Transition
             motion:constraintSetEnd="@+id/middle"
             motion:constraintSetStart="@+id/start"
-            motion:duration="500" />
+            motion:duration="500">
+
+        <KeyFrameSet>
+
+            <KeyAttribute
+                    android:alpha="0"
+                    motion:framePosition="70"
+                    motion:motionTarget="@+id/actor_name"/>
+            <KeyAttribute
+                    android:alpha="0"
+                    motion:framePosition="90"
+                    motion:motionTarget="@+id/actor_surname"/>
+
+        </KeyFrameSet>
+
+    </Transition>
 
     <ConstraintSet android:id="@+id/start">
 
@@ -18,6 +33,36 @@
                     motion:layout_constraintStart_toStartOf="@+id/guideline2"
                     motion:layout_constraintEnd_toEndOf="@+id/guideline3"/>
             <PropertySet android:visibility="invisible"/>
+        </Constraint>
+
+        <Constraint android:id="@+id/actor_name">
+            <Layout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lora_classic"
+                    android:includeFontPadding="false"
+                    android:maxLines="3"
+                    android:textColor="@android:color/white"
+                    android:textSize="32sp"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    motion:layout_constraintEnd_toEndOf="parent"
+                    motion:layout_constraintStart_toStartOf="parent"
+                    motion:layout_constraintTop_toBottomOf="@+id/actor_image_custom"/>
+            <PropertySet android:alpha="0"/>
+        </Constraint>
+
+        <Constraint android:id="@+id/actor_surname">
+            <Layout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lora_bold"
+                    android:includeFontPadding="false"
+                    android:maxLines="3"
+                    android:textColor="@android:color/white"
+                    android:textSize="40sp"
+                    motion:layout_constraintEnd_toEndOf="parent"
+                    motion:layout_constraintStart_toStartOf="parent"
+                    motion:layout_constraintTop_toBottomOf="@+id/actor_name"/>
+            <PropertySet android:alpha="0"/>
         </Constraint>
 
     </ConstraintSet>
@@ -35,6 +80,36 @@
                     motion:layout_constraintStart_toStartOf="@+id/guideline2"
                     motion:layout_constraintEnd_toEndOf="@+id/guideline3"/>
             <PropertySet android:visibility="visible" />
+        </Constraint>
+
+        <Constraint android:id="@+id/actor_name">
+            <Layout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lora_classic"
+                    android:includeFontPadding="false"
+                    android:maxLines="3"
+                    android:textColor="@android:color/white"
+                    android:textSize="32sp"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    motion:layout_constraintEnd_toEndOf="parent"
+                    motion:layout_constraintStart_toStartOf="parent"
+                    motion:layout_constraintTop_toBottomOf="@+id/actor_image_custom"/>
+            <PropertySet android:alpha="1"/>
+        </Constraint>
+
+        <Constraint android:id="@+id/actor_surname">
+            <Layout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lora_bold"
+                    android:includeFontPadding="false"
+                    android:maxLines="3"
+                    android:textColor="@android:color/white"
+                    android:textSize="40sp"
+                    motion:layout_constraintEnd_toEndOf="parent"
+                    motion:layout_constraintStart_toStartOf="parent"
+                    motion:layout_constraintTop_toBottomOf="@+id/actor_name"/>
+            <PropertySet android:alpha="1"/>
         </Constraint>
 
     </ConstraintSet>
