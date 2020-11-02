@@ -14,7 +14,7 @@ data class Actor(
 )
 
 fun Actor.toDomainModel(): ActorDomainModel {
-    val image : String = "http://image.tmdb.org/t/p/w185${this.profile_path}"
+    val image : String = "https://image.tmdb.org/t/p/w185${this.profile_path}"
     return ActorDomainModel(this.id ,this.name, image)
 }
 

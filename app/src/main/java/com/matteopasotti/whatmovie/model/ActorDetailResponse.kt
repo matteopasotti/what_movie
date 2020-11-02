@@ -27,6 +27,8 @@ fun ActorDetailResponse.toDomainModel(): ActorDetailDomainModel {
     val name = this.name.substringBefore(delimiter = " ", missingDelimiterValue = "Delimiter not found")
     val surname = this.name.substringAfter(delimiter = " ", missingDelimiterValue = "Delimiter not found")
 
+    val movies : List<MovieDomainModel>? = this.movie_credits?.cast?.map { it.toDomainModel() }
+
     return ActorDetailDomainModel(
         name,
         surname,
@@ -35,7 +37,7 @@ fun ActorDetailResponse.toDomainModel(): ActorDetailDomainModel {
         actor_image = image,
         birthday = this.birthday,
         deathday = this.deathday,
-        movieCredits = this.movie_credits
+        knownFor = movies
     )
 }
 
@@ -47,7 +49,7 @@ data class ActorDetailDomainModel(
     val actor_image: String,
     val birthday: String,
     val deathday: String?,
-    val movieCredits: MovieCredits?
+    val knownFor: List<MovieDomainModel>?
 )
 
 data class MovieCredits(

@@ -10,8 +10,7 @@ import java.util.*
 abstract class BaseAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<BaseViewHolder>(){
 
 
-    val items = ArrayList<Any?>()
-
+    private val items = ArrayList<Any?>()
 
     fun <T> addItems(list : List<T>) {
         items.addAll(ArrayList<Any>(list))

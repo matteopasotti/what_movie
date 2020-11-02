@@ -24,7 +24,7 @@ class ActorDetailResponseKtTest {
             place_of_birth = actorDetail.place_of_birth,
             birthday = actorDetail.birthday,
             deathday = actorDetail.deathday,
-            movieCredits = actorDetail.movie_credits,
+            knownFor = null,
             actor_image = "http://image.tmdb.org/t/p/original${image?.file_path}"
         )
 

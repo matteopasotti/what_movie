@@ -44,8 +44,8 @@ object DomainFixtures {
         actor_image: String = "",
         birthday: String = "",
         deathday: String? = "",
-        movieCredits: MovieCredits? = null
-    ): ActorDetailDomainModel = ActorDetailDomainModel(name, surname, biography, place_of_birth, actor_image, birthday, deathday, movieCredits)
+        knownFor: List<MovieDomainModel>? = null
+    ): ActorDetailDomainModel = ActorDetailDomainModel(name, surname, biography, place_of_birth, actor_image, birthday, deathday, knownFor)
 
     internal fun getActorDetail(
         id: Int = 1,

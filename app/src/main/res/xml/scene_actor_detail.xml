@@ -11,29 +11,31 @@
 
             <KeyAttribute
                     android:alpha="0"
-                    motion:framePosition="70"
+                    motion:framePosition="50"
                     motion:motionTarget="@+id/actor_name"/>
             <KeyAttribute
                     android:alpha="0"
-                    motion:framePosition="90"
+                    motion:framePosition="65"
                     motion:motionTarget="@+id/actor_surname"/>
 
         </KeyFrameSet>
 
     </Transition>
 
-    <ConstraintSet android:id="@+id/start">
+    <Transition
+        motion:constraintSetStart="@+id/middle"
+        motion:constraintSetEnd="@+id/middle_02"
+        motion:duration="500">
+        <KeyFrameSet>
+            <KeyAttribute
+                    android:alpha="0"
+                    motion:framePosition="80"
+                    motion:motionTarget="@+id/known_for"/>
 
-        <Constraint android:id="@+id/actor_image_custom">
-            <Layout
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    motion:layout_constraintTop_toTopOf="@+id/guideline1"
-                    motion:layout_constraintBottom_toBottomOf="@+id/guideline1"
-                    motion:layout_constraintStart_toStartOf="@+id/guideline2"
-                    motion:layout_constraintEnd_toEndOf="@+id/guideline3"/>
-            <PropertySet android:visibility="invisible"/>
-        </Constraint>
+        </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
 
         <Constraint android:id="@+id/actor_name">
             <Layout
@@ -72,17 +74,6 @@
     <ConstraintSet android:id="@+id/middle"
             motion:deriveConstraintsFrom="@+id/start">
 
-        <Constraint android:id="@+id/actor_image_custom">
-            <Layout
-                    android:layout_width="0dp"
-                    android:layout_height="180dp"
-                    motion:layout_constraintTop_toTopOf="@+id/guideline1"
-                    motion:layout_constraintBottom_toBottomOf="@+id/guideline1"
-                    motion:layout_constraintStart_toStartOf="@+id/guideline2"
-                    motion:layout_constraintEnd_toEndOf="@+id/guideline3"/>
-            <PropertySet android:visibility="visible" />
-        </Constraint>
-
         <Constraint android:id="@+id/actor_name">
             <Layout
                     android:layout_width="wrap_content"
@@ -114,6 +105,29 @@
             <PropertySet android:alpha="1"/>
         </Constraint>
 
+        <Constraint android:id="@+id/known_for">
+            <Layout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    motion:layout_constraintTop_toBottomOf="@+id/guideline4"
+                    motion:layout_constraintStart_toStartOf="parent"
+                    motion:layout_constraintEnd_toEndOf="parent"/>
+            <PropertySet android:alpha="0"/>
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/middle_02"
+        motion:deriveConstraintsFrom="@+id/middle">
+        <Constraint android:id="@+id/known_for">
+            <Layout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    motion:layout_constraintTop_toBottomOf="@+id/actor_surname"
+                    motion:layout_constraintStart_toStartOf="parent"
+                    motion:layout_constraintEnd_toEndOf="parent"/>
+            <PropertySet android:alpha="1"/>
+        </Constraint>
     </ConstraintSet>
 
 </MotionScene>
