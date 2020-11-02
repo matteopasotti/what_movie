@@ -5,7 +5,7 @@
     <Transition
             motion:constraintSetEnd="@+id/middle"
             motion:constraintSetStart="@+id/start"
-            motion:duration="500">
+            motion:duration="1000">
 
         <KeyFrameSet>
 
@@ -44,10 +44,10 @@
                     android:maxLines="3"
                     android:textColor="@android:color/white"
                     android:textSize="32sp"
-                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_big"
                     motion:layout_constraintEnd_toEndOf="parent"
                     motion:layout_constraintStart_toStartOf="parent"
-                    motion:layout_constraintTop_toBottomOf="@+id/actor_image_custom"/>
+                    motion:layout_constraintTop_toBottomOf="@+id/guideline4"/>
             <PropertySet android:alpha="0"/>
         </Constraint>
 
@@ -59,6 +59,7 @@
                     android:maxLines="3"
                     android:textColor="@android:color/white"
                     android:textSize="40sp"
+                    android:layout_marginTop="@dimen/margin_small"
                     motion:layout_constraintEnd_toEndOf="parent"
                     motion:layout_constraintStart_toStartOf="parent"
                     motion:layout_constraintTop_toBottomOf="@+id/actor_name"/>
@@ -106,6 +107,7 @@
                     android:maxLines="3"
                     android:textColor="@android:color/white"
                     android:textSize="40sp"
+                    android:layout_marginTop="0dp"
                     motion:layout_constraintEnd_toEndOf="parent"
                     motion:layout_constraintStart_toStartOf="parent"
                     motion:layout_constraintTop_toBottomOf="@+id/actor_name"/>

@@ -4,6 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/custom_actor_motion_root"
         app:layoutDescription="@xml/scene_actor_detail"
+        app:motionDebug="SHOW_PATH"
         tools:parentTag="androidx.constraintlayout.motion.widget.MotionLayout">
 
     <ImageView
@@ -32,6 +33,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.50" />
 
     <TextView
             android:id="@+id/actor_name"

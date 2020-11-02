@@ -33,7 +33,7 @@ class ActorDetailActivity: AppCompatActivity() {
 
             binding.customLayout.initView(actor.profileImage!!)
 
-            val requestOptions = RequestOptions()
+  //          val requestOptions = RequestOptions()
 //            requestOptions.circleCrop()
 //
 //            Glide.with(this)
