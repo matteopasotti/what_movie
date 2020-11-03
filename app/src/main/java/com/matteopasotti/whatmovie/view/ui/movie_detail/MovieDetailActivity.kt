@@ -8,6 +8,7 @@ import android.util.Pair
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.matteopasotti.whatmovie.R
@@ -15,7 +16,9 @@ import com.matteopasotti.whatmovie.databinding.ActivityMovieDetailBinding
 import com.matteopasotti.whatmovie.model.ActorDomainModel
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.view.adapter.MovieCastAdapter
+import com.matteopasotti.whatmovie.view.adapter.MovieGenresAdapter
 import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
+import com.matteopasotti.whatmovie.view.custom.NoScrollHorizontalLayoutManager
 import com.matteopasotti.whatmovie.view.ui.actor_detail.ActorDetailActivity
 import com.matteopasotti.whatmovie.view.viewholder.MovieCastViewHolder
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
@@ -37,6 +40,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate, Movie
     private lateinit var recommendedMoviesAdapter: MoviesAdapter
     private lateinit var similarMoviesAdapter: MoviesAdapter
     private lateinit var castAdapter: MovieCastAdapter
+    private lateinit var genresAdapter: MovieGenresAdapter
 
     companion object {
         const val MOVIE = "movie"
@@ -47,7 +51,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate, Movie
 
 
         if (savedInstanceState == null) {
-            viewModel.movie = intent.getParcelableExtra<MovieDomainModel>(MOVIE)
+            viewModel.movie = intent.getParcelableExtra(MOVIE)
             viewModel.movie?.let {
                 binding.movie = viewModel.movie
                 initView()
@@ -97,6 +101,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate, Movie
             it?.let {
                 binding.movieDetailLayout.detail = it
                 binding.ratingView.setRatingScore(it.vote_average)
+                genresAdapter.updateItems(it.genres)
             }
         })
 
@@ -105,6 +110,11 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate, Movie
 
 
     private fun initView() {
+
+        genresAdapter = MovieGenresAdapter()
+        binding.genreList.layoutManager = NoScrollHorizontalLayoutManager(this)
+        binding.genreList.updatePadding(right = 4)
+        binding.genreList.adapter = genresAdapter
 
         recommendedMoviesAdapter = MoviesAdapter(this)
         binding.recommendedLayout.setCustomLabelListView(getString(R.string.recommended_movies), recommendedMoviesAdapter)

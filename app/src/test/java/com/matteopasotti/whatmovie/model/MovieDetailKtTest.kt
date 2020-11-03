@@ -1,7 +1,7 @@
 package com.matteopasotti.whatmovie.model
 
 import com.matteopasotti.whatmovie.DomainFixtures
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -87,9 +87,27 @@ class MovieDetailKtTest {
             overview = "overview",
             productionCountries = "United States,Italy",
             releaseDate = "date",
-            vote_average = 2.0F
+            vote_average = 2.0F,
+            genres = mutableListOf()
         )
 
         assertEquals(result, expected)
+    }
+
+    @Test
+    fun `given movie detail with more than 3 genre, then in movieDetailDomain will we have only the first 3 genre`() {
+        val fourthGenre = Genre(4, "Crime")
+        val movieDetail = DomainFixtures.getMovieDetail(
+            genres = mutableListOf(
+                Genre(1, "Horror"),
+                Genre(2, "Adventure"),
+                Genre(3, "Family"),
+                fourthGenre
+            )
+        )
+
+        val result = movieDetail.toDomainModel()
+
+        assertFalse(result.genres.contains(fourthGenre))
     }
 }

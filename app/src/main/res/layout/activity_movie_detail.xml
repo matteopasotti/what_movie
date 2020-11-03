@@ -65,12 +65,23 @@
                         app:layout_constraintTop_toBottomOf="@+id/line"
                         tools:text="Title" />
 
+                <com.matteopasotti.whatmovie.view.custom.NoScrollRecyclerView
+                        android:id="@+id/genre_list"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_small"
+                        app:layout_constraintEnd_toStartOf="@+id/rating_view"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/movie_title"
+                        tools:listitem="@layout/genre_item"/>
+
                 <com.matteopasotti.whatmovie.util.RatingView
                         android:id="@+id/rating_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_medium"
                         android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginEnd="@dimen/margin_medium"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/line" />
 
@@ -78,10 +89,11 @@
                         android:id="@+id/cast_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_big"
                         android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/movie_title"/>
+                        app:layout_constraintTop_toBottomOf="@+id/genre_list" />
 
 
                 <include
@@ -89,7 +101,7 @@
                         layout="@layout/about_movie_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_big"
                         android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -99,21 +111,21 @@
                         android:id="@+id/similar_movies_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         android:layout_marginTop="@dimen/margin_medium"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/movie_detail_layout"
-                        app:layout_constraintTop_toBottomOf="@+id/movie_detail_layout"/>
+                        app:layout_constraintTop_toBottomOf="@+id/movie_detail_layout" />
 
                 <com.matteopasotti.whatmovie.util.CustomLabelListView
                         android:id="@+id/recommended_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         android:layout_marginTop="@dimen/margin_medium"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/similar_movies_layout"/>
+                        app:layout_constraintTop_toBottomOf="@+id/similar_movies_layout" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,7 @@ fun setImageUrl(imageView: ImageView, url : String?) {
         .with(context)
         .load(url)
         .centerCrop()
+        .skipMemoryCache(true)
         .placeholder(cd)
         .into(imageView)
 

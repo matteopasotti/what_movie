@@ -4,7 +4,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/margin_medium">
 
     <TextView
             android:id="@+id/label"
@@ -12,7 +13,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/product_sans_bold"
             tools:text="@string/label"
-            android:layout_marginStart="@dimen/margin_medium"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 

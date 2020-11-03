@@ -32,4 +32,5 @@ class ActorDetailResponseKtTest {
 
         Assert.assertEquals(result, expected)
     }
+
 }

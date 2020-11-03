@@ -12,7 +12,7 @@ data class MovieDetail(
 
 fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
 
-    var type: String = ""
+    var type = ""
     this.genres.forEach {
         type += if (type != "") {
             "," + it.name
@@ -30,6 +30,14 @@ fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
         }
     }
 
+    var genres : List<Genre>
+
+    genres = if(this.genres.size > 3) {
+        this.genres.take(3)
+    } else {
+        this.genres
+    }
+
     return MovieDetailDomainModel(
         type,
         this.original_language,
@@ -37,7 +45,8 @@ fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
         this.overview,
         prodCountries,
         this.release_date,
-        this.vote_average
+        this.vote_average,
+        genres
     )
 
 }
@@ -49,5 +58,6 @@ data class MovieDetailDomainModel(
     val overview: String,
     val productionCountries: String,
     val releaseDate: String,
-    val vote_average: Float
+    val vote_average: Float,
+    val genres: List<Genre>
 )
