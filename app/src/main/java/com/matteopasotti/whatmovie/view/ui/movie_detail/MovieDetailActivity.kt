@@ -23,10 +23,12 @@ import com.matteopasotti.whatmovie.view.ui.actor_detail.ActorDetailActivity
 import com.matteopasotti.whatmovie.view.viewholder.MovieCastViewHolder
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import kotlinx.android.synthetic.main.movie_cast_item_layout.view.*
+import org.koin.android.ext.android.bind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate, MovieCastViewHolder.Delegate {
+class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
+    MovieCastViewHolder.Delegate {
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMovieDetailBinding>(
@@ -71,19 +73,19 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate, Movie
         })
 
         viewModel.isError().observe(this, Observer {
-            if(it) {
+            if (it) {
                 //error
             }
         })
 
-        viewModel.recommendedMovies.observe(this , Observer {
+        viewModel.recommendedMovies.observe(this, Observer {
             it?.let {
                 binding.recommendedLayout.addItems(it)
                 binding.recommendedLayout.visibility = View.VISIBLE
             }
         })
 
-        viewModel.similarMovies.observe(this , Observer {
+        viewModel.similarMovies.observe(this, Observer {
             it?.let {
                 binding.similarMoviesLayout.addItems(it)
                 binding.similarMoviesLayout.visibility = View.VISIBLE
@@ -100,6 +102,8 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate, Movie
         viewModel.movieDetails.observe(this, Observer {
             it?.let {
                 binding.movieDetailLayout.detail = it
+                binding.playButton.visibility =
+                    if (it.videos.isNotEmpty()) View.VISIBLE else View.GONE
                 binding.ratingView.setRatingScore(it.vote_average)
                 genresAdapter.updateItems(it.genres)
             }
@@ -117,10 +121,16 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate, Movie
         binding.genreList.adapter = genresAdapter
 
         recommendedMoviesAdapter = MoviesAdapter(this)
-        binding.recommendedLayout.setCustomLabelListView(getString(R.string.recommended_movies), recommendedMoviesAdapter)
+        binding.recommendedLayout.setCustomLabelListView(
+            getString(R.string.recommended_movies),
+            recommendedMoviesAdapter
+        )
 
         similarMoviesAdapter = MoviesAdapter(this)
-        binding.similarMoviesLayout.setCustomLabelListView(getString(R.string.similar_movies), similarMoviesAdapter)
+        binding.similarMoviesLayout.setCustomLabelListView(
+            getString(R.string.similar_movies),
+            similarMoviesAdapter
+        )
 
         castAdapter = MovieCastAdapter(this)
         binding.castLayout.setCustomLabelListView(getString(R.string.the_cast), castAdapter)
@@ -136,7 +146,11 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate, Movie
 
         val img = view.actor_image as ImageView
 
-        val options = ActivityOptions.makeSceneTransitionAnimation(this, img, resources.getString(R.string.actor_image_transition))
+        val options = ActivityOptions.makeSceneTransitionAnimation(
+            this,
+            img,
+            resources.getString(R.string.actor_image_transition)
+        )
 
         val intent = Intent(this, ActorDetailActivity::class.java)
         intent.putExtra(ActorDetailActivity.INTENT_ACTOR, actor as Parcelable)

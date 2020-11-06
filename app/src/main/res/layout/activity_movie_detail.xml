@@ -31,12 +31,58 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:scaleType="fitXY"
-                        app:imageUrl="@{movie.poster_path}"
+                        app:imageUrl="@{movie.backdrop_path}"
                         app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:background="@drawable/venom_cover" />
+
+                <View
+                        android:id="@+id/blur_view"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/blur_background"
+                        app:layout_constraintBottom_toBottomOf="@+id/backdrop_image"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                        android:id="@+id/back_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:src="@drawable/ic_back_button"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <CheckBox
+                        android:id="@+id/heart_check_box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:button="@null"
+                        android:focusable="true"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:background="@drawable/heart_icon"
+                        android:stateListAnimator="@animator/scale"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                        android:id="@+id/play_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="12dp"
+                        android:src="@drawable/ic_play_circle_outline_120dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/backdrop_image"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 <View
                         android:id="@+id/line"
@@ -53,7 +99,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_medium"
-                        android:layout_marginTop="@dimen/margin_medium"
+                        android:elevation="8dp"
                         android:ellipsize="end"
                         android:fontFamily="@font/product_sans_bold"
                         android:maxLines="3"
@@ -62,7 +108,7 @@
                         android:textSize="28sp"
                         app:layout_constraintEnd_toStartOf="@+id/rating_view"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/line"
+                        app:layout_constraintTop_toTopOf="@+id/rating_view"
                         tools:text="Title" />
 
                 <com.matteopasotti.whatmovie.view.custom.NoScrollRecyclerView
@@ -74,7 +120,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/rating_view"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/movie_title"
-                        tools:listitem="@layout/genre_item"/>
+                        tools:listitem="@layout/genre_item" />
 
                 <com.matteopasotti.whatmovie.util.RatingView
                         android:id="@+id/rating_view"
@@ -82,8 +128,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:layout_marginEnd="@dimen/margin_medium"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/line" />
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:elevation="8dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/line"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                 <com.matteopasotti.whatmovie.util.CustomLabelListView
                         android:id="@+id/cast_layout"

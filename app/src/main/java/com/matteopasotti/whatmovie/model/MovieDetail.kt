@@ -7,7 +7,8 @@ data class MovieDetail(
     val overview: String,
     val production_countries: MutableList<ProductionCountry>,
     val release_date: String,
-    val vote_average: Float
+    val vote_average: Float,
+    val videos: MovieVideo
 )
 
 fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
@@ -21,7 +22,7 @@ fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
         }
     }
 
-    var prodCountries: String = ""
+    var prodCountries = ""
     this.production_countries.forEach {
         prodCountries += if (prodCountries != "") {
             "," + it.name
@@ -30,9 +31,7 @@ fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
         }
     }
 
-    var genres : List<Genre>
-
-    genres = if(this.genres.size > 3) {
+    val genres: List<Genre> = if (this.genres.size > 3) {
         this.genres.take(3)
     } else {
         this.genres
@@ -46,7 +45,8 @@ fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
         prodCountries,
         this.release_date,
         this.vote_average,
-        genres
+        genres,
+        this.videos.results.map { it.toDomainModel() }
     )
 
 }
@@ -59,5 +59,6 @@ data class MovieDetailDomainModel(
     val productionCountries: String,
     val releaseDate: String,
     val vote_average: Float,
-    val genres: List<Genre>
+    val genres: List<Genre>,
+    val videos: List<VideoDomainModel>
 )

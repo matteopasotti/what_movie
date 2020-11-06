@@ -80,7 +80,7 @@ class MovieDetailKtTest {
 
         val result = movieDetail.toDomainModel()
 
-        val expected: MovieDetailDomainModel = MovieDetailDomainModel(
+        val expected = MovieDetailDomainModel(
             type = "Adventure",
             language = "en",
             originalTitle = "title",
@@ -88,7 +88,8 @@ class MovieDetailKtTest {
             productionCountries = "United States,Italy",
             releaseDate = "date",
             vote_average = 2.0F,
-            genres = mutableListOf()
+            genres = mutableListOf(),
+            videos = listOf()
         )
 
         assertEquals(result, expected)

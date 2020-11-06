@@ -35,7 +35,7 @@ fun Movie.toDomainModel(): MovieDomainModel {
 
     var imageBackdropPath : String? = null
     if(this.backdrop_path != null) {
-        imageBackdropPath = "https://image.tmdb.org/t/p/w300$backdrop_path"
+        imageBackdropPath = "https://image.tmdb.org/t/p/w1280$backdrop_path"
 
     }
 

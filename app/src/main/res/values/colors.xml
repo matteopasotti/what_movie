@@ -13,5 +13,7 @@
     <color name="black">#000000</color>
     <color name="grey">#455a64</color>
     <color name="grey_dark">#37474f</color>
+    <color name="violet">#a79aff</color>
+    <color name="pink">#f6a6ff</color>
 
 </resources>

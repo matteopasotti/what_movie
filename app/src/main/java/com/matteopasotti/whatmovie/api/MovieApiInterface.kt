@@ -45,7 +45,8 @@ internal interface MovieApiInterface {
     suspend fun getMovieDetail(
         @Path("movieId") movieId: Int,
         @Query("api_key") apiKey: String,
-        @Query("language") language: String
+        @Query("language") language: String,
+        @Query("append_to_response") append: String = "videos"
     ) : Response<MovieDetail>
 
     @GET("person/{personId}")
