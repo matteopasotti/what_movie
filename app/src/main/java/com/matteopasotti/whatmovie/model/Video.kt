@@ -14,12 +14,11 @@ data class Video(
 )
 
 fun Video.toDomainModel(): VideoDomainModel {
-    val baseUrl = "https://www.youtube.com/watch?v=";
-    return VideoDomainModel(url = baseUrl+this.key , type = this.type, site = this.site)
+    return VideoDomainModel(key = this.key , type = this.type, site = this.site)
 }
 
 data class VideoDomainModel(
-    val url: String,
+    val key: String,
     val type: String,
     val site: String
 )

@@ -17,6 +17,8 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
 
     var movie: MovieDomainModel? = null
 
+    var movieDetail: MovieDetailDomainModel? = null
+
     private val _recommendedMovies = MutableLiveData<List<MovieDomainModel>>()
     val recommendedMovies: LiveData<List<MovieDomainModel>> = _recommendedMovies
 

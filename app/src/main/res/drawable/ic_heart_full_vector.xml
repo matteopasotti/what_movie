@@ -2,22 +2,22 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:width="56dp"
         android:height="56dp"
-        android:tint="@color/violet"
+        android:tint="@color/pink"
         android:viewportHeight="56"
         android:viewportWidth="56">
 
     <path
             android:pathData="@string/heart_stroke_left"
-            android:strokeColor="@color/violet"
+            android:strokeColor="@color/pink"
             android:strokeWidth="2"/>
 
     <path
             android:pathData="@string/heart_stroke_right"
-            android:strokeColor="@color/violet"
+            android:strokeColor="@color/pink"
             android:strokeWidth="2"/>
 
     <path
-            android:fillColor="@color/violet"
+            android:fillColor="@color/pink"
             android:pathData="@string/heart_full_path"/>
 
     <group android:name="filled">
@@ -25,7 +25,7 @@
                 android:name="clip"
                 android:pathData="@string/heart_clip_hidden"/>
         <path
-                android:fillColor="@color/violet"
+                android:fillColor="@color/pink"
                 android:pathData="@string/heart_full_path"/>
     </group>
 
