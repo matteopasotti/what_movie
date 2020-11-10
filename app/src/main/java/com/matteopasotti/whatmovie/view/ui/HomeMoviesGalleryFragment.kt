@@ -10,21 +10,24 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.FragmentMovieGalleryBinding
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.util.Utils
 import com.matteopasotti.whatmovie.view.adapter.GridAutofitLayoutManager
+import com.matteopasotti.whatmovie.view.adapter.MovieHomeAdapter
 import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
 import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
+import com.matteopasotti.whatmovie.view.viewholder.MovieHomeViewHolder
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
+class HomeMoviesGalleryFragment : Fragment(), MovieHomeViewHolder.Delegate {
 
     private lateinit var binding: FragmentMovieGalleryBinding
 
-    private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var moviesAdapter: MovieHomeAdapter
 
     private val viewModel: HomeGalleryMoviesViewModel by viewModel()
 
@@ -61,16 +64,13 @@ class HomeMoviesGalleryFragment : Fragment(), MovieViewHolder.Delegate {
     }
 
     private fun initView() {
-        moviesAdapter = MoviesAdapter(this)
+        moviesAdapter = MovieHomeAdapter(context!!, this)
 
         binding.movieList.apply {
             setHasFixedSize(true)
             val columnWidth = context.resources.getDimension(R.dimen.image_width).toInt()
 
-            val manager = GridAutofitLayoutManager(
-                context,
-                columnWidth
-            )
+            val manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             layoutManager = manager
             adapter = moviesAdapter
         }

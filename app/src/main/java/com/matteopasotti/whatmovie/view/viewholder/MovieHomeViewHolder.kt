@@ -8,18 +8,18 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.matteopasotti.whatmovie.R
-import com.matteopasotti.whatmovie.databinding.MovieVerticalLayoutBinding
+import com.matteopasotti.whatmovie.databinding.MovieItemHomeLayoutBinding
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.util.toPx
 
-class MovieViewHolder(val context: Context, view: View, private val delegate: Delegate) :
+class MovieHomeViewHolder (val context: Context, view: View, private val delegate: MovieHomeViewHolder.Delegate) :
     BaseViewHolder(view) {
 
-    private val binding by lazy { DataBindingUtil.bind<MovieVerticalLayoutBinding>(view) }
-
     private lateinit var movie: MovieDomainModel
+
+    private val binding by lazy { DataBindingUtil.bind<MovieItemHomeLayoutBinding>(view) }
+
 
     interface Delegate {
         fun onItemClick(movie: MovieDomainModel)
@@ -42,8 +42,8 @@ class MovieViewHolder(val context: Context, view: View, private val delegate: De
                     .centerCrop()
                     .skipMemoryCache(true)
                     .placeholder(cd)
-                    .override(300, 400)
-                    .into(binding!!.movieCover)
+                    .override(300, 480)
+                    .into(binding!!.movieImage)
             }
 
 
@@ -53,6 +53,4 @@ class MovieViewHolder(val context: Context, view: View, private val delegate: De
     override fun onClick(v: View?) {
         delegate.onItemClick(movie)
     }
-
-
 }

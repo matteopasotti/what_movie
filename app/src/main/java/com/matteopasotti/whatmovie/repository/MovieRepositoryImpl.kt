@@ -6,37 +6,30 @@ import com.matteopasotti.whatmovie.db.MovieDao
 import com.matteopasotti.whatmovie.model.Movie
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.model.toDomainModel
-import com.matteopasotti.whatmovie.util.Utils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 internal class MovieRepositoryImpl(
     private val movieApi: MovieApiInterface,
-    private val movieDao: MovieDao,
-    private val syncRepository: SyncRepoImpl
+    private val movieDao: MovieDao
 ) : MovieRepository{
-
-
-    var firstAccess = true
 
     @Throws(IOException::class)
     override suspend fun getPopularMovies(page: Int): List<MovieDomainModel>? {
-        if(!syncRepository.areDataUpdated()) {
-            return getPopularMoviesFromApi(page)
-        } else {
-            var movies: List<MovieDomainModel>?
-            if(firstAccess) {
-                firstAccess = false
-                movies = getAllPopularMoviesFromDb()
-            } else {
-                movies = getPopularMoviesFromDb(page)
-                movies.also {
-                    if( it.isNullOrEmpty()) {
-                        movies = getPopularMoviesFromApi(page)
-                    }
-                }
-            }
 
-            return movies
+        val pageFromDb = getLastFetchedPageFromDb()
+
+        return if(pageFromDb != null) {
+            if(page > pageFromDb) {
+                //fetch from api
+                 getPopularMoviesFromApi(page)
+            } else {
+                //fetch from db
+                getPopularMoviesFromDb(page)
+            }
+        } else {
+            getPopularMoviesFromApi(page)
         }
     }
 
@@ -51,7 +44,7 @@ internal class MovieRepositoryImpl(
             results?.let {
                     list -> list.forEach { it.page = page }
                 saveMovies(list)
-                return results?.map { it.toDomainModel() }
+                return results.map { it.toDomainModel() }
             }
         }
 
@@ -64,8 +57,11 @@ internal class MovieRepositoryImpl(
     override suspend fun getAllPopularMoviesFromDb(): List<MovieDomainModel>? =
         movieDao.getMovies().map { it.toDomainModel() }
 
+    override suspend fun getLastFetchedPageFromDb(): Int? {
+        return movieDao.getLastPageFetched()
+    }
+
     private suspend fun saveMovies(movies: List<Movie>) {
-        syncRepository.saveSyncDate(Utils.getCurrentDate())
         movieDao.insertMovies(movies)
     }
 

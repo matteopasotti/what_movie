@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.matteopasotti.whatmovie.R
@@ -22,7 +23,7 @@ fun setImageUrl(imageView: ImageView, url : String?) {
         .with(context)
         .load(url)
         .centerCrop()
-        .skipMemoryCache(true)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .placeholder(cd)
         .into(imageView)
 

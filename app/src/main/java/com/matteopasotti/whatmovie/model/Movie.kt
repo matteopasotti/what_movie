@@ -28,7 +28,7 @@ fun Movie.toDomainModel(): MovieDomainModel {
 
     var imagePosterPath : String? = null
     if(this.poster_path != null) {
-        imagePosterPath = "https://image.tmdb.org/t/p/original$poster_path"
+        imagePosterPath = "https://image.tmdb.org/t/p/w342$poster_path"
 
     }
 

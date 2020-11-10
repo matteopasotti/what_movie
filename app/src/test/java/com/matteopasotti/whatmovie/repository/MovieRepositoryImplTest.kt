@@ -6,17 +6,14 @@ import com.matteopasotti.whatmovie.api.MovieApiInterface
 import com.matteopasotti.whatmovie.db.MovieDao
 import com.matteopasotti.whatmovie.model.response.PopularMovieResponse
 import com.matteopasotti.whatmovie.model.toDomainModel
-import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.given
-import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.runBlocking
-import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
@@ -30,9 +27,6 @@ class MovieRepositoryImplTest {
     @Mock
     internal lateinit var movieDao: MovieDao
 
-    @Mock
-    internal lateinit var syncRepo: SyncRepoImpl
-
     private lateinit var repository: MovieRepositoryImpl
 
     private val language = "en-US"
@@ -43,7 +37,7 @@ class MovieRepositoryImplTest {
 
     @Before
     fun setUp() {
-        repository = MovieRepositoryImpl(mockService, movieDao, syncRepo)
+        repository = MovieRepositoryImpl(mockService, movieDao)
     }
 
     @Test
@@ -99,64 +93,51 @@ class MovieRepositoryImplTest {
     }
 
 
-
     @Test
-    fun `Given data out of sync, Then we get movies from API`() {
-        doReturn(false).`when`(syncRepo).areDataUpdated()
+    fun `Given we are fetching page 2, AND lastFetchedPageFromDb return 1, then we fetch data from API`() {
+        val movieFromAPI = DataFixtures.getMovie(id = 4)
+        val pageDB = 1
+        val pageAPI = 2
 
         runBlocking {
-            given(mockService.getPopularMovies(apiKey, language, page))
-                .willReturn(Response.success(PopularMovieResponse(
-                    page = 1,
-                    results = listOf(DataFixtures.getMovie())
-                )))
+            given(movieDao.getLastPageFetched()).willReturn(pageDB)
 
-            val result = repository.getPopularMovies(1)
+            given(mockService.getPopularMovies(apiKey, language, pageAPI))
+                .willReturn(
+                    Response.success(
+                        PopularMovieResponse(
+                            page = 1,
+                            results = listOf(movieFromAPI)
+                        )
+                    )
 
-            assertEquals(result!!.first(), DataFixtures.getMovie().toDomainModel())
-        }
+                )
 
-    }
+            val result = repository.getPopularMovies(2)
 
-    @Test
-    fun `Given data are syncronized, And is the first access, Then we get all the movies from db`(){
-        doReturn(true).`when`(syncRepo).areDataUpdated()
-
-        repository.firstAccess = true
-
-        runBlocking {
-           given(movieDao.getMovies()).willReturn(listOf(DataFixtures.getMovie()))
-
-            val result = repository.getPopularMovies(1)
-
-            assertEquals(result!!.first(), DataFixtures.getMovie().toDomainModel())
+            assertEquals(result!!.first().id, movieFromAPI.id)
         }
     }
 
     @Test
-    fun `Given data are syncronized but firstAccess is false, And we have other movies in the db, Then we get the movies from db for that page`(){
-        doReturn(true).`when`(syncRepo).areDataUpdated()
-        repository.firstAccess = false
-
-        runBlocking {
-            given(movieDao.getMoviesByPage(1)).willReturn(listOf(DataFixtures.getMovie(id = 123)))
-
-            val result = repository.getPopularMovies(1)
-
-            assertEquals(result!!.first(), DataFixtures.getMovie().toDomainModel())
-        }
-    }
-
-    @Test
-    fun `Given data are syncronized but firstAccess is false, And we do not have other movies in the db, Then we get the movies from API`(){
-        doReturn(true).`when`(syncRepo).areDataUpdated()
-        repository.firstAccess = false
-
+    fun `Given we are fetching page 1, AND lastFetchedPageFromDb returns 1, then we fetch data from db`(){
         val movie = DataFixtures.getMovie(id = 4)
-
         runBlocking {
-            given(movieDao.getMoviesByPage(1)).willReturn(listOf())
+            given(movieDao.getLastPageFetched()).willReturn(1)
 
+            given(movieDao.getMoviesByPage(1)).willReturn(listOf(movie))
+
+            val result = repository.getPopularMovies(1)
+
+            assertEquals(result!!.first().id, movie.id)
+        }
+    }
+
+    @Test
+    fun `Given lastFetchedPageFromDb returns null, then fetch data from api`() {
+        val movie = DataFixtures.getMovie(id = 4)
+        runBlocking {
+            given(movieDao.getLastPageFetched()).willReturn(null)
             given(mockService.getPopularMovies(apiKey, language, page))
                 .willReturn(
                     Response.success(

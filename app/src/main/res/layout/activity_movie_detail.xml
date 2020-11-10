@@ -45,6 +45,7 @@
                     android:layout_marginStart="@dimen/margin_medium"
                     android:layout_marginEnd="@dimen/margin_medium"
                     android:elevation="20dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/backdrop_image"
                     app:layout_constraintEnd_toEndOf="@+id/backdrop_image"
                     app:layout_constraintStart_toStartOf="@+id/backdrop_image"

@@ -14,8 +14,7 @@ val useCasesModule = module {
         GetPopularMoviesUseCase(
             movieRepository = MovieRepositoryImpl(
                 movieApi = get(),
-                movieDao = get(),
-                syncRepository = get()
+                movieDao = get()
             )
         )
     }

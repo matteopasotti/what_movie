@@ -69,7 +69,8 @@ object DomainFixtures {
             ProductionCountry("IT", "Italy")
         ),
         release_date: String = "date",
-        vote_average: Float = 2.0F
+        vote_average: Float = 2.0F,
+        videos: MovieVideo = MovieVideo(mutableListOf())
     ): MovieDetail =
-        MovieDetail(genres, original_language, original_title, overview, production_countries, release_date, vote_average)
+        MovieDetail(genres, original_language, original_title, overview, production_countries, release_date, vote_average, videos)
 }

@@ -1,34 +1,39 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:dist="http://schemas.android.com/apk/distribution"
-        package="com.matteopasotti.whatmovie">
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="com.matteopasotti.whatmovie">
 
     <dist:module dist:instant="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-            android:name=".MyApplication"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme">
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
 
-        <activity android:name=".view.MainActivity"
-                android:screenOrientation="portrait">
+        <activity
+            android:name=".view.MainActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.ui.movie_detail.MovieDetailActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"/>
+        <activity
+            android:name=".view.ui.movie_detail.MovieDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout" />
 
-        <activity android:name=".view.ui.actor_detail.ActorDetailActivity"
-                android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.ui.actor_detail.ActorDetailActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 </manifest>

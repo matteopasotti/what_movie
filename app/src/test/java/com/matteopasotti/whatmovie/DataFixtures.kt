@@ -69,7 +69,8 @@ object DataFixtures {
         overview: String = "overview",
         production_countries: MutableList<ProductionCountry> = mutableListOf(),
         release_date: String = "date",
-        vote_average: Float = 2.0F
-    ): MovieDetail = MovieDetail(genres, original_language, original_title, overview, production_countries, release_date, vote_average)
+        vote_average: Float = 2.0F,
+        videos: MovieVideo = MovieVideo(mutableListOf())
+    ): MovieDetail = MovieDetail(genres, original_language, original_title, overview, production_countries, release_date, vote_average, videos)
 
 }

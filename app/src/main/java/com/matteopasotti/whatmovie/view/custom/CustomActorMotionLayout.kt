@@ -39,21 +39,9 @@ class CustomActorMotionLayout @JvmOverloads constructor(
         knownFor = findViewById(R.id.known_for)
     }
 
-//    fun initView(url: String) {
-//        val requestOptions = RequestOptions()
-//        requestOptions.circleCrop()
-//
-//        Glide
-//            .with(actorImg.context)
-//            .load(url)
-//            .apply(requestOptions)
-//            .transition(DrawableTransitionOptions.withCrossFade())
-//            .into(actorImg)
-//    }
-
     fun setMovieDelegate(delegate: MovieViewHolder.Delegate) {
         this.delegate = delegate
-        adapter = KnownForMoviesAdapter(delegate)
+        adapter = KnownForMoviesAdapter(context, delegate)
         knownFor.setCustomLabelListView("Known for", adapter)
     }
 

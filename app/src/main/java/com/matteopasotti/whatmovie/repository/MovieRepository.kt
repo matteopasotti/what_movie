@@ -11,4 +11,6 @@ interface MovieRepository {
     suspend fun getPopularMoviesFromDb(page: Int): List<MovieDomainModel>?
 
     suspend fun getAllPopularMoviesFromDb(): List<MovieDomainModel>?
+
+    suspend fun getLastFetchedPageFromDb(): Int?
 }

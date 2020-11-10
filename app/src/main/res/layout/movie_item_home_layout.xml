@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="movie"
+            type="com.matteopasotti.whatmovie.model.MovieDomainModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="10dp"
+        app:cardBackgroundColor="@color/mid_blue"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_small">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/movie_image"
+                android:layout_width="150dp"
+                android:layout_height="220dp"
+                tools:background="@drawable/venom_cover"
+                android:layout_marginStart="@dimen/margin_medium"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/movie_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                tools:text="Venom"
+                android:text="@{movie.title}"
+                android:textSize="16sp"
+                android:ellipsize="end"
+                android:fontFamily="@font/product_sans_bold"
+                android:textColor="@android:color/white"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
+                app:layout_constraintTop_toTopOf="@+id/movie_image"
+                app:layout_constraintStart_toEndOf="@+id/movie_image"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/movie_overview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:maxLines="6"
+                android:ellipsize="end"
+                android:text="@{movie.overview}"
+                android:textSize="11sp"
+                android:textColor="@android:color/white"
+                tools:text="@string/lorem"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:fontFamily="@font/product_sans_regular"
+                app:layout_constraintTop_toBottomOf="@+id/movie_title"
+                app:layout_constraintStart_toEndOf="@+id/movie_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

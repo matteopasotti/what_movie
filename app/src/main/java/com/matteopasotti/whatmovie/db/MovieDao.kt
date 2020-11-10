@@ -30,4 +30,7 @@ interface MovieDao {
 
     @Query("DELETE FROM Movie")
     fun deleteMovies()
+
+    @Query("SELECT MAX(page) FROM Movie")
+    fun getLastPageFetched(): Int?
 }

@@ -135,13 +135,13 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
         //binding.genreList.updatePadding(right = 4)
         binding.genreList.adapter = genresAdapter
 
-        recommendedMoviesAdapter = MoviesAdapter(this)
+        recommendedMoviesAdapter = MoviesAdapter(this, this)
         binding.recommendedLayout.setCustomLabelListView(
             getString(R.string.recommended_movies),
             recommendedMoviesAdapter
         )
 
-        similarMoviesAdapter = MoviesAdapter(this)
+        similarMoviesAdapter = MoviesAdapter(this, this)
         binding.similarMoviesLayout.setCustomLabelListView(
             getString(R.string.similar_movies),
             similarMoviesAdapter
