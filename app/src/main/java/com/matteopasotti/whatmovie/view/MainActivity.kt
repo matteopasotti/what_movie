@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.view.ui.HomeMovieCategoryConstants
 import com.matteopasotti.whatmovie.view.ui.HomeMoviesGalleryFragment
+import com.matteopasotti.whatmovie.view.ui.home.HomeMoviesFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val popularMoviesGalleryFragment =
-            HomeMoviesGalleryFragment.newInstance(HomeMovieCategoryConstants.POPULARS)
+            HomeMoviesFragment.newInstance(HomeMovieCategoryConstants.POPULARS)
         supportFragmentManager.beginTransaction()
             .replace(R.id.popular_movies_sections, popularMoviesGalleryFragment)
             .commit()

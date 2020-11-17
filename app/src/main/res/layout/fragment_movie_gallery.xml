@@ -24,7 +24,7 @@
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="true"
                     android:scrollbars="vertical"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     tools:listitem="@layout/movie_vertical_layout" />
 

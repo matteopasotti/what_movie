@@ -33,8 +33,6 @@ class MovieHomeViewHolder (val context: Context, view: View, private val delegat
                 binding?.movie = data
                 val cd = ColorDrawable(context.resources.getColor(R.color.grey, null))
 
-                Log.d("Values", "width: " + 160.toPx() + " height: " + 210.toPx())
-
                 Glide
                     .with(context)
                     .load(movie.poster_path)

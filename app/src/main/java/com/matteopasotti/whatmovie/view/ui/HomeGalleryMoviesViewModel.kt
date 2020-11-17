@@ -8,15 +8,16 @@ import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
 import kotlinx.coroutines.launch
+import org.koin.core.KoinComponent
 
 class HomeGalleryMoviesViewModel(
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase) : ViewModel() {
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCase) : ViewModel(), KoinComponent {
 
     private lateinit var isLoadingLiveData: MutableLiveData<Boolean>
 
     private lateinit var isErrorLiveData: MutableLiveData<Boolean>
 
-    private lateinit var popularMoviesLiveData: MutableLiveData<List<MovieDomainModel>>
+    lateinit var popularMoviesLiveData: MutableLiveData<List<MovieDomainModel>>
 
     fun isLoading(): LiveData<Boolean> {
         if(!::isLoadingLiveData.isInitialized) {

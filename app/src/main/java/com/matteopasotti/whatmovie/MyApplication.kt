@@ -7,7 +7,7 @@ import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
-class MyApplication : Application() {
+open class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -20,7 +20,9 @@ class MyApplication : Application() {
             androidLogger()
             // use properties from assets/koin.properties
             androidFileProperties()
-            modules(listOf(mainModule, netModule, dbModule, useCasesModule, prefModule, repoModule))
+            modules(provideDependency())
         }
     }
+
+    open fun provideDependency() = appComponent
 }

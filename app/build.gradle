@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'kotlinx-serialization'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -14,7 +16,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.matteopasotti.whatmovie.app.CustomInstrumentationRunner"
     }
 
     kapt {
@@ -37,6 +39,10 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+
     androidExtensions {
         experimental = true
     }
@@ -48,6 +54,18 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        debug {
+            assets {
+                srcDirs 'src/debug/assets', 'src/androidTest/assets'
+            }
+        }
+        main {
+            assets {
+                srcDirs 'src/main/assets', 'src/androidTest/assets'
+            }
+        }
     }
 }
 
@@ -70,9 +88,7 @@ dependencies {
     //Retrofit2
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit2_version"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.0")
-
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$coroutines_adapter"
 
     //Okhttp3
     implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
@@ -97,7 +113,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx_version"
 
     // GSON
-    implementation "com.google.code.gson:gson:2.4"
+    implementation "com.google.code.gson:gson:2.8.5"
 
     // Koin for Android - Scope feature
     // include koin-android-scope & koin-android
@@ -110,23 +126,28 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$support_version"
     implementation "com.google.android.material:material:$support_version"
-    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'androidx.palette:palette-ktx:1.0.0'
     implementation "androidx.recyclerview:recyclerview:$support_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0' // For lifecycleScope
 
+//---------------------------- TESTING ----------------------------//
 
-
-    // TEST DEPENDENCIES
-    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "android.arch.core:core-testing:1.1.0"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutineVersion"
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     testImplementation "org.mockito:mockito-inline:$mockito_version"
     testImplementation 'junit:junit:4.12'
+
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"
+
+    androidTestImplementation ("org.koin:koin-test:$koin_version") { exclude group: 'org.mockito' }
 
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 }

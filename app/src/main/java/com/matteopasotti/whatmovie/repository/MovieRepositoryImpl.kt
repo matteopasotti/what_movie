@@ -8,12 +8,13 @@ import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.model.toDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.core.KoinComponent
 import java.io.IOException
 
 internal class MovieRepositoryImpl(
     private val movieApi: MovieApiInterface,
     private val movieDao: MovieDao
-) : MovieRepository{
+) : MovieRepository, KoinComponent {
 
     @Throws(IOException::class)
     override suspend fun getPopularMovies(page: Int): List<MovieDomainModel>? {
