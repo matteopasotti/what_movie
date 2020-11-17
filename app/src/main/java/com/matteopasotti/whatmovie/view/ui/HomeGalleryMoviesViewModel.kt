@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 
@@ -17,7 +19,7 @@ class HomeGalleryMoviesViewModel(
 
     private lateinit var isErrorLiveData: MutableLiveData<Boolean>
 
-    lateinit var popularMoviesLiveData: MutableLiveData<List<MovieDomainModel>>
+    val popularMoviesLiveData: MutableLiveData<List<MovieDomainModel>> by lazy { MutableLiveData<List<MovieDomainModel>>() }
 
     fun isLoading(): LiveData<Boolean> {
         if(!::isLoadingLiveData.isInitialized) {
@@ -37,38 +39,33 @@ class HomeGalleryMoviesViewModel(
         return isErrorLiveData
     }
 
-    fun getMovies(): LiveData<List<MovieDomainModel>> {
-        if(!::popularMoviesLiveData.isInitialized) {
-            popularMoviesLiveData = MutableLiveData()
-            popularMoviesLiveData.value = null
-        }
-
-        return popularMoviesLiveData
-    }
+    fun getMovies(): LiveData<List<MovieDomainModel>> = popularMoviesLiveData
 
     fun getPopularMovies() {
         viewModelScope.launch {
-            getPopularMoviesUseCase.execute().also {
-                result ->
-                when(result) {
-                    is Result.Success -> {
-                        val movies: List<MovieDomainModel>?  = result.data as List<MovieDomainModel>?
-                        if(movies.isNullOrEmpty()) {
-                            isLoadingLiveData.value = false
-                            isErrorLiveData.value = true
-                        } else {
-                            isLoadingLiveData.value = false
-                            popularMoviesLiveData.value = movies
-                        }
-                    }
 
-                   is Result.Error -> {
-                       isLoadingLiveData.value = false
-                       isErrorLiveData.value = true
-                   }
+            val result = viewModelScope.async { getPopularMoviesUseCase.execute() }
+
+            updateUI(result.await())
+        }
+    }
+
+    private fun updateUI(result: Result<Any>) {
+        when(result) {
+            is Result.Success -> {
+                val movies: List<MovieDomainModel>?  = result.data as List<MovieDomainModel>?
+                if(movies.isNullOrEmpty()) {
+                    isLoadingLiveData.value = false
+                    isErrorLiveData.value = true
+                } else {
+                    isLoadingLiveData.value = false
+                    popularMoviesLiveData.value = movies
                 }
+            }
 
-
+            is Result.Error -> {
+                isLoadingLiveData.value = false
+                isErrorLiveData.value = true
             }
         }
     }

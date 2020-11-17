@@ -30,7 +30,7 @@ internal class MovieRepositoryImpl(
                 getPopularMoviesFromDb(page)
             }
         } else {
-            getPopularMoviesFromApi(page)
+            return getPopularMoviesFromApi(page)
         }
     }
 
@@ -38,13 +38,16 @@ internal class MovieRepositoryImpl(
     @Throws(IOException::class)
     override suspend fun getPopularMoviesFromApi(page: Int): List<MovieDomainModel>? {
 
-        val response = movieApi.getPopularMovies(BuildConfig.API_KEY, "en-US", page)
+        val response = withContext(Dispatchers.IO) { movieApi.getPopularMovies(BuildConfig.API_KEY, "en-US", page) }
 
         if(response.isSuccessful) {
             val results = response.body()?.results?.filter { it.poster_path != null }
             results?.let {
                     list -> list.forEach { it.page = page }
-                saveMovies(list)
+                withContext(Dispatchers.IO) {
+                    saveMovies(list)
+                }
+
                 return results.map { it.toDomainModel() }
             }
         }

@@ -6,36 +6,43 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.ContentLoadingProgressBar
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.util.Utils
-import com.matteopasotti.whatmovie.view.adapter.MovieHomeAdapterNormal
+import com.matteopasotti.whatmovie.view.adapter.MovieHomeAdapter
 import com.matteopasotti.whatmovie.view.ui.HomeGalleryMoviesViewModel
-import com.matteopasotti.whatmovie.view.ui.HomeMoviesGalleryFragment
 import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
-import com.matteopasotti.whatmovie.view.viewholder.MovieHomeViewHolderNormal
+import com.matteopasotti.whatmovie.view.viewholder.MovieHomeViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlinx.android.synthetic.main.fragment_home_movies.*
 
-class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
+class HomeMoviesFragment : Fragment(), MovieHomeViewHolder.Delegate {
 
-    private lateinit var moviesAdapter: MovieHomeAdapterNormal
+    private lateinit var moviesAdapter: MovieHomeAdapter
 
     private val viewModel: HomeGalleryMoviesViewModel by viewModel()
 
     private var section: Int? = null
 
+    private lateinit var recyclerView: RecyclerView
+
+    private lateinit var nestedScrollView: NestedScrollView
+
+    private lateinit var progress: ContentLoadingProgressBar
+
     companion object {
 
         private const val HOME_CATEGORY = "home_category"
 
-        fun newInstance(homeCategory: Int): HomeMoviesGalleryFragment {
+        fun newInstance(homeCategory: Int): HomeMoviesFragment {
             val args = Bundle()
             args.putInt(HOME_CATEGORY, homeCategory)
-            val fragment = HomeMoviesGalleryFragment()
+            val fragment = HomeMoviesFragment()
             fragment.arguments = args
             return fragment
         }
@@ -47,32 +54,32 @@ class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v =  inflater.inflate(R.layout.fragment_home_movies, container, false)
-
-        initView()
-
-        return v.rootView
+       return  inflater.inflate(R.layout.fragment_home_movies, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        recyclerView = view.findViewById(R.id.movie_list)
+
+        nestedScrollView = view.findViewById(R.id.nested_scroll_view)
+
+        progress = view.findViewById(R.id.progress)
+
+        initView()
 
         observeViewModel()
     }
 
     private fun initView() {
-        moviesAdapter = MovieHomeAdapterNormal(context!!, this)
+        moviesAdapter = MovieHomeAdapter(context!!, this)
 
-        movie_list.apply {
-            setHasFixedSize(true)
-            val columnWidth = context.resources.getDimension(R.dimen.image_width).toInt()
+        val manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = manager
 
-            val manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            layoutManager = manager
-            adapter = moviesAdapter
-        }
+        recyclerView.adapter = moviesAdapter
 
-        nested_scroll_view.setOnScrollChangeListener(Utils.NestedInfiniteScrollListener {
+        nestedScrollView.setOnScrollChangeListener(Utils.NestedInfiniteScrollListener {
             viewModel.getPopularMovies()
         })
 
@@ -82,16 +89,15 @@ class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
 
     private fun observeViewModel() {
 
-        viewModel.isLoading().observe(this, Observer { isLoading ->
+        viewModel.isLoading().observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading?.let {
                 progress.visibility = View.VISIBLE
             }
         })
 
-        viewModel.getMovies().observe(viewLifecycleOwner, Observer {
+        viewModel.popularMoviesLiveData.observe(viewLifecycleOwner , Observer {
             it?.let {
                 progress.visibility = View.GONE
-                movie_list.visibility = View.VISIBLE
                 moviesAdapter.updateItems(it)
             }
         })
@@ -99,12 +105,6 @@ class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
         viewModel.isError().observe(viewLifecycleOwner, Observer {
             if(it) {
                 //error
-            }
-        })
-
-        viewModel.popularMoviesLiveData.observe(viewLifecycleOwner , Observer {
-            if(!it.isNullOrEmpty()) {
-                moviesAdapter.updateItems(it)
             }
         })
 

@@ -30,16 +30,16 @@ class MovieHomeAdapter (private val context: Context, private val delegate: Movi
         return MovieHomeViewHolder(context, view, delegate)
     }
 
-    override fun onBindViewHolder(viewHolder: BaseViewHolder, position: Int) {
-        val data = getItemByPosition(position)
-
-        try {
-            viewHolder.bindData(data)
-            val animation : Animation = AnimationUtils.loadAnimation(viewHolder.itemView.context , if (position > lastPosition) R.anim.up_from_bottom  else R.anim.down_from_top)
-            viewHolder.itemView.startAnimation(animation)
-            lastPosition = position
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
+//    override fun onBindViewHolder(viewHolder: BaseViewHolder, position: Int) {
+//        val data = getItemByPosition(position)
+//
+//        try {
+//            viewHolder.bindData(data)
+//            val animation : Animation = AnimationUtils.loadAnimation(viewHolder.itemView.context , if (position > lastPosition) R.anim.up_from_bottom  else R.anim.down_from_top)
+//            viewHolder.itemView.startAnimation(animation)
+//            lastPosition = position
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//    }
 }

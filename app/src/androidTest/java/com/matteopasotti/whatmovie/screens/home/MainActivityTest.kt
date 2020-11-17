@@ -36,14 +36,6 @@ class MainActivityTest : BaseUITest() {
     @JvmField
     var mActivityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
 
-    val viewModel : HomeGalleryMoviesViewModel by inject()
-
-    val useCase : GetPopularMoviesUseCase by inject()
-
-    //val repository : MovieRepositoryImpl by inject()
-
-    val  mMockWebServer : MockWebServer by inject()
-
     private val titleTestFirstItem = "Hellooooo"
 
     @Before

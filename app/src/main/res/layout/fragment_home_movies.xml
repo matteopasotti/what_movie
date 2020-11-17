@@ -24,7 +24,6 @@
             android:nestedScrollingEnabled="true"
             android:scrollbars="vertical"
             android:visibility="visible"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/movie_vertical_layout" />
 
     </androidx.core.widget.NestedScrollView>
