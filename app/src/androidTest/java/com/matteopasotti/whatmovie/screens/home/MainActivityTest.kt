@@ -2,6 +2,7 @@ package com.matteopasotti.whatmovie.screens.home
 
 import android.os.SystemClock
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso
@@ -39,14 +40,6 @@ import java.net.HttpURLConnection
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest : BaseUITest() {
 
-    @Rule
-    @JvmField
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @Rule
-    @JvmField
-    var mActivityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
-
     private val titleTestFirstItem = "Bronx"
 
     private val overviewTestFirstItem = "Caught in the crosshairs of police corruption and " +
@@ -81,7 +74,7 @@ class MainActivityTest : BaseUITest() {
 
     @Test
     fun test_recyclerview_elements_for_expected_response() {
-        mActivityTestRule.launchActivity(null)
+        val scenario = launchActivity<MainActivity>()
 
         mockNetworkResponseWithFileContent("success_popular_movie_response.json", HttpURLConnection.HTTP_OK)
 
@@ -124,7 +117,7 @@ class MainActivityTest : BaseUITest() {
 
     @Test
     fun test_loader_is_shown_and_hidden_when_we_got_data() {
-        mActivityTestRule.launchActivity(null)
+        val scenario = launchActivity<MainActivity>()
 
         Espresso.onView(withId(R.id.progress)).check(matches(isDisplayed()))
 
@@ -138,9 +131,7 @@ class MainActivityTest : BaseUITest() {
 
     @Test
     fun test_click_on_movie_open_moviedetailactivity(){
-        //val scenario = launchActivity<MainActivity>()
-
-        mActivityTestRule.launchActivity(null)
+        val scenario = launchActivity<MainActivity>()
 
         mockNetworkResponseWithFileContent("success_popular_movie_response.json", HttpURLConnection.HTTP_OK)
 
