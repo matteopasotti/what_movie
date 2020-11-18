@@ -19,6 +19,7 @@ buildscript {
         lifecycle_viewmodel_ktx = "2.2.0"
         mockwebserver_version = "4.9.0"
         coroutines_adapter = "0.9.2"
+        espresso = "3.3.0"
     }
 
     repositories {
