@@ -22,7 +22,7 @@ interface MovieDao {
     @Query("SELECT * FROM Movie ORDER BY page")
     suspend fun getMovies() : List<Movie>
 
-    @Query("SELECT * FROM Movie WHERE Movie.page =:page")
+    @Query("SELECT * FROM Movie WHERE Movie.page =:page ORDER BY Movie.vote_average DESC")
     fun getMoviesByPage(page: Int): List<Movie>
 
     @Query("DELETE FROM Movie WHERE id =:id")

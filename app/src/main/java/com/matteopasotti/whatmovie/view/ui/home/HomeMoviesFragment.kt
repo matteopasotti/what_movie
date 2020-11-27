@@ -16,24 +16,21 @@ import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.util.Utils
 import com.matteopasotti.whatmovie.view.adapter.MovieHomeAdapter
+import com.matteopasotti.whatmovie.view.adapter.MovieHomeAdapterNormal
 import com.matteopasotti.whatmovie.view.ui.HomeGalleryMoviesViewModel
 import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
 import com.matteopasotti.whatmovie.view.viewholder.MovieHomeViewHolder
+import com.matteopasotti.whatmovie.view.viewholder.MovieHomeViewHolderNormal
+import kotlinx.android.synthetic.main.fragment_home_movies.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeMoviesFragment : Fragment(), MovieHomeViewHolder.Delegate {
+class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
 
-    private lateinit var moviesAdapter: MovieHomeAdapter
+    private lateinit var moviesAdapter: MovieHomeAdapterNormal
 
     private val viewModel: HomeGalleryMoviesViewModel by viewModel()
 
     private var section: Int? = null
-
-    private lateinit var recyclerView: RecyclerView
-
-    private lateinit var nestedScrollView: NestedScrollView
-
-    private lateinit var progress: ContentLoadingProgressBar
 
     companion object {
 
@@ -60,31 +57,23 @@ class HomeMoviesFragment : Fragment(), MovieHomeViewHolder.Delegate {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.movie_list)
-
-        nestedScrollView = view.findViewById(R.id.nested_scroll_view)
-
-        progress = view.findViewById(R.id.progress)
-
         initView()
 
         observeViewModel()
     }
 
     private fun initView() {
-        moviesAdapter = MovieHomeAdapter(context!!, this)
+        moviesAdapter = MovieHomeAdapterNormal(context!!, this)
 
-        val manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerView.layoutManager = manager
+        movie_list.apply {
+            val manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = manager
+            adapter = moviesAdapter
+        }
 
-        recyclerView.adapter = moviesAdapter
-
-        nestedScrollView.setOnScrollChangeListener(Utils.NestedInfiniteScrollListener {
+        nested_scroll_view.setOnScrollChangeListener(Utils.NestedInfiniteScrollListener {
             viewModel.getPopularMovies()
         })
-
-
-        section = arguments?.getInt(HomeMoviesFragment.HOME_CATEGORY)
     }
 
     private fun observeViewModel() {

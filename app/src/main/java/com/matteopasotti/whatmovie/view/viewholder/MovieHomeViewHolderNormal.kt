@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.card.MaterialCardView
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 
@@ -25,15 +26,14 @@ class MovieHomeViewHolderNormal(
     private var title: TextView = itemView.findViewById(R.id.movie_title)
     private var overview: TextView = itemView.findViewById(R.id.movie_overview)
     private var image: ImageView = itemView.findViewById(R.id.movie_image)
+    private var popularity: TextView = itemView.findViewById(R.id.popularity)
     private lateinit var movie: MovieDomainModel
 
-    @RequiresApi(Build.VERSION_CODES.M)
     fun bindData(movie: MovieDomainModel) {
         this.movie = movie
         title.text = movie.title
         overview.text = movie.overview
-
-        val cd = ColorDrawable(context.resources.getColor(R.color.grey, null))
+        popularity.text = movie.vote_average.toString()
 
         Glide
             .with(context)
@@ -41,8 +41,6 @@ class MovieHomeViewHolderNormal(
             .thumbnail(0.25f)
             .centerCrop()
             .skipMemoryCache(true)
-            .placeholder(cd)
-            .override(300, 480)
             .into(image)
 
         itemView.setOnClickListener(this)

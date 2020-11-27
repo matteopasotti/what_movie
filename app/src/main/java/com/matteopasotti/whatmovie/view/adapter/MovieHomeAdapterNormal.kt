@@ -3,6 +3,8 @@ package com.matteopasotti.whatmovie.view.adapter
 import android.content.Context
 import android.os.Build
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.matteopasotti.whatmovie.R
@@ -30,8 +32,13 @@ class MovieHomeAdapterNormal(
     override fun getItemCount(): Int = movies.size
 
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    override fun onBindViewHolder(holder: MovieHomeViewHolderNormal, position: Int) {
-        holder.bindData(movies[position])
+    override fun onBindViewHolder(viewHolder: MovieHomeViewHolderNormal, position: Int) {
+        val data = movies[position]
+
+        try {
+            viewHolder.bindData(data)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

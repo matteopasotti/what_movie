@@ -132,7 +132,6 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
 
         genresAdapter = MovieGenresAdapter()
         binding.genreList.layoutManager = NoScrollHorizontalLayoutManager(this)
-        //binding.genreList.updatePadding(right = 4)
         binding.genreList.adapter = genresAdapter
 
         recommendedMoviesAdapter = MoviesAdapter(this, this)
