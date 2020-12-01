@@ -8,7 +8,8 @@ data class MovieDetail(
     val production_countries: MutableList<ProductionCountry>,
     val release_date: String,
     val vote_average: Float,
-    val videos: MovieVideo
+    val videos: MovieVideo,
+    val runtime: Int
 )
 
 fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
@@ -37,6 +38,7 @@ fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
         this.genres
     }
 
+
     return MovieDetailDomainModel(
         type,
         this.original_language,
@@ -46,9 +48,16 @@ fun MovieDetail.toDomainModel(): MovieDetailDomainModel {
         this.release_date,
         this.vote_average,
         genres,
-        this.videos.results.map { it.toDomainModel() }
+        this.videos.results.map { it.toDomainModel() },
+        getDuration(this.runtime)
     )
 
+}
+
+fun getDuration(runtime: Int): String {
+    val hours : Int = runtime / 60
+    val minutes = runtime - (hours * 60)
+    return """${hours}h ${minutes}m"""
 }
 
 data class MovieDetailDomainModel(
@@ -60,5 +69,6 @@ data class MovieDetailDomainModel(
     val releaseDate: String,
     val vote_average: Float,
     val genres: List<Genre>,
-    val videos: List<VideoDomainModel>
+    val videos: List<VideoDomainModel>,
+    val duration: String
 )

@@ -36,13 +36,15 @@ class ActorDetailResponseRepositoryImplTest {
             given(apiService.getActorDetails(1, BuildConfig.API_KEY, "en-US"))
                 .willReturn(
                     Response.success(
-                        200, DataFixtures.getActorDetail()
+                        200, DataFixtures.getActorDetail(
+                            name = "Leonardo DiCaprio"
+                        )
                     )
                 )
 
             val result = repository.getActorDetails(1)
 
-            assertEquals(result!!.name, DataFixtures.getActorDetail().name)
+            assertEquals("Leonardo", result!!.name)
         }
     }
 

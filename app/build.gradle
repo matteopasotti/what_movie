@@ -144,7 +144,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso"
 
-    androidTestImplementation "android.arch.core:core-testing:1.1.0"
+    testImplementation "android.arch.core:core-testing:1.1.0"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutineVersion"
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     testImplementation "org.mockito:mockito-inline:$mockito_version"

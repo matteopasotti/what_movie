@@ -1,8 +1,6 @@
 package com.matteopasotti.whatmovie.screens.home
 
 import android.os.SystemClock
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso

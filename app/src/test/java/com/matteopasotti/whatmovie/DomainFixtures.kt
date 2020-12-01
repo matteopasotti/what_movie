@@ -70,7 +70,8 @@ object DomainFixtures {
         ),
         release_date: String = "date",
         vote_average: Float = 2.0F,
-        videos: MovieVideo = MovieVideo(mutableListOf())
+        videos: MovieVideo = MovieVideo(mutableListOf()),
+        runtime: Int = 98
     ): MovieDetail =
-        MovieDetail(genres, original_language, original_title, overview, production_countries, release_date, vote_average, videos)
+        MovieDetail(genres, original_language, original_title, overview, production_countries, release_date, vote_average, videos, runtime)
 }

@@ -52,7 +52,7 @@ object DataFixtures {
 
     internal fun getActorDetail(
         id: Int = 1,
-        name: String = "Leonardo",
+        name: String = "Leonardo DiCaprio",
         biography: String = "biography",
         place_of_birth: String = "place",
         profile_path: String = "profile_path",
@@ -70,7 +70,8 @@ object DataFixtures {
         production_countries: MutableList<ProductionCountry> = mutableListOf(),
         release_date: String = "date",
         vote_average: Float = 2.0F,
-        videos: MovieVideo = MovieVideo(mutableListOf())
-    ): MovieDetail = MovieDetail(genres, original_language, original_title, overview, production_countries, release_date, vote_average, videos)
+        videos: MovieVideo = MovieVideo(mutableListOf()),
+        runtime: Int = 98
+    ): MovieDetail = MovieDetail(genres, original_language, original_title, overview, production_countries, release_date, vote_average, videos, runtime)
 
 }

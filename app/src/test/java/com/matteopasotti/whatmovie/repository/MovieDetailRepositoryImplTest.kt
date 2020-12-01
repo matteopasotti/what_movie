@@ -9,7 +9,7 @@ import com.matteopasotti.whatmovie.model.toDomainModel
 import com.nhaarman.mockitokotlin2.given
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
-import okhttp3.ResponseBody.Companion.toResponseBody
+import okhttp3.ResponseBody
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -56,7 +56,7 @@ class MovieDetailRepositoryImplTest {
         runBlocking {
             given(mockService.getRecommendedMovies(1, BuildConfig.API_KEY, "en-US", 1))
                 .willReturn(
-                    Response.error(400, content.toResponseBody())
+                    Response.error(400, ResponseBody.create(null, content))
                 )
 
             val result = repository.getRecommendedMovies(1)
@@ -91,7 +91,7 @@ class MovieDetailRepositoryImplTest {
         runBlocking {
             given(mockService.getSimilarMovies(1, BuildConfig.API_KEY, "en-US", 1))
                 .willReturn(
-                    Response.error(400, content.toResponseBody())
+                    Response.error(400, ResponseBody.create(null, content))
                 )
 
             val result = repository.getSimilarMovies(1)
@@ -144,7 +144,7 @@ class MovieDetailRepositoryImplTest {
         runBlocking {
             given(mockService.getMovieCredits(1, BuildConfig.API_KEY))
                 .willReturn(
-                    Response.error(400, content.toResponseBody())
+                    Response.error(400, ResponseBody.create(null, content))
                 )
 
             val result = repository.getMovieCredits(1)

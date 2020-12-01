@@ -75,7 +75,8 @@ class MovieDetailKtTest {
             production_countries = mutableListOf(
                 ProductionCountry("US", "United States"),
                 ProductionCountry("IT", "Italy")
-            )
+            ),
+            runtime = 98
         )
 
         val result = movieDetail.toDomainModel()
@@ -88,8 +89,9 @@ class MovieDetailKtTest {
             productionCountries = "United States,Italy",
             releaseDate = "date",
             vote_average = 2.0F,
-            genres = mutableListOf(),
-            videos = listOf()
+            genres = mutableListOf(Genre(1, "Adventure")),
+            videos = listOf(),
+            duration = "1h 38m"
         )
 
         assertEquals(result, expected)
