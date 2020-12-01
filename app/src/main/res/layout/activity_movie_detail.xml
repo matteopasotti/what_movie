@@ -11,7 +11,8 @@
     </data>
 
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/container_movie_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary">
@@ -38,19 +39,17 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:background="@drawable/venom_cover" />
 
-                <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-                    android:id="@+id/youtubeView"
+                <FrameLayout
+                    android:id="@+id/youtube_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_medium"
                     android:layout_marginEnd="@dimen/margin_medium"
-                    android:elevation="20dp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/backdrop_image"
                     app:layout_constraintEnd_toEndOf="@+id/backdrop_image"
                     app:layout_constraintStart_toStartOf="@+id/backdrop_image"
-                    app:layout_constraintTop_toTopOf="@+id/backdrop_image"
-                    app:showYouTubeButton="true" />
+                    app:layout_constraintTop_toTopOf="@+id/backdrop_image" />
 
 
                 <View
@@ -196,7 +195,7 @@
         </androidx.core.widget.NestedScrollView>
 
 
-    </LinearLayout>
+    </FrameLayout>
 
 
 </layout>
