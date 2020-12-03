@@ -15,7 +15,6 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.base.BaseUITest
 import com.matteopasotti.whatmovie.di.generateTestAppComponent
@@ -26,7 +25,6 @@ import com.matteopasotti.whatmovie.view.viewholder.MovieHomeViewHolderNormal
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.android.ext.koin.androidContext

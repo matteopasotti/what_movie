@@ -1,85 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/custom_actor_motion_root"
-        app:layoutDescription="@xml/scene_actor_detail"
-        app:motionDebug="SHOW_PATH"
-        tools:parentTag="androidx.constraintlayout.motion.widget.MotionLayout">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/custom_actor_motion_root"
+    app:layoutDescription="@xml/scene_actor_detail"
+    app:motionDebug="SHOW_PATH"
+    tools:parentTag="androidx.constraintlayout.motion.widget.MotionLayout">
 
     <ImageView
-            android:id="@+id/actor_image_custom"
-            android:layout_width="0dp"
-            android:layout_height="180dp"
-            app:layout_constraintTop_toTopOf="@+id/guideline1"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline1"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintEnd_toEndOf="@+id/guideline3"
-            android:visibility="visible"
-            android:transitionName="@string/actor_image_transition" />
+        android:id="@+id/actor_image_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:background="@drawable/venom_cover"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/actor_blur_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="1dp"
+        android:background="@drawable/bg_actor_blur_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/actor_image_custom"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:elevation="8dp"
+        android:transitionName="@string/actor_image_transition"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/guideline1"
+        app:layout_constraintEnd_toEndOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline1" />
 
     <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.75" />
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
 
     <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.25" />
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.25" />
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.50" />
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.50" />
 
     <TextView
-            android:id="@+id/actor_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:fontFamily="@font/lora_classic"
-            android:includeFontPadding="false"
-            android:maxLines="3"
-            android:textColor="@android:color/white"
-            android:textSize="32sp"
-            tools:text="Leonardo" />
+        android:id="@+id/actor_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:elevation="8dp"
+        android:fontFamily="@font/lora_classic"
+        android:includeFontPadding="false"
+        android:maxLines="3"
+        android:textColor="@android:color/white"
+        android:textSize="32sp"
+        tools:text="Leonardo" />
 
     <TextView
-            android:id="@+id/actor_surname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lora_bold"
-            android:includeFontPadding="false"
-            android:maxLines="3"
-            android:text="@{actor.surname}"
-            android:textColor="@android:color/white"
-            android:textSize="40sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/actor_name"
-            tools:text="DiCaprio" />
+        android:id="@+id/actor_surname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:fontFamily="@font/lora_bold"
+        android:includeFontPadding="false"
+        android:maxLines="3"
+        android:text="@{actor.surname}"
+        android:textColor="@android:color/white"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actor_name"
+        tools:text="DiCaprio" />
 
-    <com.matteopasotti.whatmovie.util.CustomLabelListView
-            android:id="@+id/known_for"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/guideline4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="invisible"/>
+    <com.matteopasotti.whatmovie.view.custom.CustomLabelListView
+        android:id="@+id/known_for"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:elevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline4" />
 
 </merge>

@@ -3,4 +3,8 @@
     <declare-styleable name="RatingView">
         <attr name="ratingScore" format="float"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomFabButton">
+        <attr name="fabIcon" format="reference" />
+    </declare-styleable>
 </resources>

@@ -110,6 +110,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
 
     private fun updateView(movieDetail: MovieDetailDomainModel) {
         viewModel.movieDetail = movieDetail
+        binding.movieDuration.text = movieDetail.duration
         binding.movieDetailLayout.detail = movieDetail
         binding.playButton.visibility =
             if (movieDetail.videos.isNotEmpty()) View.VISIBLE else View.GONE

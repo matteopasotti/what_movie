@@ -53,6 +53,6 @@ internal interface MovieApiInterface {
     suspend fun getActorDetails(@Path("personId") personId: Int,
                                 @Query("api_key") apiKey: String,
                                 @Query("language") language: String,
-                                @Query("append_to_response") append: String = "movie_credits,images") : Response<ActorDetailResponse>
+                                @Query("append_to_response") append: String = "combined_credits,images") : Response<ActorDetailResponse>
 
 }

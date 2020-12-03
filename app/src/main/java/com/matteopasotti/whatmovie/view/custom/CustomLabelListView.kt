@@ -1,4 +1,4 @@
-package com.matteopasotti.whatmovie.util
+package com.matteopasotti.whatmovie.view.custom
 
 import android.content.Context
 import android.util.AttributeSet

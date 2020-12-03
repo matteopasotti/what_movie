@@ -10,8 +10,8 @@ data class ActorDetailResponse(
     val profile_path: String,
     val birthday: String,
     val deathday: String?,
-    @SerializedName("movie_credits")
-    val movie_credits: MovieCredits?,
+    @SerializedName("combined_credits")
+    val combined_credits: MovieCredits?,
     val images: ActorImages?
 )
 
@@ -27,7 +27,10 @@ fun ActorDetailResponse.toDomainModel(): ActorDetailDomainModel {
     val name = this.name.substringBefore(delimiter = " ", missingDelimiterValue = "Delimiter not found")
     val surname = this.name.substringAfter(delimiter = " ", missingDelimiterValue = "Delimiter not found")
 
-    val movies : List<MovieDomainModel>? = this.movie_credits?.cast?.map { it.toDomainModel() }
+    val moviesSorted = this.combined_credits?.cast?.sortedByDescending { it.vote_count }
+    val movies : List<MovieDomainModel>? = moviesSorted?.map { it.toDomainModel() }
+
+    val backgroundImage = movies?.first()?.backdrop_path
 
     return ActorDetailDomainModel(
         name,
@@ -37,7 +40,8 @@ fun ActorDetailResponse.toDomainModel(): ActorDetailDomainModel {
         actor_image = image,
         birthday = this.birthday,
         deathday = this.deathday,
-        knownFor = movies
+        knownFor = movies,
+        background_image = backgroundImage
     )
 }
 
@@ -49,7 +53,8 @@ data class ActorDetailDomainModel(
     val actor_image: String,
     val birthday: String,
     val deathday: String?,
-    val knownFor: List<MovieDomainModel>?
+    val knownFor: List<MovieDomainModel>?,
+    val background_image: String?
 )
 
 data class MovieCredits(

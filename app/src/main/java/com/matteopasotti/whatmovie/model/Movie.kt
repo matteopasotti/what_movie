@@ -22,19 +22,31 @@ data class Movie(
     val video: Boolean,
     val vote_average: Double,
     var page: Int?
-) : Parcelable
+) : Parcelable, Comparable<Movie> {
+
+    override fun compareTo(other: Movie): Int {
+        if (this.popularity > other.popularity) {
+            return 1
+        } else if (this.popularity < other.popularity) {
+            return -1
+        }
+
+        return 0
+    }
+
+}
 
 fun Movie.toDomainModel(): MovieDomainModel {
 
-    var imagePosterPath : String? = null
-    if(this.poster_path != null) {
+    var imagePosterPath: String? = null
+    if (this.poster_path != null) {
         imagePosterPath = "https://image.tmdb.org/t/p/w342$poster_path"
 
     }
 
 
-    var imageBackdropPath : String? = null
-    if(this.backdrop_path != null) {
+    var imageBackdropPath: String? = null
+    if (this.backdrop_path != null) {
         imageBackdropPath = "https://image.tmdb.org/t/p/w1280$backdrop_path"
 
     }
@@ -61,4 +73,4 @@ data class MovieDomainModel(
     val release_date: String?,
     val vote_average: Double,
     val vote_count: Int
-):Parcelable
+) : Parcelable

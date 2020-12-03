@@ -6,10 +6,10 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.model.ActorDetailDomainModel
 import com.matteopasotti.whatmovie.model.MovieDomainModel
-import com.matteopasotti.whatmovie.util.CustomLabelListView
 import com.matteopasotti.whatmovie.view.adapter.KnownForMoviesAdapter
 import com.matteopasotti.whatmovie.view.ui.actor_detail.ActorDetailActivity
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
@@ -24,16 +24,18 @@ class CustomActorMotionLayout @JvmOverloads constructor(
     var actorImg: ImageView
     private var actorName: TextView
     private var actorSurname: TextView
+    private var backgroundImage: ImageView
 
     private var knownFor: CustomLabelListView
     private lateinit var adapter: KnownForMoviesAdapter
     private lateinit var delegate: MovieViewHolder.Delegate
 
-    private lateinit var knownForMovies: List<MovieDomainModel>
+    private var knownForMovies: List<MovieDomainModel> = listOf()
 
     init {
         View.inflate(context, R.layout.custom_actor_motion_layout, this)
         actorImg = findViewById(R.id.actor_image_custom)
+        backgroundImage = findViewById(R.id.actor_image_background)
         actorName = findViewById(R.id.actor_name)
         actorSurname = findViewById(R.id.actor_surname)
         knownFor = findViewById(R.id.known_for)
@@ -51,6 +53,12 @@ class CustomActorMotionLayout @JvmOverloads constructor(
         actor.knownFor?.let {
             knownForMovies = it
         }
+
+        Glide
+            .with(context)
+            .load(actor.background_image)
+            .centerCrop()
+            .into(backgroundImage)
     }
 
     fun startAnimation() = performAnimation {
