@@ -7,4 +7,8 @@
     <declare-styleable name="CustomFabButton">
         <attr name="fabIcon" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="CustomCheckBox">
+        <attr name="checkboxBackground" format="reference"/>
+    </declare-styleable>
 </resources>

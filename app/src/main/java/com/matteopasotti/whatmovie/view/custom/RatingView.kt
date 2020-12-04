@@ -1,4 +1,4 @@
-package com.matteopasotti.whatmovie.util
+package com.matteopasotti.whatmovie.view.custom
 
 import android.content.Context
 import android.util.AttributeSet
@@ -28,5 +28,7 @@ class RatingView @JvmOverloads constructor(
 
     fun setRatingScore(score: Float) {
         scoreTxt.text = score.toString()
+        invalidate()
+        requestLayout()
     }
 }
