@@ -84,7 +84,7 @@ class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
             }
         })
 
-        viewModel.popularMoviesLiveData.observe(viewLifecycleOwner , Observer {
+        viewModel.popularMovies.observe(viewLifecycleOwner , Observer {
             it?.let {
                 progress.visibility = View.GONE
                 moviesAdapter.updateItems(it)

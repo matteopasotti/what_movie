@@ -97,14 +97,54 @@
         app:layout_constraintTop_toBottomOf="@+id/actor_name"
         tools:text="DiCaprio" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/short_bio_info_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:elevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actor_surname">
+
+        <TextView
+            android:id="@+id/actor_place_birth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lora_classic"
+            android:textColor="@android:color/white"
+            android:textSize="21sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/actor_date_birth"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="New York" />
+
+        <TextView
+            android:id="@+id/actor_date_birth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lora_classic"
+            android:textColor="@android:color/white"
+            android:textSize="21sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/actor_place_birth"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="21/10/1992" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.matteopasotti.whatmovie.view.custom.CustomLabelListView
         android:id="@+id/known_for"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
         android:elevation="8dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline4" />
+        app:layout_constraintTop_toBottomOf="@+id/short_bio_info_layout" />
 
 </merge>

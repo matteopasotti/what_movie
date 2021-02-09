@@ -19,7 +19,10 @@ class HomeGalleryMoviesViewModel(
 
     private lateinit var isErrorLiveData: MutableLiveData<Boolean>
 
-    val popularMoviesLiveData: MutableLiveData<List<MovieDomainModel>> by lazy { MutableLiveData<List<MovieDomainModel>>() }
+    private val _popularMoviesLiveData: MutableLiveData<List<MovieDomainModel>> = MutableLiveData<List<MovieDomainModel>>()
+    val popularMovies: LiveData<List<MovieDomainModel>> = _popularMoviesLiveData
+
+    fun getMoviesLiveData() = popularMovies
 
     fun isLoading(): LiveData<Boolean> {
         if(!::isLoadingLiveData.isInitialized) {
@@ -39,12 +42,12 @@ class HomeGalleryMoviesViewModel(
         return isErrorLiveData
     }
 
-    fun getMovies(): LiveData<List<MovieDomainModel>> = popularMoviesLiveData
+    fun getMovies(): LiveData<List<MovieDomainModel>> = _popularMoviesLiveData
 
     fun getPopularMovies() {
         viewModelScope.launch {
 
-            val result = viewModelScope.async { getPopularMoviesUseCase.execute() }
+            val result = viewModelScope.async(Dispatchers.IO) { getPopularMoviesUseCase.execute() }
 
             updateUI(result.await())
         }
@@ -59,7 +62,7 @@ class HomeGalleryMoviesViewModel(
                     isErrorLiveData.value = true
                 } else {
                     isLoadingLiveData.value = false
-                    popularMoviesLiveData.value = movies
+                    _popularMoviesLiveData.value = movies
                 }
             }
 

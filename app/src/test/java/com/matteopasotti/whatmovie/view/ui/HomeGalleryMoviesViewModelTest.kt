@@ -5,11 +5,15 @@ import androidx.lifecycle.LiveData
 import com.matteopasotti.whatmovie.DomainFixtures
 import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
-import com.matteopasotti.whatmovie.util.CoroutineRule
+import com.matteopasotti.whatmovie.util.LiveDataTestUtil
+import com.matteopasotti.whatmovie.util.TestMainCoroutineRule
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.stub
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
@@ -19,12 +23,13 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class  HomeGalleryMoviesViewModelTest {
 
-    @ExperimentalCoroutinesApi
+
     @get:Rule
-    var coroutinesTestRule = CoroutineRule()
+    var coroutinesTestRule = TestMainCoroutineRule()
 
     @get:Rule
     var rule = InstantTaskExecutorRule()
@@ -36,12 +41,13 @@ class  HomeGalleryMoviesViewModelTest {
     private lateinit var isErrorLiveData: LiveData<Boolean>
 
     @Mock
-    internal lateinit var mockGetPopularMoviesUseCase: GetPopularMoviesUseCase
+    internal lateinit var useCase: GetPopularMoviesUseCase
+
 
     @Before
     fun setUp() {
 
-        viewModel = HomeGalleryMoviesViewModel(mockGetPopularMoviesUseCase)
+        viewModel = HomeGalleryMoviesViewModel(useCase)
 
         isLoadingLiveData = viewModel.isLoading()
 
@@ -56,31 +62,44 @@ class  HomeGalleryMoviesViewModelTest {
 
         // then
         runBlocking {
-            verify(mockGetPopularMoviesUseCase).execute()
+            verify(useCase).execute()
         }
     }
 
     @Test
     fun `GetPopularMovies shows and hides loading progress bar`() {
-
         viewModel.getMovies()
-
-        runBlocking {
-
-            given(mockGetPopularMoviesUseCase.execute()).willReturn(Result.Success(listOf(DomainFixtures.getMovie())))
+        coroutinesTestRule.testCoroutineDispatcher.runBlockingTest {
+            useCase.stub {
+                onBlocking { execute() }.doReturn(Result.Success(listOf(DomainFixtures.getMovie())))
+            }
 
             var isLoading = isLoadingLiveData.value
             assertNotNull(isLoading)
             isLoading?.let { Assert.assertTrue(it) }
 
             viewModel.getPopularMovies()
-            verify(mockGetPopularMoviesUseCase).execute()
+            verify(useCase).execute()
 
             isLoading = isLoadingLiveData.value
-            Assert.assertNotNull(isLoading)
+            assertNotNull(isLoading)
             isLoading?.let { Assert.assertFalse(it) }
 
-            return@runBlocking
+        }
+    }
+
+    @Test
+    fun `Given we get movies,Then we update the list`(){
+        val movies = listOf(DomainFixtures.getMovie())
+        coroutinesTestRule.testCoroutineDispatcher.runBlockingTest {
+            useCase.stub {
+                onBlocking { execute() }.doReturn(Result.Success(movies))
+            }
+
+            viewModel.getPopularMovies()
+
+            val results = LiveDataTestUtil.getValue(viewModel.popularMovies)
+            assertTrue(!results.isNullOrEmpty() && results.size == movies.size)
         }
     }
 
@@ -88,8 +107,10 @@ class  HomeGalleryMoviesViewModelTest {
     fun `GetPopularMovies show error dialog when we get an error from api`() {
         viewModel.getMovies()
 
-        runBlocking {
-            given(mockGetPopularMoviesUseCase.execute()).willReturn(Result.Error("Error"))
+        coroutinesTestRule.testCoroutineDispatcher.runBlockingTest {
+            useCase.stub {
+                onBlocking { execute() }.doReturn(Result.Error("Error"))
+            }
 
             var isError = isErrorLiveData.value
             assertNotNull(isError)
@@ -97,13 +118,11 @@ class  HomeGalleryMoviesViewModelTest {
             isError?.let { assertFalse(it) }
 
             viewModel.getPopularMovies()
-            verify(mockGetPopularMoviesUseCase).execute()
+            verify(useCase).execute()
 
             isError = isErrorLiveData.value
             assertNotNull(isError)
             isError?.let { assertTrue(it) }
-
-            return@runBlocking
         }
     }
 }

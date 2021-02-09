@@ -25,7 +25,8 @@ class ActorDetailResponseKtTest {
             birthday = actorDetail.birthday,
             deathday = actorDetail.deathday,
             knownFor = null,
-            actor_image = "http://image.tmdb.org/t/p/original${image?.file_path}"
+            actor_image = "http://image.tmdb.org/t/p/original${image?.file_path}",
+            background_image = null
         )
 
         val result = actorDetail.toDomainModel()

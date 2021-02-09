@@ -24,6 +24,8 @@ class CustomActorMotionLayout @JvmOverloads constructor(
     var actorImg: ImageView
     private var actorName: TextView
     private var actorSurname: TextView
+    private var actorPlaceBirth: TextView
+    private var actorDateBirth: TextView
     private var backgroundImage: ImageView
 
     private var knownFor: CustomLabelListView
@@ -37,6 +39,8 @@ class CustomActorMotionLayout @JvmOverloads constructor(
         actorImg = findViewById(R.id.actor_image_custom)
         backgroundImage = findViewById(R.id.actor_image_background)
         actorName = findViewById(R.id.actor_name)
+        actorPlaceBirth = findViewById(R.id.actor_place_birth)
+        actorDateBirth = findViewById(R.id.actor_date_birth)
         actorSurname = findViewById(R.id.actor_surname)
         knownFor = findViewById(R.id.known_for)
     }
@@ -49,6 +53,8 @@ class CustomActorMotionLayout @JvmOverloads constructor(
 
     fun updateView(actor: ActorDetailDomainModel) {
         actorName.text = actor.name
+        actorPlaceBirth.text = actor.place_of_birth
+        actorDateBirth.text = actor.birthday
         actorSurname.text = actor.surname
         actor.knownFor?.let {
             knownForMovies = it
@@ -68,6 +74,9 @@ class CustomActorMotionLayout @JvmOverloads constructor(
 
         transitionToState(R.id.middle_02)
         awaitTransitionComplete(R.id.middle_02)
+
+        transitionToState(R.id.middle_03)
+        awaitTransitionComplete(R.id.middle_03)
 
         adapter.addItems(knownForMovies)
     }

@@ -1,132 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:motion="http://schemas.android.com/apk/res-auto">
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <Transition
-            motion:constraintSetEnd="@+id/middle"
-            motion:constraintSetStart="@+id/start"
-            motion:duration="600">
+        motion:constraintSetEnd="@+id/middle"
+        motion:constraintSetStart="@+id/start"
+        motion:duration="600">
 
         <KeyFrameSet>
 
             <KeyAttribute
-                    android:alpha="0"
-                    motion:framePosition="50"
-                    motion:motionTarget="@+id/actor_name"/>
+                android:alpha="0"
+                motion:framePosition="50"
+                motion:motionTarget="@+id/actor_name" />
             <KeyAttribute
-                    android:alpha="0"
-                    motion:framePosition="65"
-                    motion:motionTarget="@+id/actor_surname"/>
+                android:alpha="0"
+                motion:framePosition="65"
+                motion:motionTarget="@+id/actor_surname" />
 
         </KeyFrameSet>
 
     </Transition>
 
     <Transition
-        motion:constraintSetStart="@+id/middle"
-        motion:constraintSetEnd="@+id/middle_02">
+        motion:constraintSetEnd="@+id/middle_02"
+        motion:constraintSetStart="@+id/middle">
         <KeyFrameSet>
             <KeyAttribute
-                    android:alpha="0"
-                    motion:framePosition="80"
-                    motion:motionTarget="@+id/known_for"/>
+                android:alpha="0"
+                motion:framePosition="50"
+                motion:motionTarget="@+id/actor_place_birth" />
+
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="65"
+                motion:motionTarget="@+id/actor_place_birth" />
 
         </KeyFrameSet>
     </Transition>
+
+    <Transition
+        motion:constraintSetEnd="@+id/middle_03"
+        motion:constraintSetStart="@+id/middle_02">
+        <KeyFrameSet>
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="80"
+                motion:motionTarget="@+id/known_for" />
+
+        </KeyFrameSet>
+    </Transition>
+
+<!--    START-->
 
     <ConstraintSet android:id="@+id/start">
 
         <Constraint android:id="@+id/actor_name">
             <Layout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lora_classic"
-                    android:includeFontPadding="false"
-                    android:maxLines="3"
-                    android:textColor="@android:color/white"
-                    android:textSize="32sp"
-                    android:layout_marginTop="@dimen/margin_big"
-                    motion:layout_constraintEnd_toEndOf="parent"
-                    motion:layout_constraintStart_toStartOf="parent"
-                    motion:layout_constraintTop_toBottomOf="@+id/guideline4"/>
-            <PropertySet android:alpha="0"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_big"
+                android:fontFamily="@font/lora_classic"
+                android:includeFontPadding="false"
+                android:maxLines="3"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@+id/guideline4" />
+            <PropertySet android:alpha="0" />
         </Constraint>
 
         <Constraint android:id="@+id/actor_surname">
-            <Layout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lora_bold"
-                    android:includeFontPadding="false"
-                    android:maxLines="3"
-                    android:textColor="@android:color/white"
-                    android:textSize="40sp"
-                    android:layout_marginTop="@dimen/margin_small"
-                    motion:layout_constraintEnd_toEndOf="parent"
-                    motion:layout_constraintStart_toStartOf="parent"
-                    motion:layout_constraintTop_toBottomOf="@+id/actor_name"/>
-            <PropertySet android:alpha="0"/>
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:fontFamily="@font/lora_bold"
+                android:includeFontPadding="false"
+                android:maxLines="3"
+                android:textColor="@android:color/white"
+                android:textSize="40sp"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@+id/actor_name" />
+            <PropertySet android:alpha="0" />
         </Constraint>
 
     </ConstraintSet>
 
 
-    <ConstraintSet android:id="@+id/middle"
-            motion:deriveConstraintsFrom="@+id/start">
+<!--    MIDDLE REVEAL NAME AND SURNAME-->
+    <ConstraintSet
+        android:id="@+id/middle"
+        motion:deriveConstraintsFrom="@+id/start">
 
         <Constraint android:id="@+id/actor_name">
             <Layout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lora_classic"
-                    android:includeFontPadding="false"
-                    android:maxLines="3"
-                    android:textColor="@android:color/white"
-                    android:textSize="32sp"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    motion:layout_constraintEnd_toEndOf="parent"
-                    motion:layout_constraintStart_toStartOf="parent"
-                    motion:layout_constraintTop_toBottomOf="@+id/actor_image_custom"/>
-            <PropertySet android:alpha="1"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:fontFamily="@font/lora_classic"
+                android:includeFontPadding="false"
+                android:maxLines="3"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@+id/actor_image_custom" />
+            <PropertySet android:alpha="1" />
         </Constraint>
 
         <Constraint android:id="@+id/actor_surname">
-            <Layout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lora_bold"
-                    android:includeFontPadding="false"
-                    android:maxLines="3"
-                    android:textColor="@android:color/white"
-                    android:textSize="40sp"
-                    android:layout_marginTop="0dp"
-                    motion:layout_constraintEnd_toEndOf="parent"
-                    motion:layout_constraintStart_toStartOf="parent"
-                    motion:layout_constraintTop_toBottomOf="@+id/actor_name"/>
-            <PropertySet android:alpha="1"/>
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/lora_bold"
+                android:includeFontPadding="false"
+                android:maxLines="3"
+                android:textColor="@android:color/white"
+                android:textSize="40sp"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@+id/actor_name" />
+            <PropertySet android:alpha="1" />
         </Constraint>
 
-        <Constraint android:id="@+id/known_for">
+        <Constraint android:id="@+id/actor_place_birth">
             <Layout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    motion:layout_constraintTop_toBottomOf="@+id/guideline4"
-                    motion:layout_constraintStart_toStartOf="parent"
-                    motion:layout_constraintEnd_toEndOf="parent"/>
-            <PropertySet android:alpha="0"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lora_classic"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toStartOf="@+id/actor_date_birth"
+                motion:layout_constraintHorizontal_bias="0.5"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toTopOf="parent" />
+            <PropertySet android:alpha="0" />
+        </Constraint>
+
+        <Constraint android:id="@+id/actor_date_birth">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lora_classic"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintHorizontal_bias="0.5"
+                motion:layout_constraintStart_toEndOf="@+id/actor_place_birth"
+                motion:layout_constraintTop_toTopOf="parent" />
+            <PropertySet android:alpha="0" />
         </Constraint>
 
     </ConstraintSet>
 
-    <ConstraintSet android:id="@+id/middle_02"
+<!--    MIDDLE_02 REVEAL PLACE AND DATE OF BIRTH-->
+    <ConstraintSet
+        android:id="@+id/middle_02"
         motion:deriveConstraintsFrom="@+id/middle">
+
+        <Constraint android:id="@+id/actor_place_birth">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lora_classic"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toStartOf="@+id/actor_date_birth"
+                motion:layout_constraintHorizontal_bias="0.5"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toTopOf="parent" />
+            <PropertySet android:alpha="1" />
+        </Constraint>
+
+        <Constraint android:id="@+id/actor_date_birth">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lora_classic"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintHorizontal_bias="0.5"
+                motion:layout_constraintStart_toEndOf="@+id/actor_place_birth"
+                motion:layout_constraintTop_toTopOf="parent" />
+            <PropertySet android:alpha="1" />
+        </Constraint>
+
         <Constraint android:id="@+id/known_for">
             <Layout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    motion:layout_constraintTop_toBottomOf="@+id/actor_surname"
-                    motion:layout_constraintStart_toStartOf="parent"
-                    motion:layout_constraintEnd_toEndOf="parent"/>
-            <PropertySet android:alpha="1"/>
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@+id/short_bio_info_layout" />
+            <PropertySet android:alpha="0" />
         </Constraint>
+
+
+    </ConstraintSet>
+
+<!--    MIDDLE_03 REVEAL KNOWN FOR-->
+    <ConstraintSet android:id="@+id/middle_03"
+        motion:deriveConstraintsFrom="@+id/middle_02">
+
+        <Constraint android:id="@+id/known_for">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@+id/short_bio_info_layout" />
+            <PropertySet android:alpha="1" />
+        </Constraint>
+
     </ConstraintSet>
 
 </MotionScene>
