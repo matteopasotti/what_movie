@@ -78,7 +78,7 @@ class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
 
     private fun observeViewModel() {
 
-        viewModel.isLoading().observe(viewLifecycleOwner, Observer { isLoading ->
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading?.let {
                 progress.visibility = View.VISIBLE
             }
@@ -91,7 +91,7 @@ class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
             }
         })
 
-        viewModel.isError().observe(viewLifecycleOwner, Observer {
+        viewModel.isError.observe(viewLifecycleOwner, Observer {
             if(it) {
                 //error
             }

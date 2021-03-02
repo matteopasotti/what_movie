@@ -87,13 +87,13 @@ class HomeMoviesGalleryFragment : Fragment(), MovieHomeViewHolderNormal.Delegate
 
     private fun observeViewModel() {
 
-        viewModel.isLoading().observe(viewLifecycleOwner, Observer { isLoading ->
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading?.let {
                 binding.progress.visibility = View.VISIBLE
             }
         })
 
-        viewModel.getMovies().observe(viewLifecycleOwner, Observer {
+        viewModel.popularMovies.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.progress.visibility = View.GONE
                 binding.movieList.visibility = View.VISIBLE
@@ -101,7 +101,7 @@ class HomeMoviesGalleryFragment : Fragment(), MovieHomeViewHolderNormal.Delegate
             }
         })
 
-        viewModel.isError().observe(viewLifecycleOwner, Observer {
+        viewModel.isError.observe(viewLifecycleOwner, Observer {
             if(it) {
                 //error
             }
