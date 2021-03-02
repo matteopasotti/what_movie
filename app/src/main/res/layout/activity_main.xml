@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/container"
+    <com.matteopasotti.whatmovie.util.CustomViewPager
+        android:id="@+id/viewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:paddingBottom="@dimen/margin_medium"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,6 +22,7 @@
         app:menu="@menu/navigation_main"
         app:itemTextColor="@color/pink"
         app:labelVisibilityMode="selected"
+        android:background="@color/colorPrimary"
         app:itemIconTint="@color/bottom_navigation_item_colors"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
