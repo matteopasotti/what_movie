@@ -46,11 +46,11 @@ class HomeGalleryMoviesViewModelTest {
     @Test
     fun `execute getPopularMoviesUseCase`() {
         // when
-        viewModel.getPopularMovies()
+        viewModel.getMovies()
 
         // then
         runBlocking {
-            verify(useCase).execute()
+            verify(useCase).getPopularMovies()
         }
     }
 
@@ -58,10 +58,10 @@ class HomeGalleryMoviesViewModelTest {
     fun `GetPopularMovies shows and hides loading progress bar`() {
         coroutinesTestRule.testCoroutineDispatcher.runBlockingTest {
             useCase.stub {
-                onBlocking { execute() }.doReturn(Result.Success(listOf(DomainFixtures.getMovie())))
+                onBlocking { getPopularMovies() }.doReturn(Result.Success(listOf(DomainFixtures.getMovie())))
             }
 
-            viewModel.getPopularMovies()
+            viewModel.getMovies()
 
             val isLoading = LiveDataTestUtil.getValue(viewModel.isLoading)
             assertNotNull(isLoading)
@@ -75,10 +75,10 @@ class HomeGalleryMoviesViewModelTest {
         val movies = listOf(DomainFixtures.getMovie())
         coroutinesTestRule.testCoroutineDispatcher.runBlockingTest {
             useCase.stub {
-                onBlocking { execute() }.doReturn(Result.Success(movies))
+                onBlocking { getPopularMovies() }.doReturn(Result.Success(movies))
             }
 
-            viewModel.getPopularMovies()
+            viewModel.getMovies()
 
             val results = LiveDataTestUtil.getValue(viewModel.popularMovies)
             assertTrue(!results.isNullOrEmpty() && results.size == movies.size)
@@ -89,10 +89,10 @@ class HomeGalleryMoviesViewModelTest {
     fun `GetPopularMovies show error dialog when we get an error from api`() {
         coroutinesTestRule.testCoroutineDispatcher.runBlockingTest {
             useCase.stub {
-                onBlocking { execute() }.doReturn(Result.Error("error"))
+                onBlocking { getPopularMovies() }.doReturn(Result.Error("error"))
             }
 
-            viewModel.getPopularMovies()
+            viewModel.getMovies()
 
             val isError = LiveDataTestUtil.getValue(viewModel.isError)
             assertNotNull(isError)

@@ -21,10 +21,10 @@ internal class MovieRepositoryImpl(
 
         val pageFromDb = getLastFetchedPageFromDb()
 
-        return if(pageFromDb != null) {
-            if(page > pageFromDb) {
+        return if (pageFromDb != null) {
+            if (page > pageFromDb) {
                 //fetch from api
-                 getPopularMoviesFromApi(page)
+                getPopularMoviesFromApi(page)
             } else {
                 //fetch from db
                 getPopularMoviesFromDb(page)
@@ -34,16 +34,37 @@ internal class MovieRepositoryImpl(
         }
     }
 
+    override suspend fun getMoviesAtTheatre(): List<MovieDomainModel>? {
+        val response = movieApi.getMoviesInCinema(
+            page = 1,
+            startDate = "2021-03-01",
+            endDate = "2021-03-30"
+        )
+
+
+        if (response.isSuccessful) {
+            response.body()?.results?.let { movies ->
+                return movies.map { it.toDomainModel() }
+            }
+        }
+
+        return null
+    }
+
 
     @Throws(IOException::class)
     override suspend fun getPopularMoviesFromApi(page: Int): List<MovieDomainModel>? {
 
-        val response = withContext(Dispatchers.IO) { movieApi.getPopularMovies(BuildConfig.API_KEY, "en-US", page) }
+        val response = movieApi.getPopularMovies(
+                BuildConfig.API_KEY,
+                "en-US",
+                page
+            )
 
-        if(response.isSuccessful) {
+        if (response.isSuccessful) {
             val results = response.body()?.results?.filter { it.poster_path != null }
-            results?.let {
-                    list -> list.forEach { it.page = page }
+            results?.let { list ->
+                list.forEach { it.page = page }
                 withContext(Dispatchers.IO) {
                     saveMovies(list)
                 }

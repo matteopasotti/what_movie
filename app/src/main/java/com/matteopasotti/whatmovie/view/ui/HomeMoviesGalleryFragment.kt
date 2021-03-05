@@ -3,7 +3,6 @@ package com.matteopasotti.whatmovie.view.ui
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +14,9 @@ import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.FragmentMovieGalleryBinding
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.util.Utils
-import com.matteopasotti.whatmovie.view.adapter.GridAutofitLayoutManager
-import com.matteopasotti.whatmovie.view.adapter.MovieHomeAdapter
 import com.matteopasotti.whatmovie.view.adapter.MovieHomeAdapterNormal
-import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
 import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
-import com.matteopasotti.whatmovie.view.viewholder.MovieHomeViewHolder
 import com.matteopasotti.whatmovie.view.viewholder.MovieHomeViewHolderNormal
-import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeMoviesGalleryFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
@@ -78,7 +72,7 @@ class HomeMoviesGalleryFragment : Fragment(), MovieHomeViewHolderNormal.Delegate
         }
 
         binding.nestedScrollView.setOnScrollChangeListener(Utils.NestedInfiniteScrollListener {
-            viewModel.getPopularMovies()
+            viewModel.getMovies()
         })
 
 
@@ -107,7 +101,7 @@ class HomeMoviesGalleryFragment : Fragment(), MovieHomeViewHolderNormal.Delegate
             }
         })
 
-        viewModel.getPopularMovies()
+        viewModel.getMovies()
     }
 
     override fun onItemClick(movie: MovieDomainModel) {

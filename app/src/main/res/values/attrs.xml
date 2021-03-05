@@ -11,4 +11,8 @@
     <declare-styleable name="CustomCheckBox">
         <attr name="checkboxBackground" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="AutoScrollableRecyclerView">
+        <attr name="delay" format="integer" />
+    </declare-styleable>
 </resources>

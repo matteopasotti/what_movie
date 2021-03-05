@@ -11,7 +11,7 @@ class GetPopularMoviesUseCase (
 
     private var page: Int = 0
 
-    suspend fun execute(): Result<Any> {
+    suspend fun getPopularMovies(): Result<Any> {
         return try {
             page++
             movieRepository.getPopularMovies(page)?.let { list ->
@@ -19,6 +19,16 @@ class GetPopularMoviesUseCase (
             } ?: Result.Error("No Data")
         } catch (e: Exception) {
             Result.Error("getPopularMovies error")
+        }
+    }
+
+    suspend fun getMoviesAtCinema(): Result<Any> {
+        return try {
+            movieRepository.getMoviesAtTheatre()?.let {
+                Result.Success(it)
+            } ?: Result.Error("getMoviesAtCinema error")
+        } catch (e: Exception) {
+            Result.Error("getMoviesAtCinema error")
         }
     }
 }

@@ -17,15 +17,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/movie_list"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="true"
-            android:scrollbars="vertical"
-            android:visibility="visible"
-            android:layoutAnimation="@anim/home_movies_layout_animation"
-            tools:listitem="@layout/movie_vertical_layout" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.matteopasotti.whatmovie.view.custom.AutoScrollableRecyclerView
+                android:id="@+id/carousel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <com.matteopasotti.whatmovie.view.custom.CustomLabelListView
+                android:id="@+id/movies_cinema_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:visibility="gone"/>
+
+
+            <com.matteopasotti.whatmovie.view.custom.CustomLabelListView
+                android:id="@+id/popular_movies_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
 
     </androidx.core.widget.NestedScrollView>
 

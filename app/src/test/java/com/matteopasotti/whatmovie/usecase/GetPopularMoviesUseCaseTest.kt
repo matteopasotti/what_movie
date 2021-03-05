@@ -36,7 +36,7 @@ class GetPopularMoviesUseCaseTest {
 
             given(mockMovieRepository.getPopularMovies(1)).willReturn(movies)
 
-            val result = useCase.execute()
+            val result = useCase.getPopularMovies()
 
             assertEquals(result, Result.Success(movies))
         }
@@ -47,7 +47,7 @@ class GetPopularMoviesUseCaseTest {
         runBlocking {
             given(mockMovieRepository.getPopularMovies(1)).willReturn(null)
 
-            val result = useCase.execute()
+            val result = useCase.getPopularMovies()
 
             assertEquals(result, Result.Error("No Data"))
         }
@@ -58,7 +58,7 @@ class GetPopularMoviesUseCaseTest {
         runBlocking {
             doThrow(IOException::class).`when`(mockMovieRepository).getPopularMovies(1)
 
-            val result = useCase.execute()
+            val result = useCase.getPopularMovies()
 
             assertEquals(result, Result.Error("getPopularMovies error"))
         }

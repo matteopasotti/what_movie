@@ -6,27 +6,25 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.ContentLoadingProgressBar
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.PagerSnapHelper
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.model.MovieDomainModel
-import com.matteopasotti.whatmovie.util.Utils
-import com.matteopasotti.whatmovie.view.adapter.MovieHomeAdapter
-import com.matteopasotti.whatmovie.view.adapter.MovieHomeAdapterNormal
+import com.matteopasotti.whatmovie.view.adapter.CarouselAdapter
+import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
 import com.matteopasotti.whatmovie.view.ui.HomeGalleryMoviesViewModel
 import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
-import com.matteopasotti.whatmovie.view.viewholder.MovieHomeViewHolder
-import com.matteopasotti.whatmovie.view.viewholder.MovieHomeViewHolderNormal
+import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import kotlinx.android.synthetic.main.fragment_home_movies.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
+class HomeMoviesFragment : Fragment(), MovieViewHolder.Delegate {
 
-    private lateinit var moviesAdapter: MovieHomeAdapterNormal
+    private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var moviesCinemaAdapter: MoviesAdapter
+    private val carouselAdapter = CarouselAdapter(::carouselItemClicked)
+
 
     private val viewModel: HomeGalleryMoviesViewModel by viewModel()
 
@@ -51,7 +49,7 @@ class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       return  inflater.inflate(R.layout.fragment_home_movies, container, false)
+        return inflater.inflate(R.layout.fragment_home_movies, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,17 +61,23 @@ class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
     }
 
     private fun initView() {
-        moviesAdapter = MovieHomeAdapterNormal(context!!, this)
 
-        movie_list.apply {
-            val manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            layoutManager = manager
-            adapter = moviesAdapter
+        carousel.run {
+            PagerSnapHelper().attachToRecyclerView(this)
+            adapter = carouselAdapter
         }
 
-        nested_scroll_view.setOnScrollChangeListener(Utils.NestedInfiniteScrollListener {
-            viewModel.getPopularMovies()
-        })
+        moviesAdapter = MoviesAdapter(context!!, this)
+        popular_movies_layout.setCustomLabelListView(
+            getString(R.string.popular_movies),
+            moviesAdapter
+        )
+
+        moviesCinemaAdapter = MoviesAdapter(context!!, this)
+        movies_cinema_layout.setCustomLabelListView(
+            getString(R.string.in_theaters),
+            moviesCinemaAdapter
+        )
     }
 
     private fun observeViewModel() {
@@ -84,20 +88,38 @@ class HomeMoviesFragment : Fragment(), MovieHomeViewHolderNormal.Delegate {
             }
         })
 
-        viewModel.popularMovies.observe(viewLifecycleOwner , Observer {
+        viewModel.popularMovies.observe(viewLifecycleOwner, Observer {
             it?.let {
                 progress.visibility = View.GONE
+                popular_movies_layout.visibility = View.VISIBLE
                 moviesAdapter.updateItems(it)
             }
         })
 
+        viewModel.moviesInCinema.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                progress.visibility = View.GONE
+                carousel.visibility = View.VISIBLE
+                carouselAdapter.setItems(it)
+                carousel.resumeAutoScroll()
+                movies_cinema_layout.visibility = View.VISIBLE
+                moviesCinemaAdapter.updateItems(it)
+            }
+        })
+
         viewModel.isError.observe(viewLifecycleOwner, Observer {
-            if(it) {
+            if (it) {
                 //error
             }
         })
 
-        viewModel.getPopularMovies()
+        viewModel.getMovies()
+    }
+
+    private fun carouselItemClicked(movie: MovieDomainModel) {
+        val intent = Intent(context, MovieDetailActivity::class.java)
+        intent.putExtra(MovieDetailActivity.MOVIE, movie as Parcelable)
+        startActivity(intent)
     }
 
 

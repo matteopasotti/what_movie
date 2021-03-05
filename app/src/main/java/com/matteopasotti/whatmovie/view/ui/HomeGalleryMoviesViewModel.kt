@@ -24,17 +24,48 @@ class HomeGalleryMoviesViewModel(
     private val _popularMoviesLiveData: MutableLiveData<List<MovieDomainModel>> = MutableLiveData()
     val popularMovies: LiveData<List<MovieDomainModel>> = _popularMoviesLiveData
 
-    fun getPopularMovies() {
+    private val _moviesInCinemaLiveData: MutableLiveData<List<MovieDomainModel>> = MutableLiveData()
+    val moviesInCinema: LiveData<List<MovieDomainModel>> = _moviesInCinemaLiveData
+
+    fun getMovies() {
         viewModelScope.launch {
-            val result = viewModelScope.async(Dispatchers.IO) { useCase.execute() }
-            updateUI(result.await())
+            val popularMovies = viewModelScope.async(Dispatchers.IO) { useCase.getPopularMovies() }
+
+            val moviesAtCinema = viewModelScope.async(Dispatchers.IO) { useCase.getMoviesAtCinema() }
+
+            updateUI(popularMovies.await(), moviesAtCinema.await())
         }
     }
 
-    private fun updateUI(result: Result<Any>) {
-        when(result) {
+    private fun updateUI(popularMovies: Result<Any>, moviesAtCinema: Result<Any>) {
+        handleMoviesAtCinema(moviesAtCinema)
+        handlePopularMoviesResponse(popularMovies)
+    }
+
+    private fun handleMoviesAtCinema(response: Result<Any>) {
+        when(response) {
             is Result.Success -> {
-                val movies: List<MovieDomainModel>?  = result.data as List<MovieDomainModel>?
+                val movies: List<MovieDomainModel>?  = response.data as List<MovieDomainModel>?
+                if(movies.isNullOrEmpty()) {
+                    _isLoadingLiveData.value = false
+                    _isErrorLiveData.value = true
+                } else {
+                    _isLoadingLiveData.value = false
+                    _moviesInCinemaLiveData.value = movies
+                }
+            }
+
+            is Result.Error -> {
+                _isLoadingLiveData.value = false
+                _isErrorLiveData.value = true
+            }
+        }
+    }
+
+    private fun handlePopularMoviesResponse(response: Result<Any>) {
+        when(response) {
+            is Result.Success -> {
+                val movies: List<MovieDomainModel>?  = response.data as List<MovieDomainModel>?
                 if(movies.isNullOrEmpty()) {
                     _isLoadingLiveData.value = false
                     _isErrorLiveData.value = true

@@ -45,7 +45,7 @@
         <KeyFrameSet>
             <KeyAttribute
                 android:alpha="0"
-                motion:framePosition="80"
+                motion:framePosition="60"
                 motion:motionTarget="@+id/known_for" />
 
         </KeyFrameSet>
@@ -200,6 +200,7 @@
                 android:layout_height="wrap_content"
                 motion:layout_constraintEnd_toEndOf="parent"
                 motion:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/margin_medium"
                 motion:layout_constraintTop_toBottomOf="@+id/short_bio_info_layout" />
             <PropertySet android:alpha="0" />
         </Constraint>
@@ -217,6 +218,7 @@
                 android:layout_height="wrap_content"
                 motion:layout_constraintEnd_toEndOf="parent"
                 motion:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/margin_medium"
                 motion:layout_constraintTop_toBottomOf="@+id/short_bio_info_layout" />
             <PropertySet android:alpha="1" />
         </Constraint>

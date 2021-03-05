@@ -39,9 +39,10 @@ data class Movie(
 fun Movie.toDomainModel(): MovieDomainModel {
 
     var imagePosterPath: String? = null
+    var carouselUrl: String? = null
     if (this.poster_path != null) {
         imagePosterPath = "https://image.tmdb.org/t/p/w342$poster_path"
-
+        carouselUrl = "https://image.tmdb.org/t/p/w500$poster_path"
     }
 
 
@@ -59,18 +60,20 @@ fun Movie.toDomainModel(): MovieDomainModel {
         overview = this.overview,
         release_date = this.release_date,
         vote_average = this.vote_average,
-        vote_count = this.vote_count
+        vote_count = this.vote_count,
+        imgUrl = carouselUrl
     )
 }
 
 @Parcelize
 data class MovieDomainModel(
-    val id: Int,
+    override val id: Int,
     val poster_path: String?,
     val backdrop_path: String?,
     val title: String?,
     val overview: String?,
     val release_date: String?,
     val vote_average: Double,
-    val vote_count: Int
-) : Parcelable
+    val vote_count: Int,
+    override val imgUrl: String?
+) : Parcelable, CarouselEntity()

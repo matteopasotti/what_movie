@@ -1,5 +1,6 @@
 package com.matteopasotti.whatmovie.api
 
+import com.matteopasotti.whatmovie.BuildConfig
 import com.matteopasotti.whatmovie.model.ActorDetailResponse
 import com.matteopasotti.whatmovie.model.MovieDetail
 import com.matteopasotti.whatmovie.model.response.MovieCreditResponse
@@ -18,6 +19,17 @@ internal interface MovieApiInterface {
         @Query("language") language: String,
         @Query("page") page: Int
     ) : Response<PopularMovieResponse>
+
+    @GET("discover/movie")
+    suspend fun getMoviesInCinema(
+        @Query("api_key") apiKey: String = BuildConfig.API_KEY,
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int,
+        @Query("include_adult") includeAdult: Boolean = false,
+        @Query("sort_by") sortBy: String = "popularity.desc",
+        @Query("primary_release_date.gte") startDate: String,
+        @Query("primary_release_date.lte") endDate: String
+    ) : Response<BasicMovieResponse>
 
     @GET("movie/{movieId}/recommendations")
     suspend fun getRecommendedMovies(
