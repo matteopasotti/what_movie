@@ -28,7 +28,7 @@ class CustomFabButton@JvmOverloads constructor(
             0, 0).apply {
 
             try {
-                mFabIcon = getDrawable(R.styleable.CustomFabButton_fabIcon)
+                mFabIcon = getDrawable(R.styleable.CustomFabButton_fabIcon)!!
                 imageView.setImageDrawable(mFabIcon)
 
             } finally {

@@ -11,6 +11,7 @@ object DataFixtures {
         overview: String = "",
         release_date: String = "",
         original_title: String = "",
+        original_name: String? = "",
         original_language: String = "",
         title: String = "Jumanji",
         genre_ids: MutableList<Int> = mutableListOf(),
@@ -19,6 +20,7 @@ object DataFixtures {
         vote_count: Int = 10,
         video: Boolean = false,
         vote_average: Double = 8.0,
+        media_type: String = "movie",
         page: Int = 1
     ): Movie = Movie(
         id,
@@ -27,6 +29,7 @@ object DataFixtures {
         overview,
         release_date,
         original_title,
+        original_name,
         original_language,
         title,
         genre_ids,
@@ -35,6 +38,7 @@ object DataFixtures {
         vote_count,
         video,
         vote_average,
+        media_type,
         page
     )
 

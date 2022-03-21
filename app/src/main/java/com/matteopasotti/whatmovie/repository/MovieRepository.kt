@@ -1,14 +1,15 @@
 package com.matteopasotti.whatmovie.repository
 
+import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 
 interface MovieRepository {
 
-    suspend fun getPopularMovies(page: Int): List<MovieDomainModel>?
+    suspend fun getMoviesAtTheatre(): Result<Any>
 
-    suspend fun getMoviesAtTheatre(): List<MovieDomainModel>?
+    suspend fun getTrendingOfTheWeek(): Result<Any>
 
-    suspend fun getPopularMoviesFromApi(page: Int): List<MovieDomainModel>?
+    suspend fun getPopularMoviesFromApi(): Result<Any>
 
     suspend fun getPopularMoviesFromDb(page: Int): List<MovieDomainModel>?
 

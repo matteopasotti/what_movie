@@ -27,7 +27,7 @@ class CustomCheckBox@JvmOverloads constructor(
             0, 0).apply {
 
             try {
-                mCheckboxBackground = getDrawable(R.styleable.CustomCheckBox_checkboxBackground)
+                mCheckboxBackground = getDrawable(R.styleable.CustomCheckBox_checkboxBackground)!!
                 checkbox.background = mCheckboxBackground
 
             } finally {

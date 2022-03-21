@@ -11,7 +11,7 @@ internal class ActorDetailRepositoryImpl(private val movieApi: MovieApiInterface
 
 
     override suspend fun getActorDetails(actorId: Int): ActorDetailDomainModel? {
-        val response = withContext(Dispatchers.IO) { movieApi.getActorDetails(personId = actorId, apiKey = BuildConfig.API_KEY, language = "en-US") }
+        val response = withContext(Dispatchers.IO) { movieApi.getActorDetails(personId = actorId) }
 
         if(response.isSuccessful) {
             return response

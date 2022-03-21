@@ -12,9 +12,11 @@ object DomainFixtures {
         title: String = "Jumanji",
         backdrop_path: String = "",
         vote_count: Int = 10,
-        vote_average: Double = 8.0
+        vote_average: Double = 8.0,
+        imgUrl: String? = "",
+        carouselItemTitle: String? = ""
     ): MovieDomainModel = MovieDomainModel(
-        id, poster_path, backdrop_path, title, overview, release_date, vote_average, vote_count
+        id, poster_path, backdrop_path, title, overview, release_date, vote_average, vote_count, imgUrl, carouselItemTitle
     )
 
     internal fun getActorDomainModel(

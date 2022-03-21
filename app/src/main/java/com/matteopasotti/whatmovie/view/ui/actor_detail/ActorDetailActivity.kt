@@ -36,7 +36,7 @@ class ActorDetailActivity: AppCompatActivity(), MovieViewHolder.Delegate {
         if(savedInstanceState == null) {
             supportPostponeEnterTransition()
 
-            actor = intent.getParcelableExtra(INTENT_ACTOR)
+            actor = intent.getParcelableExtra(INTENT_ACTOR)!!
             viewModel.actorId = actor.id
 
             binding.customLayout.setMovieDelegate(this)

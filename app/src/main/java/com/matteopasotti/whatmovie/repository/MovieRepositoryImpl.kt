@@ -2,6 +2,7 @@ package com.matteopasotti.whatmovie.repository
 
 import com.matteopasotti.whatmovie.BuildConfig
 import com.matteopasotti.whatmovie.api.MovieApiInterface
+import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.db.MovieDao
 import com.matteopasotti.whatmovie.model.Movie
 import com.matteopasotti.whatmovie.model.MovieDomainModel
@@ -14,66 +15,35 @@ import java.io.IOException
 internal class MovieRepositoryImpl(
     private val movieApi: MovieApiInterface,
     private val movieDao: MovieDao
-) : MovieRepository, KoinComponent {
+) : MovieRepository, KoinComponent, BaseRepository() {
 
-    @Throws(IOException::class)
-    override suspend fun getPopularMovies(page: Int): List<MovieDomainModel>? {
 
-        val pageFromDb = getLastFetchedPageFromDb()
-
-        return if (pageFromDb != null) {
-            if (page > pageFromDb) {
-                //fetch from api
-                getPopularMoviesFromApi(page)
-            } else {
-                //fetch from db
-                getPopularMoviesFromDb(page)
+    override suspend fun getMoviesAtTheatre(): Result<Any> {
+        return safeApiCall(
+            call = {
+                movieApi.getMoviesInCinema(
+                    page = 1,
+                    startDate = "2021-03-01",
+                    endDate = "2021-03-30"
+                )
             }
-        } else {
-            return getPopularMoviesFromApi(page)
-        }
-    }
-
-    override suspend fun getMoviesAtTheatre(): List<MovieDomainModel>? {
-        val response = movieApi.getMoviesInCinema(
-            page = 1,
-            startDate = "2021-03-01",
-            endDate = "2021-03-30"
         )
-
-
-        if (response.isSuccessful) {
-            response.body()?.results?.let { movies ->
-                return movies.map { it.toDomainModel() }
-            }
-        }
-
-        return null
     }
 
-
-    @Throws(IOException::class)
-    override suspend fun getPopularMoviesFromApi(page: Int): List<MovieDomainModel>? {
-
-        val response = movieApi.getPopularMovies(
-                BuildConfig.API_KEY,
-                "en-US",
-                page
-            )
-
-        if (response.isSuccessful) {
-            val results = response.body()?.results?.filter { it.poster_path != null }
-            results?.let { list ->
-                list.forEach { it.page = page }
-                withContext(Dispatchers.IO) {
-                    saveMovies(list)
-                }
-
-                return results.map { it.toDomainModel() }
+    override suspend fun getTrendingOfTheWeek(): Result<Any> {
+        return safeApiCall(
+            call = {
+                movieApi.getTrendingOfTheWeek()
             }
-        }
+        )
+    }
 
-        return null
+    override suspend fun getPopularMoviesFromApi(): Result<Any> {
+        return safeApiCall(
+            call = {
+                movieApi.getPopularMovies()
+            }
+        )
     }
 
     override suspend fun getPopularMoviesFromDb(page: Int): List<MovieDomainModel>? =

@@ -9,26 +9,22 @@ import java.lang.Exception
 class GetPopularMoviesUseCase (
     private val movieRepository: MovieRepository): KoinComponent {
 
-    private var page: Int = 0
-
     suspend fun getPopularMovies(): Result<Any> {
-        return try {
-            page++
-            movieRepository.getPopularMovies(page)?.let { list ->
-                Result.Success(list)
-            } ?: Result.Error("No Data")
-        } catch (e: Exception) {
-            Result.Error("getPopularMovies error")
-        }
+        return movieRepository.getPopularMoviesFromApi()
     }
 
     suspend fun getMoviesAtCinema(): Result<Any> {
-        return try {
-            movieRepository.getMoviesAtTheatre()?.let {
-                Result.Success(it)
-            } ?: Result.Error("getMoviesAtCinema error")
-        } catch (e: Exception) {
-            Result.Error("getMoviesAtCinema error")
-        }
+        return  movieRepository.getMoviesAtTheatre()
+    }
+
+    suspend fun getTrendingOfTheWeek(): Result<Any> {
+        return movieRepository.getTrendingOfTheWeek()
+//        return try {
+//            movieRepository.getTrendingOfTheWeek()?.let {
+//                Result.Success(it)
+//            } ?: Result.Error("getTrendingOfTheWeek error")
+//        } catch (e: Exception) {
+//            Result.Error("getTrendingOfTheWeek error")
+//        }
     }
 }

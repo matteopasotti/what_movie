@@ -13,7 +13,6 @@ import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.view.adapter.CarouselAdapter
 import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
-import com.matteopasotti.whatmovie.view.ui.HomeGalleryMoviesViewModel
 import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import kotlinx.android.synthetic.main.fragment_home_movies.*
@@ -84,7 +83,21 @@ class HomeMoviesFragment : Fragment(), MovieViewHolder.Delegate {
 
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading?.let {
-                progress.visibility = View.VISIBLE
+                if(isLoading) {
+                    progress.visibility = View.VISIBLE
+                } else {
+                    progress.visibility = View.GONE
+                }
+
+            }
+        })
+
+        viewModel.trending.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                progress.visibility = View.GONE
+                carousel.visibility = View.VISIBLE
+                carouselAdapter.setItems(it)
+                carousel.resumeAutoScroll()
             }
         })
 
@@ -99,9 +112,6 @@ class HomeMoviesFragment : Fragment(), MovieViewHolder.Delegate {
         viewModel.moviesInCinema.observe(viewLifecycleOwner, Observer {
             it?.let {
                 progress.visibility = View.GONE
-                carousel.visibility = View.VISIBLE
-                carouselAdapter.setItems(it)
-                carousel.resumeAutoScroll()
                 movies_cinema_layout.visibility = View.VISIBLE
                 moviesCinemaAdapter.updateItems(it)
             }

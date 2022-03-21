@@ -27,4 +27,10 @@ class RoomConverters {
 
         return gson.fromJson(genre, obj)
     }
+
+//    @TypeConverter
+//    fun toMediaType(value: String) = enumValueOf<MediaType>(value)
+//
+//    @TypeConverter
+//    fun fromMediaType(value: MediaType) = value.name
 }

@@ -6,6 +6,7 @@ import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
 import com.matteopasotti.whatmovie.util.LiveDataTestUtil
 import com.matteopasotti.whatmovie.util.TestMainCoroutineRule
+import com.matteopasotti.whatmovie.view.ui.home.HomeGalleryMoviesViewModel
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.stub
 import com.nhaarman.mockitokotlin2.verify
@@ -40,7 +41,10 @@ class HomeGalleryMoviesViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = HomeGalleryMoviesViewModel(useCase)
+        viewModel =
+            HomeGalleryMoviesViewModel(
+                useCase
+            )
     }
 
     @Test

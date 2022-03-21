@@ -15,6 +15,7 @@ import com.matteopasotti.whatmovie.databinding.FragmentMovieGalleryBinding
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.util.Utils
 import com.matteopasotti.whatmovie.view.adapter.MovieHomeAdapterNormal
+import com.matteopasotti.whatmovie.view.ui.home.HomeGalleryMoviesViewModel
 import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
 import com.matteopasotti.whatmovie.view.viewholder.MovieHomeViewHolderNormal
 import org.koin.androidx.viewmodel.ext.android.viewModel

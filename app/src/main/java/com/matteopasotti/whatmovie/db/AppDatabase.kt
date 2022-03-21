@@ -8,6 +8,5 @@ import com.matteopasotti.whatmovie.model.Movie
 @Database(entities = [(Movie::class)], version = 1, exportSchema = true)
 @TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun movieDao() : MovieDao
 }

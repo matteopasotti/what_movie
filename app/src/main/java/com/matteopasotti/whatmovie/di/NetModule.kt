@@ -1,6 +1,7 @@
 package com.matteopasotti.whatmovie.di
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.matteopasotti.whatmovie.api.AuthInterceptor
 import com.matteopasotti.whatmovie.api.MovieApiInterface
 import com.matteopasotti.whatmovie.di.DatasourceProperties.SERVER_URL
 import okhttp3.OkHttpClient
@@ -12,7 +13,8 @@ import java.util.concurrent.TimeUnit
 
 val netModule = module {
     // provided web components
-    single { createOkHttpClient() }
+    factory { AuthInterceptor() }
+    factory { createOkHttpClient(get()) }
 
     // Fill property
     single { createWebService<MovieApiInterface>(get(), getProperty(SERVER_URL)) }
@@ -23,13 +25,14 @@ object DatasourceProperties {
     const val SERVER_URL = "SERVER_URL"
 }
 
-fun createOkHttpClient(): OkHttpClient {
+fun createOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
     val httpLoggingInterceptor = HttpLoggingInterceptor()
     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
     return OkHttpClient.Builder()
         .connectTimeout(60L, TimeUnit.SECONDS)
         .readTimeout(60L, TimeUnit.SECONDS)
-        .addInterceptor(httpLoggingInterceptor).build()
+        .addInterceptor(httpLoggingInterceptor)
+        .addInterceptor(authInterceptor).build()
 }
 
 inline fun <reified T> createWebService(okHttpClient: OkHttpClient, url: String): T {

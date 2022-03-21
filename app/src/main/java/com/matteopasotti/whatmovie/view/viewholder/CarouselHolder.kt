@@ -15,10 +15,16 @@ class CarouselHolder<T : CarouselEntity>(
         itemView.carousel_image
     }
 
+    private val title by lazy {
+        itemView.carousel_title
+    }
+
     fun bind(data: T) {
         Glide.with(itemView)
             .load(data.imgUrl)
             .into(iv)
+
+        title.text = data.carouselItemTitle
 
         itemView.setOnClickListener {
             clicked(data)
