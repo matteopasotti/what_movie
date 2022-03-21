@@ -116,7 +116,7 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
         when (response) {
             is Result.Success -> {
                 val movies: List<MovieDomainModel>? =
-                    response.data as List<MovieDomainModel>?
+                    response.value as List<MovieDomainModel>?
                 if (movies.isNullOrEmpty()) {
                     isLoadingLiveData.value = false
                     isErrorLiveData.value = true
@@ -137,7 +137,7 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
         when (response) {
             is Result.Success -> {
                 val movies: List<MovieDomainModel>? =
-                    response.data as List<MovieDomainModel>?
+                    response.value as List<MovieDomainModel>?
                 if (movies.isNullOrEmpty()) {
                     isLoadingLiveData.value = false
                     isErrorLiveData.value = true
@@ -157,7 +157,7 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
     private fun handleCreditResponse(response: Result<Any>) {
         when (response) {
             is Result.Success -> {
-                val cast: List<ActorDomainModel> = response.data as List<ActorDomainModel>
+                val cast: List<ActorDomainModel> = response.value as List<ActorDomainModel>
                 if (cast.isNullOrEmpty()) {
                     isLoadingLiveData.value = false
                     isErrorLiveData.value = true
@@ -177,7 +177,7 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
     private fun handleMovieDetailResponse(response: Result<Any>) {
         when (response) {
             is Result.Success -> {
-                val detail: MovieDetailDomainModel = response.data as MovieDetailDomainModel
+                val detail: MovieDetailDomainModel = response.value as MovieDetailDomainModel
                 isLoadingLiveData.value = false
                 _movieDetail.postValue(detail)
             }

@@ -1,16 +1,13 @@
 package com.matteopasotti.whatmovie.repository
 
-import com.matteopasotti.whatmovie.BuildConfig
 import com.matteopasotti.whatmovie.api.MovieApiInterface
 import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.db.MovieDao
 import com.matteopasotti.whatmovie.model.Movie
 import com.matteopasotti.whatmovie.model.MovieDomainModel
+import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
 import com.matteopasotti.whatmovie.model.toDomainModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
-import java.io.IOException
 
 internal class MovieRepositoryImpl(
     private val movieApi: MovieApiInterface,
@@ -18,9 +15,9 @@ internal class MovieRepositoryImpl(
 ) : MovieRepository, KoinComponent, BaseRepository() {
 
 
-    override suspend fun getMoviesAtTheatre(): Result<Any> {
+    override suspend fun getMoviesAtTheatre(): Result<BasicMovieResponse> {
         return safeApiCall(
-            call = {
+            apiCall = {
                 movieApi.getMoviesInCinema(
                     page = 1,
                     startDate = "2021-03-01",
@@ -30,17 +27,17 @@ internal class MovieRepositoryImpl(
         )
     }
 
-    override suspend fun getTrendingOfTheWeek(): Result<Any> {
+    override suspend fun getTrendingOfTheWeek(): Result<BasicMovieResponse> {
         return safeApiCall(
-            call = {
+            apiCall = {
                 movieApi.getTrendingOfTheWeek()
             }
         )
     }
 
-    override suspend fun getPopularMoviesFromApi(): Result<Any> {
+    override suspend fun getPopularMoviesFromApi(): Result<BasicMovieResponse> {
         return safeApiCall(
-            call = {
+            apiCall = {
                 movieApi.getPopularMovies()
             }
         )

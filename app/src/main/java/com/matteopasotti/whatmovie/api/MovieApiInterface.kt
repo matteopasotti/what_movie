@@ -12,7 +12,7 @@ import retrofit2.http.Query
 internal interface MovieApiInterface {
 
     @GET("movie/popular")
-    suspend fun getPopularMovies(): Response<BasicMovieResponse>
+    suspend fun getPopularMovies(): BasicMovieResponse
 
     @GET("discover/movie")
     suspend fun getMoviesInCinema(
@@ -21,11 +21,11 @@ internal interface MovieApiInterface {
         @Query("sort_by") sortBy: String = "popularity.desc",
         @Query("primary_release_date.gte") startDate: String,
         @Query("primary_release_date.lte") endDate: String
-    ): Response<BasicMovieResponse>
+    ): BasicMovieResponse
 
     //https://api.themoviedb.org/3/trending/all/week?api_key=d0ac984349d63f4af1bbea3359b8fdbc
     @GET("trending/all/week")
-    suspend fun getTrendingOfTheWeek(): Response<BasicMovieResponse>
+    suspend fun getTrendingOfTheWeek(): BasicMovieResponse
 
     @GET("movie/{movieId}/recommendations")
     suspend fun getRecommendedMovies(

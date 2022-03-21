@@ -54,7 +54,7 @@ class ActorDetailViewModel(private val useCase: GetActorDetailsUseCase): ViewMod
     private fun updateUI(actorDetailResponse: Result<Any>) {
         when(actorDetailResponse) {
             is Result.Success -> {
-                val response = actorDetailResponse.data as ActorDetailDomainModel
+                val response = actorDetailResponse.value as ActorDetailDomainModel
                 isLoadingLiveData.postValue(false)
                 _actorDetail.postValue(response)
             }

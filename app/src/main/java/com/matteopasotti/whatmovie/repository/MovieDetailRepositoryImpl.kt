@@ -1,9 +1,10 @@
 package com.matteopasotti.whatmovie.repository
 
-import android.util.Log
-import com.matteopasotti.whatmovie.BuildConfig
 import com.matteopasotti.whatmovie.api.MovieApiInterface
-import com.matteopasotti.whatmovie.model.*
+import com.matteopasotti.whatmovie.model.ActorDomainModel
+import com.matteopasotti.whatmovie.model.MovieDetailDomainModel
+import com.matteopasotti.whatmovie.model.MovieDomainModel
+import com.matteopasotti.whatmovie.model.toDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException

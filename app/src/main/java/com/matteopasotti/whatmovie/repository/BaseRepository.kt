@@ -5,15 +5,11 @@ import retrofit2.Response
 
 open class BaseRepository{
 
-    suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): Result<T> {
-        return safeApiResult(call)
-
-    }
-
-    private suspend fun <T: Any> safeApiResult(call: suspend ()-> Response<T>) : Result<T>{
-        val response = call.invoke()
-        if(response.isSuccessful) return Result.Success(response.body()!!)
-
-        return Result.Error(response.errorBody().toString())
+    suspend fun <T : Any> safeApiCall(apiCall: suspend () -> T): Result<T> {
+        return try {
+            Result.Success(apiCall.invoke())
+        } catch (throwable: Throwable) {
+            Result.Error("Api Call Failed")
+        }
     }
 }

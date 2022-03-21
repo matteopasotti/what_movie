@@ -1,37 +1,35 @@
 package com.matteopasotti.whatmovie.view.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
 import com.matteopasotti.whatmovie.model.toDomainModel
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
+import com.matteopasotti.whatmovie.view.BaseStateViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 
+sealed class HomeMovieGalleryState {
+    object Idle : HomeMovieGalleryState()
+    object Error : HomeMovieGalleryState()
+    data class Content(
+        val popularMovies: List<MovieDomainModel>,
+        val moviesAtCinema: List<MovieDomainModel>,
+        val trendingMovies: List<MovieDomainModel>
+    ) : HomeMovieGalleryState()
+}
+
+sealed class HomeMovieGalleryEvents {
+    data class MovieClicked(val movieId: String) : HomeMovieGalleryEvents()
+}
+
 class HomeGalleryMoviesViewModel(
     private val useCase: GetPopularMoviesUseCase
-) : ViewModel(), KoinComponent {
-
-    private val _isLoadingLiveData: MutableLiveData<Boolean> = MutableLiveData(true)
-    val isLoading: LiveData<Boolean> = _isLoadingLiveData
-
-    private val _isErrorLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
-    val isError: LiveData<Boolean> = _isErrorLiveData
-
-    private val _popularMoviesLiveData: MutableLiveData<List<MovieDomainModel>> = MutableLiveData()
-    val popularMovies: LiveData<List<MovieDomainModel>> = _popularMoviesLiveData
-
-    private val _moviesInCinemaLiveData: MutableLiveData<List<MovieDomainModel>> = MutableLiveData()
-    val moviesInCinema: LiveData<List<MovieDomainModel>> = _moviesInCinemaLiveData
-
-    private val _trendingLiveData: MutableLiveData<List<MovieDomainModel>> = MutableLiveData()
-    val trending: LiveData<List<MovieDomainModel>> = _trendingLiveData
+) : BaseStateViewModel<HomeMovieGalleryState, HomeMovieGalleryEvents>(HomeMovieGalleryState.Idle),
+    KoinComponent {
 
     fun getMovies() {
         viewModelScope.launch {
@@ -46,71 +44,40 @@ class HomeGalleryMoviesViewModel(
         }
     }
 
-    private fun updateUI(popularMovies: Result<Any>, moviesAtCinema: Result<Any>, trending: Result<Any>) {
-        handleTrendingOfTheWeekResponse(trending)
-        handleMoviesAtCinema(moviesAtCinema)
-        handlePopularMoviesResponse(popularMovies)
-    }
+    private fun updateUI(
+        popularMoviesResponse: Result<BasicMovieResponse>,
+        moviesAtCinemaResponse: Result<BasicMovieResponse>,
+        trendingMoviesResponse: Result<BasicMovieResponse>
+    ) {
+        val trendingMovies = handleResponse(trendingMoviesResponse)
+        val moviesAtCinema = handleResponse(moviesAtCinemaResponse)
+        val popularMovies = handleResponse(popularMoviesResponse)
 
-    private fun handleTrendingOfTheWeekResponse(response: Result<Any>) {
-        when (response) {
-            is Result.Success -> {
-                val resp = response.data as BasicMovieResponse
-                val movies: List<MovieDomainModel>? = resp.results?.map { it.toDomainModel() }
-                if (movies.isNullOrEmpty()) {
-                    _isLoadingLiveData.value = false
-                    _isErrorLiveData.value = true
-                } else {
-                    _isLoadingLiveData.value = false
-                    _trendingLiveData.value = movies
-                }
-            }
-
-            is Result.Error -> {
-                _isLoadingLiveData.value = false
-                _isErrorLiveData.value = true
-            }
+        if (trendingMovies != null && moviesAtCinema != null && popularMovies != null) {
+            setState(
+                HomeMovieGalleryState.Content(
+                    trendingMovies = trendingMovies,
+                    popularMovies = popularMovies,
+                    moviesAtCinema = moviesAtCinema
+                )
+            )
+        } else {
+            setState(HomeMovieGalleryState.Error)
         }
     }
 
-    private fun handleMoviesAtCinema(response: Result<Any>) {
-        when (response) {
+    private fun handleResponse(response: Result<BasicMovieResponse>): List<MovieDomainModel>? {
+        return when (response) {
             is Result.Success -> {
-                val resp = response.data as BasicMovieResponse
-                val movies: List<MovieDomainModel>? = resp.results?.map { it.toDomainModel() }
-                if (movies.isNullOrEmpty()) {
-                    _isLoadingLiveData.value = false
-                    _isErrorLiveData.value = true
+                val movies = response.value.results
+                return if (movies.isNullOrEmpty()) {
+                    null
                 } else {
-                    _isLoadingLiveData.value = false
-                    _moviesInCinemaLiveData.value = movies
+                    movies.map { it.toDomainModel() }
                 }
             }
-
             is Result.Error -> {
-                _isLoadingLiveData.value = false
-                _isErrorLiveData.value = true
-            }
-        }
-    }
-
-    private fun handlePopularMoviesResponse(response: Result<Any>) {
-        when (response) {
-            is Result.Success -> {
-                val resp = response.data as BasicMovieResponse
-                val movies: List<MovieDomainModel>? = resp.results?.map { it.toDomainModel() }
-                if (movies.isNullOrEmpty()) {
-                    _isLoadingLiveData.value = false
-                    _isErrorLiveData.value = true
-                } else {
-                    _isLoadingLiveData.value = false
-                    _popularMoviesLiveData.value = movies
-                }
-            }
-
-            is Result.Error -> {
-                _isLoadingLiveData.value = false
-                _isErrorLiveData.value = true
+                null
             }
         }
     }

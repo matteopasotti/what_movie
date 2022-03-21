@@ -81,49 +81,40 @@ class HomeMoviesFragment : Fragment(), MovieViewHolder.Delegate {
 
     private fun observeViewModel() {
 
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            isLoading?.let {
-                if(isLoading) {
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { state ->
+            when(state) {
+                is HomeMovieGalleryState.Idle -> {
                     progress.visibility = View.VISIBLE
-                } else {
+                }
+                is HomeMovieGalleryState.Error -> {
                     progress.visibility = View.GONE
                 }
-
-            }
-        })
-
-        viewModel.trending.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                progress.visibility = View.GONE
-                carousel.visibility = View.VISIBLE
-                carouselAdapter.setItems(it)
-                carousel.resumeAutoScroll()
-            }
-        })
-
-        viewModel.popularMovies.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                progress.visibility = View.GONE
-                popular_movies_layout.visibility = View.VISIBLE
-                moviesAdapter.updateItems(it)
-            }
-        })
-
-        viewModel.moviesInCinema.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                progress.visibility = View.GONE
-                movies_cinema_layout.visibility = View.VISIBLE
-                moviesCinemaAdapter.updateItems(it)
-            }
-        })
-
-        viewModel.isError.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                //error
+                is HomeMovieGalleryState.Content -> {
+                    progress.visibility = View.GONE
+                    showPopularMovies(state.popularMovies)
+                    showTrendingMovies(state.trendingMovies)
+                    showMoviesAtCinema(state.moviesAtCinema)
+                }
             }
         })
 
         viewModel.getMovies()
+    }
+
+    private fun showMoviesAtCinema(movies: List<MovieDomainModel>) {
+        movies_cinema_layout.visibility = View.VISIBLE
+        moviesCinemaAdapter.updateItems(movies)
+    }
+
+    private fun showPopularMovies(movies: List<MovieDomainModel>) {
+        popular_movies_layout.visibility = View.VISIBLE
+        moviesAdapter.updateItems(movies)
+    }
+
+    private fun showTrendingMovies(movies: List<MovieDomainModel>) {
+        carousel.visibility = View.VISIBLE
+        carouselAdapter.setItems(movies)
+        carousel.resumeAutoScroll()
     }
 
     private fun carouselItemClicked(movie: MovieDomainModel) {
