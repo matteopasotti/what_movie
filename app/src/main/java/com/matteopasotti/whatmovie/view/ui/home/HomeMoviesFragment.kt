@@ -97,8 +97,6 @@ class HomeMoviesFragment : Fragment(), MovieViewHolder.Delegate {
                 }
             }
         })
-
-        viewModel.getMovies()
     }
 
     private fun showMoviesAtCinema(movies: List<MovieDomainModel>) {

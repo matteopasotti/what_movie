@@ -18,7 +18,6 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class GetPopularMoviesUseCaseTest {
 
-
     @Mock
     internal lateinit var movieRepository: MovieRepository
 

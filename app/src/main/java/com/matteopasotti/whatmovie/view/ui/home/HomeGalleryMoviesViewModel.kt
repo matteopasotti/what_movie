@@ -32,7 +32,7 @@ class HomeGalleryMoviesViewModel(
 ) : BaseStateViewModel<HomeMovieGalleryState, HomeMovieGalleryEvents>(HomeMovieGalleryState.Idle),
     KoinComponent {
 
-    fun getMovies() {
+    init {
         viewModelScope.launch {
             val trending = viewModelScope.async(Dispatchers.IO) { useCase.getTrendingOfTheWeek() }
 
