@@ -33,7 +33,7 @@ class ActorDetailResponseRepositoryImplTest {
     @Test
     fun `getActorDetails fetch actor details and map it to domainModel`(){
         runBlocking {
-            given(apiService.getActorDetails(1, BuildConfig.API_KEY, "en-US"))
+            given(apiService.getActorDetails(1))
                 .willReturn(
                     Response.success(
                         200, DataFixtures.getActorDetail(
@@ -53,7 +53,7 @@ class ActorDetailResponseRepositoryImplTest {
         val content =
             "{\"status_code\":7,\"status_message\":\"Invalid API key: You must be granted a valid key.\",\"success\":false}"
         runBlocking {
-            given(apiService.getActorDetails(1, BuildConfig.API_KEY, "en-US"))
+            given(apiService.getActorDetails(1))
                 .willReturn(Response.error(400, content.toResponseBody()))
 
             val result = repository.getActorDetails(1)

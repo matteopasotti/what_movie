@@ -33,7 +33,7 @@ class MovieDetailRepositoryImplTest {
     @Test
     fun `getRecommendedMovies fetches Movies and map them to domainModel`() {
         runBlocking {
-            given(mockService.getRecommendedMovies(1, BuildConfig.API_KEY, "en-US", 1))
+            given(mockService.getRecommendedMovies(1, 1))
                 .willReturn(
                     Response.success(
                         200, BasicMovieResponse(
@@ -54,7 +54,7 @@ class MovieDetailRepositoryImplTest {
         val content =
             "{\"status_code\":7,\"status_message\":\"Invalid API key: You must be granted a valid key.\",\"success\":false}"
         runBlocking {
-            given(mockService.getRecommendedMovies(1, BuildConfig.API_KEY, "en-US", 1))
+            given(mockService.getRecommendedMovies(1, 1))
                 .willReturn(
                     Response.error(400, ResponseBody.create(null, content))
                 )
@@ -68,7 +68,7 @@ class MovieDetailRepositoryImplTest {
     @Test
     fun `getSimilarMovies fetches Movies and map them to domainModel`() {
         runBlocking {
-            given(mockService.getSimilarMovies(1, BuildConfig.API_KEY, "en-US", 1))
+            given(mockService.getSimilarMovies(1, 1))
                 .willReturn(
                     Response.success(
                         200, BasicMovieResponse(
@@ -89,7 +89,7 @@ class MovieDetailRepositoryImplTest {
         val content =
             "{\"status_code\":7,\"status_message\":\"Invalid API key: You must be granted a valid key.\",\"success\":false}"
         runBlocking {
-            given(mockService.getSimilarMovies(1, BuildConfig.API_KEY, "en-US", 1))
+            given(mockService.getSimilarMovies(1, 1))
                 .willReturn(
                     Response.error(400, ResponseBody.create(null, content))
                 )
@@ -103,7 +103,7 @@ class MovieDetailRepositoryImplTest {
     @Test
     fun `getMovieCredits fetches credits and map them to domainModel`() {
         runBlocking {
-            given(mockService.getMovieCredits(1, BuildConfig.API_KEY))
+            given(mockService.getMovieCredits(1))
                 .willReturn(
                     Response.success(200, MovieCreditResponse(
                         id = 1,
@@ -122,7 +122,7 @@ class MovieDetailRepositoryImplTest {
         val actorWithImage = DataFixtures.getActor(profile_path = "image")
         val actorWithoutImage = DataFixtures.getActor(profile_path = null)
         runBlocking {
-            given(mockService.getMovieCredits(1, BuildConfig.API_KEY))
+            given(mockService.getMovieCredits(1))
                 .willReturn(
                     Response.success(200, MovieCreditResponse(
                         id = 1,
@@ -142,7 +142,7 @@ class MovieDetailRepositoryImplTest {
         val content =
             "{\"status_code\":7,\"status_message\":\"Invalid API key: You must be granted a valid key.\",\"success\":false}"
         runBlocking {
-            given(mockService.getMovieCredits(1, BuildConfig.API_KEY))
+            given(mockService.getMovieCredits(1))
                 .willReturn(
                     Response.error(400, ResponseBody.create(null, content))
                 )
@@ -156,7 +156,7 @@ class MovieDetailRepositoryImplTest {
     @Test
     fun `getMovieDetail returns movie detail and map it to domainModel`(){
         runBlocking {
-            given(mockService.getMovieDetail(1, BuildConfig.API_KEY, "en-US"))
+            given(mockService.getMovieDetail(1))
                 .willReturn(
                     Response.success(200, DataFixtures.getMovieDetailResponse())
                 )

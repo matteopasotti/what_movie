@@ -14,7 +14,6 @@ internal class MovieRepositoryImpl(
     private val movieDao: MovieDao
 ) : MovieRepository, KoinComponent, BaseRepository() {
 
-
     override suspend fun getMoviesAtTheatre(): Result<BasicMovieResponse> {
         return safeApiCall(
             apiCall = {

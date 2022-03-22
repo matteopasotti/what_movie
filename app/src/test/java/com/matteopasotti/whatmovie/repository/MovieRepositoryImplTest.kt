@@ -1,0 +1,144 @@
+package com.matteopasotti.whatmovie.repository
+
+import com.matteopasotti.whatmovie.DataFixtures
+import com.matteopasotti.whatmovie.api.MovieApiInterface
+import com.matteopasotti.whatmovie.api.Result
+import com.matteopasotti.whatmovie.db.MovieDao
+import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
+import com.nhaarman.mockitokotlin2.whenever
+import kotlinx.coroutines.runBlocking
+import okhttp3.ResponseBody.Companion.toResponseBody
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.junit.MockitoJUnitRunner
+import retrofit2.Response
+
+@RunWith(MockitoJUnitRunner::class)
+class MovieRepositoryImplTest {
+
+    @Mock
+    internal lateinit var movieApiInterface: MovieApiInterface
+
+    @Mock
+    internal lateinit var movieDao: MovieDao
+
+    private lateinit var repository: MovieRepository
+
+    private val successResponse =
+        BasicMovieResponse(page = 1, results = listOf(DataFixtures.getMovie()))
+
+    private val errorContent =
+        "{\"status_code\":7,\"status_message\":\"Invalid API key: You must be granted a valid key.\",\"success\":false}"
+
+    @Before
+    fun setUp() {
+        repository = MovieRepositoryImpl(movieApi = movieApiInterface, movieDao = movieDao)
+    }
+
+    @Test
+    fun `Given we call getMoviesInCinema,And We get a valid response from Api,Then we return Result Success`() {
+
+        runBlocking {
+
+            whenever(
+                movieApiInterface.getMoviesInCinema(
+                    page = 1,
+                    startDate = "2021-03-01",
+                    endDate = "2021-03-30"
+                )
+            ).thenReturn(
+                Response.success(
+                    200,
+                    successResponse
+                )
+            )
+
+            val expected = Result.Success(successResponse)
+            val actual = repository.getMoviesAtTheatre()
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `Given we call getMoviesInCinema,And we get an Error from Api,Then we return Result Error`() {
+        runBlocking {
+            whenever(
+                movieApiInterface.getMoviesInCinema(
+                    page = 1,
+                    startDate = "2021-03-01",
+                    endDate = "2021-03-30"
+                )
+            ).thenReturn(Response.error(400, errorContent.toResponseBody()))
+
+            val actual = repository.getMoviesAtTheatre()
+
+            assertTrue(actual is Result.Error)
+        }
+    }
+
+    @Test
+    fun `Given we call getTrendingOfTheWeek,And we get a valid response from Api,Then we return Success`() {
+        runBlocking {
+            whenever(movieApiInterface.getTrendingOfTheWeek()).thenReturn(
+                Response.success(
+                    200,
+                    successResponse
+                )
+            )
+
+            val expected = Result.Success(successResponse)
+            val actual = repository.getTrendingOfTheWeek()
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `Given we call getTrendingOfTheWeek,And we get an error from Api,Then we return Error`() {
+        runBlocking {
+            whenever(
+                movieApiInterface.getTrendingOfTheWeek()
+            ).thenReturn(Response.error(400, errorContent.toResponseBody()))
+
+            val actual = repository.getTrendingOfTheWeek()
+
+            assertTrue(actual is Result.Error)
+        }
+
+    }
+
+    @Test
+    fun `Given we call getPopularMoviesFromApi,And we get a valid response from Api,Then we return Success`() {
+        runBlocking {
+            whenever(movieApiInterface.getPopularMovies()).thenReturn(
+                Response.success(
+                    200,
+                    successResponse
+                )
+            )
+
+            val expected = Result.Success(successResponse)
+            val actual = repository.getPopularMoviesFromApi()
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `Given we call getPopularMoviesFromApi,And we get an error from Api,Then we return Error`() {
+        runBlocking {
+            whenever(movieApiInterface.getPopularMovies()).thenReturn(
+                Response.error(400, errorContent.toResponseBody())
+            )
+
+            val actual = repository.getPopularMoviesFromApi()
+
+            assertTrue(actual is Result.Error)
+        }
+    }
+}

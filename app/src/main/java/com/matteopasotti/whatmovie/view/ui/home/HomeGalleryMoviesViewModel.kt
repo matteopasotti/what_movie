@@ -6,6 +6,7 @@ import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
 import com.matteopasotti.whatmovie.model.toDomainModel
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
+import com.matteopasotti.whatmovie.usecase.MoviesDomainModel
 import com.matteopasotti.whatmovie.view.BaseStateViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -45,40 +46,23 @@ class HomeGalleryMoviesViewModel(
     }
 
     private fun updateUI(
-        popularMoviesResponse: Result<BasicMovieResponse>,
-        moviesAtCinemaResponse: Result<BasicMovieResponse>,
-        trendingMoviesResponse: Result<BasicMovieResponse>
+        popularMoviesResponse: MoviesDomainModel,
+        moviesAtCinemaResponse: MoviesDomainModel,
+        trendingMoviesResponse: MoviesDomainModel
     ) {
-        val trendingMovies = handleResponse(trendingMoviesResponse)
-        val moviesAtCinema = handleResponse(moviesAtCinemaResponse)
-        val popularMovies = handleResponse(popularMoviesResponse)
-
-        if (trendingMovies != null && moviesAtCinema != null && popularMovies != null) {
+        if (popularMoviesResponse.errorMessage != null ||
+            moviesAtCinemaResponse.errorMessage != null ||
+            trendingMoviesResponse.errorMessage != null
+        ) {
+            setState(HomeMovieGalleryState.Error)
+        } else {
             setState(
                 HomeMovieGalleryState.Content(
-                    trendingMovies = trendingMovies,
-                    popularMovies = popularMovies,
-                    moviesAtCinema = moviesAtCinema
+                    trendingMovies = trendingMoviesResponse.movies,
+                    popularMovies = popularMoviesResponse.movies,
+                    moviesAtCinema = moviesAtCinemaResponse.movies
                 )
             )
-        } else {
-            setState(HomeMovieGalleryState.Error)
-        }
-    }
-
-    private fun handleResponse(response: Result<BasicMovieResponse>): List<MovieDomainModel>? {
-        return when (response) {
-            is Result.Success -> {
-                val movies = response.value.results
-                return if (movies.isNullOrEmpty()) {
-                    null
-                } else {
-                    movies.map { it.toDomainModel() }
-                }
-            }
-            is Result.Error -> {
-                null
-            }
         }
     }
 }

@@ -4,15 +4,15 @@ import com.matteopasotti.whatmovie.model.ActorDetailResponse
 import com.matteopasotti.whatmovie.model.MovieDetail
 import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
 import com.matteopasotti.whatmovie.model.response.MovieCreditResponse
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.Response
 
 internal interface MovieApiInterface {
 
     @GET("movie/popular")
-    suspend fun getPopularMovies(): BasicMovieResponse
+    suspend fun getPopularMovies(): Response<BasicMovieResponse>
 
     @GET("discover/movie")
     suspend fun getMoviesInCinema(
@@ -21,11 +21,11 @@ internal interface MovieApiInterface {
         @Query("sort_by") sortBy: String = "popularity.desc",
         @Query("primary_release_date.gte") startDate: String,
         @Query("primary_release_date.lte") endDate: String
-    ): BasicMovieResponse
+    ): Response<BasicMovieResponse>
 
     //https://api.themoviedb.org/3/trending/all/week?api_key=d0ac984349d63f4af1bbea3359b8fdbc
     @GET("trending/all/week")
-    suspend fun getTrendingOfTheWeek(): BasicMovieResponse
+    suspend fun getTrendingOfTheWeek(): Response<BasicMovieResponse>
 
     @GET("movie/{movieId}/recommendations")
     suspend fun getRecommendedMovies(
