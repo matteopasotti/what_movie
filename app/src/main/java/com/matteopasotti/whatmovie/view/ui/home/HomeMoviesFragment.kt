@@ -23,11 +23,7 @@ class HomeMoviesFragment : Fragment(), MovieViewHolder.Delegate {
     private lateinit var moviesAdapter: MoviesAdapter
     private lateinit var moviesCinemaAdapter: MoviesAdapter
     private val carouselAdapter = CarouselAdapter(::carouselItemClicked)
-
-
     private val viewModel: HomeGalleryMoviesViewModel by viewModel()
-
-    private var section: Int? = null
 
     companion object {
 
@@ -41,7 +37,6 @@ class HomeMoviesFragment : Fragment(), MovieViewHolder.Delegate {
             return fragment
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

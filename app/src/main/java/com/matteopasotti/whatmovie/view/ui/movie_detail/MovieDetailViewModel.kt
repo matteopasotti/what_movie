@@ -1,40 +1,41 @@
 package com.matteopasotti.whatmovie.view.ui.movie_detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.model.ActorDomainModel
 import com.matteopasotti.whatmovie.model.MovieDetailDomainModel
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.usecase.GetMovieDetailsUseCase
+import com.matteopasotti.whatmovie.usecase.MovieCreditsDomainModel
+import com.matteopasotti.whatmovie.usecase.MovieDetailVModel
+import com.matteopasotti.whatmovie.usecase.MoviesDomainModel
+import com.matteopasotti.whatmovie.view.BaseStateViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
+sealed class MovieDetailState {
+    object Idle : MovieDetailState()
+    object Error : MovieDetailState()
+    data class Content(
+        val similarMovies: List<MovieDomainModel>,
+        val recommendedMovies: List<MovieDomainModel>,
+        val cast: List<ActorDomainModel>,
+        val moviesDetail: MovieDetailDomainModel
+    ) : MovieDetailState()
+}
+
+sealed class MovieDetailEvents {
+    data class MovieClicked(val movieId: String) : MovieDetailEvents()
+    data class ActorClicked(val actorId: String) : MovieDetailEvents()
+    data class HeartIconClicked(val movieId: String) : MovieDetailEvents()
+}
+
 class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUseCase) :
-    ViewModel() {
+    BaseStateViewModel<MovieDetailState, MovieDetailEvents>(MovieDetailState.Idle) {
 
     var movie: MovieDomainModel? = null
 
     var movieDetail: MovieDetailDomainModel? = null
-
-    private val _recommendedMovies = MutableLiveData<List<MovieDomainModel>>()
-    val recommendedMovies: LiveData<List<MovieDomainModel>> = _recommendedMovies
-
-    private val _similarMovies = MutableLiveData<List<MovieDomainModel>>()
-    val similarMovies: LiveData<List<MovieDomainModel>> = _similarMovies
-
-    private val _cast = MutableLiveData<List<ActorDomainModel>>()
-    val cast: LiveData<List<ActorDomainModel>> = _cast
-
-    private val _movieDetail = MutableLiveData<MovieDetailDomainModel>()
-    val movieDetails: LiveData<MovieDetailDomainModel> = _movieDetail
-
-    private lateinit var isLoadingLiveData: MutableLiveData<Boolean>
-
-    private lateinit var isErrorLiveData: MutableLiveData<Boolean>
-
 
     fun getData() {
         movie?.let {
@@ -43,149 +44,54 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
 
     }
 
-    fun isLoading(): LiveData<Boolean> {
-        if (!::isLoadingLiveData.isInitialized) {
-            isLoadingLiveData = MutableLiveData()
-            isLoadingLiveData.value = true
-        }
-
-        return isLoadingLiveData
-    }
-
-    fun isError(): LiveData<Boolean> {
-        if (!::isErrorLiveData.isInitialized) {
-            isErrorLiveData = MutableLiveData()
-            isErrorLiveData.value = false
-        }
-
-        return isErrorLiveData
-    }
-
     private fun getMovieDetails(movieId: Int) {
 
         viewModelScope.launch {
-            try {
-                val recommendedMovieResponse = viewModelScope.async {
-                    getMovieDetailsUseCase.getRecommendedMovie(movieId)
-                }
-
-                val similarMoviesResponse = viewModelScope.async {
-                    getMovieDetailsUseCase.getSimilarMovies(movieId)
-                }
-
-                val creditResponse = viewModelScope.async {
-                    getMovieDetailsUseCase.getMovieCredits(movieId)
-                }
-
-                val movieDetailResponse = viewModelScope.async {
-                    getMovieDetailsUseCase.getMovieDetail(movieId)
-                }
-
-                updateUI(
-                    recommendedMovieResponse.await(),
-                    similarMoviesResponse.await(),
-                    creditResponse.await(),
-                    movieDetailResponse.await()
-                )
-            } catch (e: Throwable) {
-                isLoadingLiveData.value = false
-                isErrorLiveData.value = true
+            val recommendedMovieResponse = viewModelScope.async(Dispatchers.IO) {
+                getMovieDetailsUseCase.getRecommendedMovies(movieId)
             }
+
+            val similarMoviesResponse = viewModelScope.async(Dispatchers.IO) {
+                getMovieDetailsUseCase.getSimilarMovies(movieId)
+            }
+
+            val creditResponse = viewModelScope.async(Dispatchers.IO) {
+                getMovieDetailsUseCase.getMovieCredits(movieId)
+            }
+
+            val movieDetailResponse = viewModelScope.async(Dispatchers.IO) {
+                getMovieDetailsUseCase.getMovieDetail(movieId)
+            }
+
+            updateUI(
+                recommendedMovieResponse.await(),
+                similarMoviesResponse.await(),
+                creditResponse.await(),
+                movieDetailResponse.await()
+            )
         }
 
     }
 
     private fun updateUI(
-        recommendedMoviesResponse: Result<Any>,
-        similarMoviesResponse: Result<Any>,
-        creditResponse: Result<Any>,
-        movieDetailResponse: Result<Any>
+        recommendedMoviesResponse: MoviesDomainModel,
+        similarMoviesResponse: MoviesDomainModel,
+        creditResponse: MovieCreditsDomainModel,
+        movieDetailResponse: MovieDetailVModel
     ) {
 
-        handleRecommendedMoviesResponse(recommendedMoviesResponse)
-
-        handleSimilarMoviesResponse(similarMoviesResponse)
-
-        handleCreditResponse(creditResponse)
-
-        handleMovieDetailResponse(movieDetailResponse)
-    }
-
-
-    private fun handleRecommendedMoviesResponse(response: Result<Any>) {
-        when (response) {
-            is Result.Success -> {
-                val movies: List<MovieDomainModel>? =
-                    response.value as List<MovieDomainModel>?
-                if (movies.isNullOrEmpty()) {
-                    isLoadingLiveData.value = false
-                    isErrorLiveData.value = true
-                } else {
-                    isLoadingLiveData.value = false
-                    _recommendedMovies.postValue(movies)
-                }
-            }
-
-            is Result.Error -> {
-                isLoadingLiveData.value = false
-                isErrorLiveData.value = true
-            }
-        }
-    }
-
-    private fun handleSimilarMoviesResponse(response: Result<Any>) {
-        when (response) {
-            is Result.Success -> {
-                val movies: List<MovieDomainModel>? =
-                    response.value as List<MovieDomainModel>?
-                if (movies.isNullOrEmpty()) {
-                    isLoadingLiveData.value = false
-                    isErrorLiveData.value = true
-                } else {
-                    isLoadingLiveData.value = false
-                    _similarMovies.postValue(movies)
-                }
-            }
-
-            is Result.Error -> {
-                isLoadingLiveData.value = false
-                isErrorLiveData.value = true
-            }
-        }
-    }
-
-    private fun handleCreditResponse(response: Result<Any>) {
-        when (response) {
-            is Result.Success -> {
-                val cast: List<ActorDomainModel> = response.value as List<ActorDomainModel>
-                if (cast.isNullOrEmpty()) {
-                    isLoadingLiveData.value = false
-                    isErrorLiveData.value = true
-                } else {
-                    isLoadingLiveData.value = false
-                    _cast.postValue(cast)
-                }
-            }
-
-            is Result.Error -> {
-                isLoadingLiveData.value = false
-                isErrorLiveData.value = true
-            }
-        }
-    }
-
-    private fun handleMovieDetailResponse(response: Result<Any>) {
-        when (response) {
-            is Result.Success -> {
-                val detail: MovieDetailDomainModel = response.value as MovieDetailDomainModel
-                isLoadingLiveData.value = false
-                _movieDetail.postValue(detail)
-            }
-
-            is Result.Error -> {
-                isLoadingLiveData.value = false
-                isErrorLiveData.value = true
-            }
+        // If we can not retrieve the movie details then we can not display this screen properly
+        if (movieDetailResponse.errorMessage != null) {
+            setState(MovieDetailState.Error)
+        } else {
+            setState(
+                MovieDetailState.Content(
+                    similarMovies = similarMoviesResponse.movies,
+                    recommendedMovies = recommendedMoviesResponse.movies,
+                    cast = creditResponse.cast ?: emptyList(),
+                    moviesDetail = movieDetailResponse.movieDetail!!
+                )
+            )
         }
     }
 }

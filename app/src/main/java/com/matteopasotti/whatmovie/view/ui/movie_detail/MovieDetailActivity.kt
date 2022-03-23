@@ -52,7 +52,6 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            //lifecycle.addObserver(binding.youtubeView)
             viewModel.movie = intent.getParcelableExtra(MOVIE)
             viewModel.movie?.let {
                 binding.movie = viewModel.movie
@@ -66,43 +65,30 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
 
     private fun observeViewModel() {
 
-        viewModel.isLoading().observe(this, Observer { isLoading ->
-            isLoading?.let {
-                //binding.progressAnimation.visibility = if(isLoading) View.VISIBLE else View.GONE
-            }
-        })
+        viewModel.viewState.observe(this, Observer { state ->
+            when(state) {
+                is MovieDetailState.Idle -> {
 
-        viewModel.isError().observe(this, Observer {
-            if (it) {
-                //error
-            }
-        })
+                }
 
-        viewModel.recommendedMovies.observe(this, Observer {
-            it?.let {
-                binding.recommendedLayout.addItems(it)
-                binding.recommendedLayout.visibility = View.VISIBLE
-            }
-        })
+                is MovieDetailState.Error -> {
 
-        viewModel.similarMovies.observe(this, Observer {
-            it?.let {
-                binding.similarMoviesLayout.addItems(it)
-                binding.similarMoviesLayout.visibility = View.VISIBLE
-            }
-        })
+                }
 
-        viewModel.cast.observe(this, Observer {
-            it?.let {
-                binding.castLayout.addItems(it)
-                binding.castLayout.visibility = View.VISIBLE
+                is MovieDetailState.Content -> {
+                    updateView(state.moviesDetail)
+                    //cast
+                    binding.castLayout.addItems(state.cast)
+                    binding.castLayout.visibility = View.VISIBLE
+                    //similar movies
+                    binding.similarMoviesLayout.addItems(state.similarMovies)
+                    binding.similarMoviesLayout.visibility = View.VISIBLE
+                    //recommended movies
+                    binding.recommendedLayout.addItems(state.recommendedMovies)
+                    binding.recommendedLayout.visibility = View.VISIBLE
+                }
             }
-        })
 
-        viewModel.movieDetails.observe(this, Observer {
-            it?.let {
-                updateView(it)
-            }
         })
 
         viewModel.getData()

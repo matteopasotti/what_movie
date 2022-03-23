@@ -25,27 +25,27 @@ class GetPopularMoviesUseCase(
     suspend fun getTrendingOfTheWeek(): MoviesDomainModel{
         return movieRepository.getTrendingOfTheWeek().toMoviesDomainModel()
     }
-
-    private fun Result<BasicMovieResponse>.toMoviesDomainModel(): MoviesDomainModel {
-        return when (this) {
-            is Result.Success -> {
-                MoviesDomainModel(
-                    movies = this.value.results?.map { it.toDomainModel() } ?: emptyList(),
-                    errorMessage = null
-                )
-            }
-
-            is Result.Error -> {
-                MoviesDomainModel(
-                    movies = emptyList(),
-                    errorMessage = "Error unable to retrieve movies"
-                )
-            }
-        }
-    }
 }
 
 data class MoviesDomainModel(
     val movies: List<MovieDomainModel>,
     val errorMessage: String?
 )
+
+fun Result<BasicMovieResponse>.toMoviesDomainModel(): MoviesDomainModel {
+    return when (this) {
+        is Result.Success -> {
+            MoviesDomainModel(
+                movies = this.value.results?.map { it.toDomainModel() } ?: emptyList(),
+                errorMessage = null
+            )
+        }
+
+        is Result.Error -> {
+            MoviesDomainModel(
+                movies = emptyList(),
+                errorMessage = "Error unable to retrieve movies"
+            )
+        }
+    }
+}
