@@ -1,11 +1,15 @@
 package com.matteopasotti.whatmovie.usecase
 
+import com.matteopasotti.whatmovie.DataFixtures
 import com.matteopasotti.whatmovie.DomainFixtures
 import com.matteopasotti.whatmovie.api.Result
+import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
+import com.matteopasotti.whatmovie.model.toDomainModel
 import com.matteopasotti.whatmovie.repository.MovieDetailRepository
 import com.matteopasotti.whatmovie.repository.MovieDetailRepositoryImpl
 import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -19,104 +23,116 @@ import java.io.IOException
 class GetMovieDetailsUseCaseTest {
 
     @Mock
-    internal lateinit var mockMovieDetailRepository: MovieDetailRepositoryImpl
+    internal lateinit var repository: MovieDetailRepositoryImpl
 
-    private lateinit var movieDetailsUseCase: GetMovieDetailsUseCase
+    private lateinit var usecase: GetMovieDetailsUseCase
+
+    private val movies = listOf(DataFixtures.getMovie(id = 1))
+
+    private val successResponse =
+        BasicMovieResponse(page = 1, results = movies)
 
     @Before
     fun setUp() {
-        movieDetailsUseCase = GetMovieDetailsUseCase(mockMovieDetailRepository)
+        usecase = GetMovieDetailsUseCase(repository)
     }
 
     @Test
-    fun `return a list of recommended movies`() {
+    fun `Given we call getRecommendedMovies,And we receive a valid response from repository,Then we return the right object`() {
         runBlocking {
-            val movies = listOf(DomainFixtures.getMovie(), DomainFixtures.getMovie())
+            whenever(repository.getRecommendedMovies(1)).thenReturn(
+                Result.Success(successResponse)
+            )
 
-            given(mockMovieDetailRepository.getRecommendedMovies(123)).willReturn(movies)
+            val actual = usecase.getRecommendedMovies(1)
 
-            val result = movieDetailsUseCase.getRecommendedMovie(123)
+            val expected = MoviesDomainModel(
+                movies = movies.map { it.toDomainModel() },
+                errorMessage = null
+            )
 
-            assertEquals(result, Result.Success(movies))
+            assertEquals(expected, actual)
         }
     }
 
     @Test
-    fun `return a list of actors`() {
+    fun `Given we call getRecommendedMovies,And we receive an error,Then we return the right object`() {
         runBlocking {
-            val actors = listOf(DomainFixtures.getActorDomainModel(), DomainFixtures.getActorDomainModel())
+            whenever(repository.getRecommendedMovies(1)).thenReturn(
+                Result.Error("Error unable to retrieve movies")
+            )
 
-            given(mockMovieDetailRepository.getMovieCredits(123)).willReturn(actors)
+            val actual = usecase.getRecommendedMovies(1)
 
-            val result = movieDetailsUseCase.getMovieCredits(123)
+            val expected = MoviesDomainModel(
+                movies = emptyList(),
+                errorMessage = "Error unable to retrieve movies"
+            )
 
-            assertEquals(result, Result.Success(actors))
+            assertEquals(expected, actual)
         }
     }
 
     @Test
-    fun `return an error when get credits fails`() {
+    fun `Given we call getSimilarMovies,And we receive a valid response from repository,Then we return the right object`() {
         runBlocking {
-            given(mockMovieDetailRepository.getMovieCredits(123)).willReturn(null)
+            whenever(repository.getSimilarMovies(1)).thenReturn(
+                Result.Success(successResponse)
+            )
 
-            val result = movieDetailsUseCase.getMovieCredits(123)
+            val actual = usecase.getSimilarMovies(1)
 
-            assertEquals(result, Result.Error("No Data"))
+            val expected = MoviesDomainModel(
+                movies = movies.map { it.toDomainModel() },
+                errorMessage = null
+            )
+
+            assertEquals(expected, actual)
         }
     }
 
     @Test
-    fun `return an error when get recommended movies fails`() {
+    fun `Given we call getSimilarMovies,And we receive a valid response from repository,And some movies do not have an image,Then we return the right object`() {
+
+        val movie1 = DataFixtures.getMovie(id = 1)
+        val movie2 = DataFixtures.getMovie(id = 2, poster_path = null)
+        val movies = listOf(movie1, movie2)
+
+        val response =
+            BasicMovieResponse(page = 1, results = movies)
+
         runBlocking {
-            given(mockMovieDetailRepository.getRecommendedMovies(123)).willReturn(null)
+            whenever(repository.getSimilarMovies(1)).thenReturn(
+                Result.Success(response)
+            )
 
-            val result = movieDetailsUseCase.getRecommendedMovie(123)
+            val actual = usecase.getSimilarMovies(1)
 
-            assertEquals(result, Result.Error("No Data"))
+            val expected = MoviesDomainModel(
+                movies = listOf(movie1.toDomainModel()),
+                errorMessage = null
+            )
+
+            assertEquals(expected, actual)
         }
     }
 
     @Test
-    fun `return an error when get recommended movies throws an exception`(){
+    fun `Given we call getSimilarMovies,And we receive an error,Then we return the right object`() {
         runBlocking {
-            doThrow(IOException::class).`when`(mockMovieDetailRepository).getRecommendedMovies(1)
+            whenever(repository.getSimilarMovies(1)).thenReturn(
+                Result.Error("Error unable to retrieve movies")
+            )
 
-            val result = movieDetailsUseCase.getRecommendedMovie(1)
+            val actual = usecase.getSimilarMovies(1)
 
-            assertEquals(result, Result.Error("getRecommendedMovie has failed"))
+            val expected = MoviesDomainModel(
+                movies = emptyList(),
+                errorMessage = "Error unable to retrieve movies"
+            )
+
+            assertEquals(expected, actual)
         }
     }
-
-    @Test
-    fun `return an error when get similar movies throws an exception`(){
-        runBlocking {
-            doThrow(IOException::class).`when`(mockMovieDetailRepository).getSimilarMovies(1)
-
-            val result = movieDetailsUseCase.getSimilarMovies(1)
-
-            assertEquals(result, Result.Error("getSimilarMovies has failed"))
-        }
-    }
-
-    @Test
-    fun `return an error when get credit movies throws an exception`(){
-        runBlocking {
-            doThrow(IOException::class).`when`(mockMovieDetailRepository).getMovieCredits(1)
-
-            val result = movieDetailsUseCase.getMovieCredits(1)
-
-            assertEquals(result, Result.Error("getMovieCredits has failed"))
-        }
-    }
-
-    @Test
-    fun `return an error when get movie details throws an exception`(){
-        runBlocking {
-            doThrow(IOException::class).`when`(mockMovieDetailRepository).getMovieDetail(1)
-
-            val result = movieDetailsUseCase.getMovieDetail(1)
-
-            assertEquals(result, Result.Error("getMovieDetail has failed"))
-        }
-    }
+    
 }
