@@ -134,5 +134,5 @@ class GetMovieDetailsUseCaseTest {
             assertEquals(expected, actual)
         }
     }
-    
+
 }
