@@ -1,7 +1,9 @@
 package com.matteopasotti.whatmovie.view.ui.actor_detail
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -14,6 +16,7 @@ import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.ActivityActorDetailBinding
 import com.matteopasotti.whatmovie.model.ActorDomainModel
 import com.matteopasotti.whatmovie.model.MovieDomainModel
+import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,6 +29,7 @@ class ActorDetailActivity: AppCompatActivity(), MovieViewHolder.Delegate {
 
     companion object {
         const val INTENT_ACTOR = "intent_actor"
+        const val MOVIE = "movie"
     }
 
     private lateinit var actor: ActorDomainModel
@@ -96,6 +100,8 @@ class ActorDetailActivity: AppCompatActivity(), MovieViewHolder.Delegate {
     }
 
     override fun onItemClick(movie: MovieDomainModel) {
-        TODO("Not yet implemented")
+        val intent = Intent(this, MovieDetailActivity::class.java)
+        intent.putExtra(ActorDetailActivity.MOVIE, movie as Parcelable)
+        startActivity(intent)
     }
 }

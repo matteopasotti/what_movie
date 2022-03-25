@@ -37,6 +37,7 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
 
     var movieDetail: MovieDetailDomainModel? = null
 
+
     fun getData() {
         movie?.let {
             getMovieDetails(movieId = it.id)
@@ -71,6 +72,10 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
             )
         }
 
+    }
+
+    fun heartIconClicked(movieId: String) {
+        emitEvent(MovieDetailEvents.HeartIconClicked(movieId))
     }
 
     private fun updateUI(

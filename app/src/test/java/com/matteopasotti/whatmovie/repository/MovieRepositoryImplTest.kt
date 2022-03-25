@@ -16,6 +16,8 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 @RunWith(MockitoJUnitRunner::class)
 class MovieRepositoryImplTest {
@@ -47,8 +49,8 @@ class MovieRepositoryImplTest {
             whenever(
                 movieApiInterface.getMoviesInCinema(
                     page = 1,
-                    startDate = "2021-03-01",
-                    endDate = "2021-03-30"
+                    startDate = getStartDate(),
+                    endDate = getEndDate()
                 )
             ).thenReturn(
                 Response.success(
@@ -70,8 +72,8 @@ class MovieRepositoryImplTest {
             whenever(
                 movieApiInterface.getMoviesInCinema(
                     page = 1,
-                    startDate = "2021-03-01",
-                    endDate = "2021-03-30"
+                    startDate = getStartDate(),
+                    endDate = getEndDate()
                 )
             ).thenReturn(Response.error(400, errorContent.toResponseBody()))
 
@@ -140,5 +142,22 @@ class MovieRepositoryImplTest {
 
             assertTrue(actual is Result.Error)
         }
+    }
+
+    private fun getStartDate(): String {
+        val currentTime: Date = Calendar.getInstance().time
+        return formatDate(currentTime)
+    }
+
+    private fun getEndDate(): String {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, 1)
+        val date = calendar.time
+        return formatDate(date)
+    }
+
+    private fun formatDate(date: Date): String {
+        val df = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return df.format(date)
     }
 }

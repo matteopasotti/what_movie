@@ -8,6 +8,8 @@ import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
 import com.matteopasotti.whatmovie.model.toDomainModel
 import org.koin.core.KoinComponent
+import java.text.SimpleDateFormat
+import java.util.*
 
 internal class MovieRepositoryImpl(
     private val movieApi: MovieApiInterface,
@@ -19,8 +21,8 @@ internal class MovieRepositoryImpl(
             apiCall = {
                 movieApi.getMoviesInCinema(
                     page = 1,
-                    startDate = "2021-03-01",
-                    endDate = "2021-03-30"
+                    startDate = getStartDate(),
+                    endDate = getEndDate()
                 )
             }
         )
@@ -54,6 +56,23 @@ internal class MovieRepositoryImpl(
 
     private suspend fun saveMovies(movies: List<Movie>) {
         movieDao.insertMovies(movies)
+    }
+
+    private fun formatDate(date: Date): String {
+        val df = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return df.format(date)
+    }
+
+    private fun getStartDate(): String {
+        val currentTime: Date = Calendar.getInstance().time
+        return formatDate(currentTime)
+    }
+
+    private fun getEndDate(): String {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, 1)
+        val date = calendar.time
+       return formatDate(date)
     }
 
 }

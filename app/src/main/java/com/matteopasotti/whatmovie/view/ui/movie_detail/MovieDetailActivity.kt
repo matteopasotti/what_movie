@@ -111,6 +111,10 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
         binding.genreList.layoutManager = NoScrollHorizontalLayoutManager(this)
         binding.genreList.adapter = genresAdapter
 
+        binding.fabBackButton.setOnClickListener {
+            onBackPressed()
+        }
+
         recommendedMoviesAdapter = MoviesAdapter(this, this)
         binding.recommendedLayout.setCustomLabelListView(
             getString(R.string.recommended_movies),
@@ -138,6 +142,13 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
 
         }
 
+        binding.fabCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked) {
+                //viewModel.addFavCharacter(viewModel.character)
+            } else {
+                //viewModel.removeFavCharacter(viewModel.character)
+            }
+        }
 
     }
 

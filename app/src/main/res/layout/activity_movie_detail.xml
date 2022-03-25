@@ -74,16 +74,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
-                <com.matteopasotti.whatmovie.view.custom.CustomCheckBox
+                <CheckBox
                     android:id="@+id/fab_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:button="@null"
                     android:clickable="true"
+                    android:button="@null"
                     android:focusable="true"
-                    app:checkboxBackground="@drawable/heart_icon"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/heart_icon"
                     android:stateListAnimator="@animator/scale"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -134,11 +133,12 @@
                     tools:text="1h 38m"
                     android:gravity="center_vertical"
                     android:fontFamily="@font/product_sans_bold"
+                    android:textSize="20sp"
                     android:textColor="@color/pink"
                     android:drawablePadding="3dp"
+                    android:layout_marginTop="@dimen/margin_small"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/genre_list"
-                    app:layout_constraintBottom_toBottomOf="@+id/genre_list"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_title"
                     android:layout_marginStart="@dimen/margin_medium"
                     app:drawableLeftCompat="@drawable/ic_clock" />
 
@@ -147,10 +147,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_medium"
-                    android:layout_marginTop="@dimen/margin_small"
-                    app:layout_constraintEnd_toStartOf="@+id/rating_view"
-                    app:layout_constraintStart_toEndOf="@+id/movie_duration"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_title"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_duration"
                     tools:listitem="@layout/genre_item" />
 
                 <com.matteopasotti.whatmovie.view.custom.RatingView
