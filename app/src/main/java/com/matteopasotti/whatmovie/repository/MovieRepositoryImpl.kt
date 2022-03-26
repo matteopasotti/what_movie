@@ -7,41 +7,50 @@ import com.matteopasotti.whatmovie.model.Movie
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
 import com.matteopasotti.whatmovie.model.toDomainModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import java.text.SimpleDateFormat
 import java.util.*
 
 internal class MovieRepositoryImpl(
     private val movieApi: MovieApiInterface,
-    private val movieDao: MovieDao
+    private val movieDao: MovieDao,
+    private val ioDispatcher: CoroutineDispatcher
 ) : MovieRepository, KoinComponent, BaseRepository() {
 
     override suspend fun getMoviesAtTheatre(): Result<BasicMovieResponse> {
-        return safeApiCall(
-            apiCall = {
-                movieApi.getMoviesInCinema(
-                    page = 1,
-                    startDate = getStartDate(),
-                    endDate = getEndDate()
-                )
-            }
-        )
+        return withContext(ioDispatcher) {
+            safeApiCall(
+                apiCall = {
+                    movieApi.getMoviesInCinema(
+                        page = 1,
+                        startDate = getStartDate(),
+                        endDate = getEndDate()
+                    )
+                }
+            )
+        }
     }
 
     override suspend fun getTrendingOfTheWeek(): Result<BasicMovieResponse> {
-        return safeApiCall(
-            apiCall = {
-                movieApi.getTrendingOfTheWeek()
-            }
-        )
+        return withContext(ioDispatcher) {
+            safeApiCall(
+                apiCall = {
+                    movieApi.getTrendingOfTheWeek()
+                }
+            )
+        }
     }
 
     override suspend fun getPopularMoviesFromApi(): Result<BasicMovieResponse> {
-        return safeApiCall(
-            apiCall = {
-                movieApi.getPopularMovies()
-            }
-        )
+        return withContext(ioDispatcher) {
+            safeApiCall(
+                apiCall = {
+                    movieApi.getPopularMovies()
+                }
+            )
+        }
     }
 
     override suspend fun getPopularMoviesFromDb(page: Int): List<MovieDomainModel>? =
@@ -72,7 +81,7 @@ internal class MovieRepositoryImpl(
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.MONTH, 1)
         val date = calendar.time
-       return formatDate(date)
+        return formatDate(date)
     }
 
 }

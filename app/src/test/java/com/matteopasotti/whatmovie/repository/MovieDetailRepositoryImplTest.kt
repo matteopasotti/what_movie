@@ -5,12 +5,16 @@ import com.matteopasotti.whatmovie.api.MovieApiInterface
 import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
 import com.matteopasotti.whatmovie.model.response.MovieCreditResponse
+import com.matteopasotti.whatmovie.util.TestMainCoroutineRule
 import com.nhaarman.mockitokotlin2.whenever
 import junit.framework.Assert.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -19,6 +23,10 @@ import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
 class MovieDetailRepositoryImplTest {
+
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val coroutineRule = TestMainCoroutineRule()
 
     @Mock
     internal lateinit var movieApi: MovieApiInterface
@@ -33,13 +41,12 @@ class MovieDetailRepositoryImplTest {
 
     @Before
     fun setUp() {
-        repository = MovieDetailRepositoryImpl(movieApi)
+        repository = MovieDetailRepositoryImpl(movieApi, coroutineRule.testCoroutineDispatcher)
     }
 
     @Test
     fun `Given we call getRecommendedMovies,And We get a valid response from Api,Then we return Result Success`() {
-        runBlocking {
-
+        coroutineRule.runBlockingTest {
             whenever(
                 movieApi.getRecommendedMovies(
                     1, 1
@@ -60,7 +67,7 @@ class MovieDetailRepositoryImplTest {
 
     @Test
     fun `Given we call getRecommendedMovies,And we get an Error from Api,Then we return Result Error`() {
-        runBlocking {
+        coroutineRule.runBlockingTest {
             whenever(
                 movieApi.getRecommendedMovies(
                     1, 1
@@ -75,8 +82,7 @@ class MovieDetailRepositoryImplTest {
 
     @Test
     fun `Given we call getSimilarMovies,And We get a valid response from Api,Then we return Result Success`() {
-        runBlocking {
-
+        coroutineRule.runBlockingTest {
             whenever(
                 movieApi.getSimilarMovies(
                     1, 1
@@ -97,7 +103,7 @@ class MovieDetailRepositoryImplTest {
 
     @Test
     fun `Given we call getSimilarMovies,And we get an Error from Api,Then we return Result Error`() {
-        runBlocking {
+        coroutineRule.runBlockingTest {
             whenever(
                 movieApi.getSimilarMovies(
                     1, 1
@@ -113,7 +119,7 @@ class MovieDetailRepositoryImplTest {
     @Test
     fun `Given we call getMovieCredits,And We get a valid response from Api,Then we return Result Success`() {
         val creditResponseSuccess = MovieCreditResponse(11, listOf(DataFixtures.getActor()))
-        runBlocking {
+        coroutineRule.runBlockingTest {
             whenever(
                 movieApi.getMovieCredits(
                     1
@@ -134,7 +140,7 @@ class MovieDetailRepositoryImplTest {
 
     @Test
     fun `Given we call getMovieCredits,And We get an Error from Api,Then we return Result Error`() {
-        runBlocking {
+        coroutineRule.runBlockingTest {
             whenever(
                 movieApi.getMovieCredits(
                     1
@@ -152,7 +158,7 @@ class MovieDetailRepositoryImplTest {
     @Test
     fun `Given we call getMovieDetail,And We get a valid response from Api,Then we return Result Success`() {
         val movieDetailResponseSuccess = DataFixtures.getMovieDetailResponse()
-        runBlocking {
+        coroutineRule.runBlockingTest {
             whenever(
                 movieApi.getMovieDetail(
                     1
@@ -173,7 +179,7 @@ class MovieDetailRepositoryImplTest {
 
     @Test
     fun `Given we call getMovieDetail,And We get an error from Api,Then we return Result Error`() {
-        runBlocking {
+        coroutineRule.runBlockingTest {
             whenever(
                 movieApi.getMovieDetail(
                     1

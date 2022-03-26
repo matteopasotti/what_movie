@@ -5,12 +5,16 @@ import com.matteopasotti.whatmovie.api.MovieApiInterface
 import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.db.MovieDao
 import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
+import com.matteopasotti.whatmovie.util.TestMainCoroutineRule
 import com.nhaarman.mockitokotlin2.whenever
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -21,6 +25,10 @@ import java.util.*
 
 @RunWith(MockitoJUnitRunner::class)
 class MovieRepositoryImplTest {
+
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val coroutineRule = TestMainCoroutineRule()
 
     @Mock
     internal lateinit var movieApiInterface: MovieApiInterface
@@ -38,14 +46,17 @@ class MovieRepositoryImplTest {
 
     @Before
     fun setUp() {
-        repository = MovieRepositoryImpl(movieApi = movieApiInterface, movieDao = movieDao)
+        repository = MovieRepositoryImpl(
+            movieApi = movieApiInterface,
+            movieDao = movieDao,
+            ioDispatcher = coroutineRule.testCoroutineDispatcher
+        )
     }
 
     @Test
     fun `Given we call getMoviesInCinema,And We get a valid response from Api,Then we return Result Success`() {
 
-        runBlocking {
-
+        coroutineRule.runBlockingTest {
             whenever(
                 movieApiInterface.getMoviesInCinema(
                     page = 1,
@@ -68,7 +79,8 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `Given we call getMoviesInCinema,And we get an Error from Api,Then we return Result Error`() {
-        runBlocking {
+
+        coroutineRule.runBlockingTest {
             whenever(
                 movieApiInterface.getMoviesInCinema(
                     page = 1,
@@ -85,7 +97,7 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `Given we call getTrendingOfTheWeek,And we get a valid response from Api,Then we return Success`() {
-        runBlocking {
+        coroutineRule.runBlockingTest {
             whenever(movieApiInterface.getTrendingOfTheWeek()).thenReturn(
                 Response.success(
                     200,
@@ -102,7 +114,7 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `Given we call getTrendingOfTheWeek,And we get an error from Api,Then we return Error`() {
-        runBlocking {
+        coroutineRule.runBlockingTest {
             whenever(
                 movieApiInterface.getTrendingOfTheWeek()
             ).thenReturn(Response.error(400, errorContent.toResponseBody()))
@@ -111,12 +123,11 @@ class MovieRepositoryImplTest {
 
             assertTrue(actual is Result.Error)
         }
-
     }
 
     @Test
     fun `Given we call getPopularMoviesFromApi,And we get a valid response from Api,Then we return Success`() {
-        runBlocking {
+        coroutineRule.runBlockingTest {
             whenever(movieApiInterface.getPopularMovies()).thenReturn(
                 Response.success(
                     200,
@@ -133,7 +144,7 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `Given we call getPopularMoviesFromApi,And we get an error from Api,Then we return Error`() {
-        runBlocking {
+        coroutineRule.runBlockingTest {
             whenever(movieApiInterface.getPopularMovies()).thenReturn(
                 Response.error(400, errorContent.toResponseBody())
             )

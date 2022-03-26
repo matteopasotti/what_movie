@@ -48,27 +48,19 @@ class MovieDetailViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUs
     private fun getMovieDetails(movieId: Int) {
 
         viewModelScope.launch {
-            val recommendedMovieResponse = viewModelScope.async(Dispatchers.IO) {
-                getMovieDetailsUseCase.getRecommendedMovies(movieId)
-            }
+            val recommendedMovieResponse = getMovieDetailsUseCase.getRecommendedMovies(movieId)
 
-            val similarMoviesResponse = viewModelScope.async(Dispatchers.IO) {
-                getMovieDetailsUseCase.getSimilarMovies(movieId)
-            }
+            val similarMoviesResponse = getMovieDetailsUseCase.getSimilarMovies(movieId)
 
-            val creditResponse = viewModelScope.async(Dispatchers.IO) {
-                getMovieDetailsUseCase.getMovieCredits(movieId)
-            }
+            val creditResponse = getMovieDetailsUseCase.getMovieCredits(movieId)
 
-            val movieDetailResponse = viewModelScope.async(Dispatchers.IO) {
-                getMovieDetailsUseCase.getMovieDetail(movieId)
-            }
+            val movieDetailResponse = getMovieDetailsUseCase.getMovieDetail(movieId)
 
             updateUI(
-                recommendedMovieResponse.await(),
-                similarMoviesResponse.await(),
-                creditResponse.await(),
-                movieDetailResponse.await()
+                recommendedMovieResponse,
+                similarMoviesResponse,
+                creditResponse,
+                movieDetailResponse
             )
         }
 

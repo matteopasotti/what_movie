@@ -6,6 +6,7 @@ import com.matteopasotti.whatmovie.repository.MovieRepositoryImpl
 import com.matteopasotti.whatmovie.usecase.GetActorDetailsUseCase
 import com.matteopasotti.whatmovie.usecase.GetMovieDetailsUseCase
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val useCasesModule = module {
@@ -14,12 +15,19 @@ val useCasesModule = module {
         GetPopularMoviesUseCase(
             movieRepository = MovieRepositoryImpl(
                 movieApi = get(),
-                movieDao = get()
+                movieDao = get(),
+                ioDispatcher = get(named("IODispatcher"))
             )
         )
     }
 
-    single { GetMovieDetailsUseCase(movieDetailRepository = MovieDetailRepositoryImpl(movieApi = get())) }
+    single {
+        GetMovieDetailsUseCase(
+            movieDetailRepository = MovieDetailRepositoryImpl(
+                movieApi = get(),
+                ioDispatcher = get(named("IODispatcher")))
+            )
+    }
 
     single { GetActorDetailsUseCase(actorDetailRepository = ActorDetailRepositoryImpl(movieApi = get())) }
 }
