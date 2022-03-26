@@ -1,29 +1,18 @@
 package com.matteopasotti.whatmovie.view.ui.movie_detail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import com.matteopasotti.whatmovie.DataFixtures
-import com.matteopasotti.whatmovie.DomainFixtures
-import com.matteopasotti.whatmovie.api.Result
 import com.matteopasotti.whatmovie.model.toDomainModel
-import com.matteopasotti.whatmovie.usecase.GetMovieDetailsUseCase
+import com.matteopasotti.whatmovie.usecase.MovieDetailsUseCase
 import com.matteopasotti.whatmovie.usecase.MovieCreditsDomainModel
 import com.matteopasotti.whatmovie.usecase.MovieDetailVModel
 import com.matteopasotti.whatmovie.usecase.MoviesDomainModel
-import com.matteopasotti.whatmovie.util.CoroutineRule
 import com.matteopasotti.whatmovie.util.LiveDataTestUtil
 import com.matteopasotti.whatmovie.util.TestMainCoroutineRule
-import com.matteopasotti.whatmovie.view.ui.home.HomeGalleryMoviesViewModel
-import com.matteopasotti.whatmovie.view.ui.home.HomeMovieGalleryState
-import com.nhaarman.mockitokotlin2.given
-import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -43,7 +32,7 @@ class MovieDetailViewModelTest {
     private lateinit var viewModel: MovieDetailViewModel
 
     @Mock
-    internal lateinit var useCase: GetMovieDetailsUseCase
+    internal lateinit var useCase: MovieDetailsUseCase
 
     private fun createViewModel() {
         viewModel = MovieDetailViewModel(useCase)

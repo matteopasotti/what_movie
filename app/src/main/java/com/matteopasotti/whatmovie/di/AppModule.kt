@@ -14,7 +14,7 @@ val mainModule = module {
         )
     }
 
-    viewModel { MovieDetailViewModel(getMovieDetailsUseCase = get()) }
+    viewModel { MovieDetailViewModel(movieDetailsUseCase = get()) }
 
     viewModel { ActorDetailViewModel(get()) }
 }

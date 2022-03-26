@@ -4,8 +4,8 @@ import com.matteopasotti.whatmovie.repository.ActorDetailRepositoryImpl
 import com.matteopasotti.whatmovie.repository.MovieDetailRepositoryImpl
 import com.matteopasotti.whatmovie.repository.MovieRepositoryImpl
 import com.matteopasotti.whatmovie.usecase.GetActorDetailsUseCase
-import com.matteopasotti.whatmovie.usecase.GetMovieDetailsUseCase
 import com.matteopasotti.whatmovie.usecase.GetPopularMoviesUseCase
+import com.matteopasotti.whatmovie.usecase.MovieDetailsUseCase
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -22,7 +22,7 @@ val useCasesModule = module {
     }
 
     single {
-        GetMovieDetailsUseCase(
+        MovieDetailsUseCase(
             movieDetailRepository = MovieDetailRepositoryImpl(
                 movieApi = get(),
                 ioDispatcher = get(named("IODispatcher")))

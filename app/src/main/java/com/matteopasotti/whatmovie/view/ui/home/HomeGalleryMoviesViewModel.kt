@@ -34,13 +34,13 @@ class HomeGalleryMoviesViewModel(
 
     init {
         viewModelScope.launch {
-            val trending = useCase.getTrendingOfTheWeek()
+            val trending = async { useCase.getTrendingOfTheWeek() }
 
-            val popularMovies = useCase.getPopularMovies()
+            val popularMovies = async { useCase.getPopularMovies() }
 
-            val moviesAtCinema = useCase.getMoviesAtCinema()
+            val moviesAtCinema = async { useCase.getMoviesAtCinema() }
 
-            updateUI(popularMovies, moviesAtCinema, trending)
+            updateUI(popularMovies.await(), moviesAtCinema.await(), trending.await())
         }
     }
 
