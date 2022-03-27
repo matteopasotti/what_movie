@@ -11,7 +11,7 @@ interface MovieRepository {
 
     suspend fun getTrendingOfTheWeek(): Result<BasicMovieResponse>
 
-    suspend fun getPopularMoviesFromApi(): Result<BasicMovieResponse>
+    suspend fun getPopularMovies(): Result<BasicMovieResponse>
 
     suspend fun getPopularMoviesFromDb(page: Int): List<MovieDomainModel>?
 

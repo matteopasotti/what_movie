@@ -43,7 +43,7 @@ internal class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun getPopularMoviesFromApi(): Result<BasicMovieResponse> {
+    override suspend fun getPopularMovies(): Result<BasicMovieResponse> {
         return withContext(ioDispatcher) {
             safeApiCall(
                 apiCall = {

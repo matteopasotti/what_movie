@@ -11,6 +11,7 @@ import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert
 import org.junit.Before
@@ -44,9 +45,10 @@ class MovieDetailRepositoryImplTest {
         repository = MovieDetailRepositoryImpl(movieApi, coroutineRule.testCoroutineDispatcher)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getRecommendedMovies,And We get a valid response from Api,Then we return Result Success`() {
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(
                 movieApi.getRecommendedMovies(
                     1, 1
@@ -65,9 +67,10 @@ class MovieDetailRepositoryImplTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getRecommendedMovies,And we get an Error from Api,Then we return Result Error`() {
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(
                 movieApi.getRecommendedMovies(
                     1, 1
@@ -80,9 +83,10 @@ class MovieDetailRepositoryImplTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getSimilarMovies,And We get a valid response from Api,Then we return Result Success`() {
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(
                 movieApi.getSimilarMovies(
                     1, 1
@@ -101,9 +105,10 @@ class MovieDetailRepositoryImplTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getSimilarMovies,And we get an Error from Api,Then we return Result Error`() {
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(
                 movieApi.getSimilarMovies(
                     1, 1
@@ -116,10 +121,11 @@ class MovieDetailRepositoryImplTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getMovieCredits,And We get a valid response from Api,Then we return Result Success`() {
         val creditResponseSuccess = MovieCreditResponse(11, listOf(DataFixtures.getActor()))
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(
                 movieApi.getMovieCredits(
                     1
@@ -138,9 +144,10 @@ class MovieDetailRepositoryImplTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getMovieCredits,And We get an Error from Api,Then we return Result Error`() {
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(
                 movieApi.getMovieCredits(
                     1
@@ -155,10 +162,11 @@ class MovieDetailRepositoryImplTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getMovieDetail,And We get a valid response from Api,Then we return Result Success`() {
         val movieDetailResponseSuccess = DataFixtures.getMovieDetailResponse()
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(
                 movieApi.getMovieDetail(
                     1
@@ -177,9 +185,10 @@ class MovieDetailRepositoryImplTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getMovieDetail,And We get an error from Api,Then we return Result Error`() {
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(
                 movieApi.getMovieDetail(
                     1

@@ -20,7 +20,7 @@ fun ActorDetailResponse.toDomainModel(): ActorDetailDomainModel {
 
     var actorImage: ActorImage?
     images?.let { actorImages ->
-        actorImage = actorImages.profiles.maxBy { it.vote_average }
+        actorImage = actorImages.profiles.maxByOrNull { it.vote_average }
         image = "http://image.tmdb.org/t/p/original${actorImage?.file_path}"
     }
 

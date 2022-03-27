@@ -8,8 +8,8 @@ import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
 import com.matteopasotti.whatmovie.util.TestMainCoroutineRule
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -44,6 +44,7 @@ class MovieRepositoryImplTest {
     private val errorContent =
         "{\"status_code\":7,\"status_message\":\"Invalid API key: You must be granted a valid key.\",\"success\":false}"
 
+    @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
         repository = MovieRepositoryImpl(
@@ -53,10 +54,11 @@ class MovieRepositoryImplTest {
         )
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getMoviesInCinema,And We get a valid response from Api,Then we return Result Success`() {
 
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(
                 movieApiInterface.getMoviesInCinema(
                     page = 1,
@@ -77,10 +79,11 @@ class MovieRepositoryImplTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getMoviesInCinema,And we get an Error from Api,Then we return Result Error`() {
 
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(
                 movieApiInterface.getMoviesInCinema(
                     page = 1,
@@ -95,9 +98,10 @@ class MovieRepositoryImplTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getTrendingOfTheWeek,And we get a valid response from Api,Then we return Success`() {
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(movieApiInterface.getTrendingOfTheWeek()).thenReturn(
                 Response.success(
                     200,
@@ -112,9 +116,10 @@ class MovieRepositoryImplTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getTrendingOfTheWeek,And we get an error from Api,Then we return Error`() {
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(
                 movieApiInterface.getTrendingOfTheWeek()
             ).thenReturn(Response.error(400, errorContent.toResponseBody()))
@@ -125,9 +130,10 @@ class MovieRepositoryImplTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getPopularMoviesFromApi,And we get a valid response from Api,Then we return Success`() {
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(movieApiInterface.getPopularMovies()).thenReturn(
                 Response.success(
                     200,
@@ -136,20 +142,21 @@ class MovieRepositoryImplTest {
             )
 
             val expected = Result.Success(successResponse)
-            val actual = repository.getPopularMoviesFromApi()
+            val actual = repository.getPopularMovies()
 
             assertEquals(expected, actual)
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getPopularMoviesFromApi,And we get an error from Api,Then we return Error`() {
-        coroutineRule.runBlockingTest {
+        runTest {
             whenever(movieApiInterface.getPopularMovies()).thenReturn(
                 Response.error(400, errorContent.toResponseBody())
             )
 
-            val actual = repository.getPopularMoviesFromApi()
+            val actual = repository.getPopularMovies()
 
             assertTrue(actual is Result.Error)
         }

@@ -6,7 +6,9 @@ import com.matteopasotti.whatmovie.model.response.BasicMovieResponse
 import com.matteopasotti.whatmovie.model.toDomainModel
 import com.matteopasotti.whatmovie.repository.MovieRepository
 import com.nhaarman.mockitokotlin2.whenever
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -33,10 +35,11 @@ class GetPopularMoviesUseCaseTest {
         useCase = GetPopularMoviesUseCase(movieRepository)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getPopularMovies,And we receive some movies,Then we return the right object`() {
-        runBlocking {
-            whenever(movieRepository.getPopularMoviesFromApi()).thenReturn(
+        runTest {
+            whenever(movieRepository.getPopularMovies()).thenReturn(
                 Result.Success(successResponse)
             )
 
@@ -51,10 +54,11 @@ class GetPopularMoviesUseCaseTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getPopularMovies,And we receive an error,Then we return the right object`() {
-        runBlocking {
-            whenever(movieRepository.getPopularMoviesFromApi()).thenReturn(
+        runTest {
+            whenever(movieRepository.getPopularMovies()).thenReturn(
                 Result.Error("Error unable to retrieve movies")
             )
 
@@ -69,9 +73,10 @@ class GetPopularMoviesUseCaseTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getMoviesAtCinema,And we received some movies,Then we return the right object`() {
-        runBlocking {
+        runTest {
             whenever(movieRepository.getMoviesAtTheatre()).thenReturn(
                 Result.Success(successResponse)
             )
@@ -87,9 +92,10 @@ class GetPopularMoviesUseCaseTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getMoviesAtCinema,And we receive an error,Then we return the right object`() {
-        runBlocking {
+        runTest {
             whenever(movieRepository.getMoviesAtTheatre()).thenReturn(
                 Result.Error("Error unable to retrieve movies")
             )
@@ -105,9 +111,10 @@ class GetPopularMoviesUseCaseTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getTrendingOfTheWeek,And we receive some movies,Then we return the right object`() {
-        runBlocking {
+        runTest {
             whenever(movieRepository.getTrendingOfTheWeek()).thenReturn(
                 Result.Success(successResponse)
             )
@@ -123,9 +130,10 @@ class GetPopularMoviesUseCaseTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we call getTrendingOfTheWeek,And we receive an error,Then we return the right object`() {
-        runBlocking {
+        runTest {
             whenever(movieRepository.getTrendingOfTheWeek()).thenReturn(
                 Result.Error("Error unable to retrieve movies")
             )

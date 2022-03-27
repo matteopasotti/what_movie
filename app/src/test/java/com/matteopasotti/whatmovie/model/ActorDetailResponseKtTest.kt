@@ -15,7 +15,7 @@ class ActorDetailResponseKtTest {
 
         val actorDetail = DomainFixtures.getActorDetail(name = "Leonardo DiCaprio")
 
-        val image = actorDetail.images?.profiles?.maxBy { it.vote_average }
+        val image = actorDetail.images?.profiles?.maxByOrNull { it.vote_average }
 
         val expected = ActorDetailDomainModel(
             name = "Leonardo",

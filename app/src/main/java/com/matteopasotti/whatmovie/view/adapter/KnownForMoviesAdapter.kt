@@ -26,13 +26,14 @@ class KnownForMoviesAdapter(val context: Context, private val delegate: MovieVie
     }
 
     override fun onBindViewHolder(viewHolder: BaseViewHolder, position: Int) {
-        val data = getItemByPosition(position)
+        val index = viewHolder.adapterPosition
+        val data = getItemByPosition(index)
 
         try {
             viewHolder.bindData(data)
             val animation : Animation = AnimationUtils.loadAnimation(viewHolder.itemView.context , if (position > lastPosition) R.anim.right_to_left  else R.anim.left_to_right)
             viewHolder.itemView.startAnimation(animation)
-            lastPosition = position
+            lastPosition = index
         } catch (e: Exception) {
             e.printStackTrace()
         }
