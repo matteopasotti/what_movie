@@ -40,7 +40,7 @@ class MovieViewHolder(val context: Context, view: View, private val delegate: De
                     .load(movie.poster_path)
                     .thumbnail(0.25f)
                     .centerCrop()
-                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(cd)
                     .override(300, 400)
                     .into(binding!!.movieCover)

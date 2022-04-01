@@ -12,6 +12,7 @@ import com.matteopasotti.whatmovie.view.ui.home.HomeMovieGalleryState
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -41,13 +42,14 @@ class HomeGalleryMoviesViewModelTest {
         viewModel = HomeGalleryMoviesViewModel(useCase)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we open Home Gallery screen,And we fetch all the movies,And we receive all valid responses,Then we generate the right State`() {
         val movie1 = DataFixtures.getMovie(id = 1).toDomainModel()
         val movie2 = DataFixtures.getMovie(id = 2).toDomainModel()
         val movie3 = DataFixtures.getMovie(id = 3).toDomainModel()
 
-        coroutineRule.testCoroutineDispatcher.runBlockingTest {
+        runTest {
             // Given
             whenever(useCase.getMoviesAtCinema()).thenReturn(MoviesDomainModel(
                 movies = listOf(movie1),
@@ -77,12 +79,13 @@ class HomeGalleryMoviesViewModelTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun `Given we open Home Gallery screen,And we fetch all the movies,And we receive an error for at least one of them,Then we generate the right State`() {
         val movie1 = DataFixtures.getMovie(id = 1).toDomainModel()
         val movie3 = DataFixtures.getMovie(id = 3).toDomainModel()
 
-        coroutineRule.testCoroutineDispatcher.runBlockingTest {
+        runTest {
             // Given
             whenever(useCase.getMoviesAtCinema()).thenReturn(MoviesDomainModel(
                 movies = listOf(movie1),

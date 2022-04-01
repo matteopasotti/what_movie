@@ -61,13 +61,13 @@ class HomeMoviesFragment : Fragment(), MovieViewHolder.Delegate {
             adapter = carouselAdapter
         }
 
-        moviesAdapter = MoviesAdapter(context!!, this)
+        moviesAdapter = MoviesAdapter(requireContext(), this)
         popular_movies_layout.setCustomLabelListView(
             getString(R.string.popular_movies),
             moviesAdapter
         )
 
-        moviesCinemaAdapter = MoviesAdapter(context!!, this)
+        moviesCinemaAdapter = MoviesAdapter(requireContext(), this)
         movies_cinema_layout.setCustomLabelListView(
             getString(R.string.in_theaters),
             moviesCinemaAdapter
