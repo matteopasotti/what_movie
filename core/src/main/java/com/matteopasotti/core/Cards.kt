@@ -31,8 +31,7 @@ fun MovieCard(
         MovieImage(
             modifier = Modifier
                 .fillMaxSize(),
-            imageUrl = imageUrl,
-            placeholder = R.drawable.venom_cover
+            imageUrl = imageUrl
         )
     }
 

@@ -1,5 +1,6 @@
 package com.matteopasotti.core
 
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -14,9 +15,9 @@ import com.google.accompanist.pager.rememberPagerState
 fun AutoSlider(images: List<String>, onItemClicked: () -> Unit) {
     val pagerState = rememberPagerState()
 
-    HorizontalPager(count = images.size, state = pagerState) { page ->
+    HorizontalPager(count = images.size, state = pagerState, modifier = Modifier.height(300.dp).fillMaxWidth()) { page ->
         MovieImage(modifier = Modifier
-            .height(300.dp)
+            .fillMaxHeight()
             .fillMaxWidth(), imageUrl = images[page])
     }
 

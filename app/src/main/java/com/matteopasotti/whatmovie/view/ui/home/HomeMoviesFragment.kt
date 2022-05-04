@@ -6,21 +6,27 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.fontResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import com.matteopasotti.core.AutoSlider
 import com.matteopasotti.core.MovieCard
+import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.compose.WhatMovieComposeTheme
 import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
@@ -77,22 +83,32 @@ class HomeMoviesFragment : Fragment(), MovieViewHolder.Delegate {
     fun HomeMoviesScreen(
         state: HomeMovieGalleryState.Content
     ) {
-        Column(){
-            //AutoSlider(state.trendingMovies.map { it.poster_path }) {}
-            MoviesList(state.popularMovies)
-            MoviesList(state.moviesAtCinema)
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            AutoSlider(state.trendingMovies.map { it.poster_path }) {}
+            MoviesList("Popular Movies", state.popularMovies)
+            Spacer(modifier = Modifier
+                .height(16.dp)
+                .fillMaxWidth())
+            MoviesList("At Cinema", state.moviesAtCinema)
         }
     }
 
     @Composable
-    fun MoviesList(movies: List<MovieDomainModel>) {
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            items(movies) {
-                MovieCard(imageUrl = it.poster_path) {}
+    fun MoviesList(label: String, movies: List<MovieDomainModel>) {
+        Column {
+            Text(text = label, color = Color.White, style = MaterialTheme.typography.body1)
+            Spacer(modifier = Modifier
+                .height(16.dp)
+                .fillMaxWidth())
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                items(movies) {
+                    MovieCard(imageUrl = it.poster_path) {}
+                }
             }
         }
+        
     }
 
 
