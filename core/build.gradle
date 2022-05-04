@@ -26,6 +26,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose
+    }
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -71,4 +77,28 @@ dependencies {
 
     // GSON
     api "com.google.code.gson:gson:2.9.0"
+
+    // COMPOSE
+    api("androidx.compose.ui:ui:$compose")
+    // Tooling support (Previews, etc.)
+    api("androidx.compose.ui:ui-tooling:$compose")
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    api("androidx.compose.foundation:foundation:$compose")
+    // Material Design
+    api("androidx.compose.material:material:$compose")
+    // Material design icons
+    api("androidx.compose.material:material-icons-core:$compose")
+    api("androidx.compose.material:material-icons-extended:$compose")
+    // Integration with observables
+    api("androidx.compose.runtime:runtime-livedata:$compose")
+    api("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+
+    implementation "com.google.accompanist:accompanist-pager:0.19.0"
+
+
+    // Image Loading
+    api "io.coil-kt:coil-compose:1.4.0"
+
+    // UI Tests
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose")
 }

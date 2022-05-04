@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
+
+apply plugin: 'kotlin-parcelize'
 
 apply plugin: 'kotlinx-serialization'
 
@@ -43,12 +43,16 @@ android {
         unitTests.includeAndroidResources = true
     }
 
-    androidExtensions {
-        experimental = true
-    }
-
     dataBinding {
         enabled = true
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose
     }
 
     compileOptions {

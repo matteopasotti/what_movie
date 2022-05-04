@@ -2,13 +2,17 @@ package com.matteopasotti.whatmovie.view.ui.movie_detail
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
-import android.widget.ImageView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.matteopasotti.whatmovie.R
 import com.matteopasotti.whatmovie.databinding.ActivityMovieDetailBinding
 import com.matteopasotti.whatmovie.model.ActorDomainModel
@@ -17,25 +21,16 @@ import com.matteopasotti.whatmovie.model.MovieDomainModel
 import com.matteopasotti.whatmovie.view.adapter.MovieCastAdapter
 import com.matteopasotti.whatmovie.view.adapter.MovieGenresAdapter
 import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
-import com.matteopasotti.whatmovie.view.custom.NoScrollHorizontalLayoutManager
+import com.matteopasotti.whatmovie.view.custom.*
 import com.matteopasotti.whatmovie.view.ui.actor_detail.ActorDetailActivity
 import com.matteopasotti.whatmovie.view.ui.youtube.YoutubeFragment
 import com.matteopasotti.whatmovie.view.viewholder.MovieCastViewHolder
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
-import kotlinx.android.synthetic.main.activity_movie_detail.*
-import kotlinx.android.synthetic.main.movie_cast_item_layout.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
     MovieCastViewHolder.Delegate {
-
-    private val binding by lazy {
-        DataBindingUtil.setContentView<ActivityMovieDetailBinding>(
-            this,
-            R.layout.activity_movie_detail
-        )
-    }
 
     private val viewModel: MovieDetailViewModel by viewModel()
 
@@ -44,17 +39,43 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
     private lateinit var castAdapter: MovieCastAdapter
     private lateinit var genresAdapter: MovieGenresAdapter
 
+    private lateinit var youtubeContainer: FrameLayout
+    private lateinit var castLayout: CustomLabelListView
+    private lateinit var similarMoviesLayout: CustomLabelListView
+    private lateinit var recommendedLayout: CustomLabelListView
+    private lateinit var movieDuration: TextView
+    private lateinit var movieDetailLayout: LinearLayout
+    private lateinit var playButton: ImageView
+    private lateinit var ratingView: RatingView
+    private lateinit var genreList: NoScrollRecyclerView
+    private lateinit var fabBackButton: CustomFabButton
+    private lateinit var fabCheckbox: CheckBox
+    private lateinit var backdropImage: AppCompatImageView
+
     companion object {
         const val MOVIE = "movie"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_movie_detail)
+
+        youtubeContainer = findViewById(R.id.youtube_container)
+        castLayout = findViewById(R.id.cast_layout)
+        similarMoviesLayout = findViewById(R.id.similar_movies_layout)
+        recommendedLayout = findViewById(R.id.recommended_layout)
+        movieDuration = findViewById(R.id.movie_duration)
+        movieDetailLayout = findViewById(R.id.movie_detail_layout)
+        playButton = findViewById(R.id.play_button)
+        ratingView = findViewById(R.id.rating_view)
+        genreList = findViewById(R.id.genre_list)
+        fabBackButton = findViewById(R.id.fab_back_button)
+        fabCheckbox = findViewById(R.id.fab_checkbox)
+        backdropImage = findViewById(R.id.backdrop_image)
 
         if (savedInstanceState == null) {
             viewModel.movie = intent.getParcelableExtra(MOVIE)
             viewModel.movie?.let {
-                binding.movie = viewModel.movie
                 initView()
                 observeViewModel()
             }
@@ -78,14 +99,14 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
                 is MovieDetailState.Content -> {
                     updateView(state.moviesDetail)
                     //cast
-                    binding.castLayout.addItems(state.cast)
-                    binding.castLayout.visibility = View.VISIBLE
+                    castLayout.addItems(state.cast)
+                    castLayout.visibility = View.VISIBLE
                     //similar movies
-                    binding.similarMoviesLayout.addItems(state.similarMovies)
-                    binding.similarMoviesLayout.visibility = View.VISIBLE
+                    similarMoviesLayout.addItems(state.similarMovies)
+                    similarMoviesLayout.visibility = View.VISIBLE
                     //recommended movies
-                    binding.recommendedLayout.addItems(state.recommendedMovies)
-                    binding.recommendedLayout.visibility = View.VISIBLE
+                    recommendedLayout.addItems(state.recommendedMovies)
+                    recommendedLayout.visibility = View.VISIBLE
                 }
             }
 
@@ -95,44 +116,57 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
     }
 
     private fun updateView(movieDetail: MovieDetailDomainModel) {
-        viewModel.movieDetail = movieDetail
-        binding.movieDuration.text = movieDetail.duration
-        binding.movieDetailLayout.detail = movieDetail
-        binding.playButton.visibility =
-            if (movieDetail.videos.isNotEmpty()) View.VISIBLE else View.GONE
-        binding.ratingView.setRatingScore(movieDetail.vote_average)
-        genresAdapter.updateItems(movieDetail.genres)
+//        viewModel.movieDetail = movieDetail
+//        movieDuration.text = movieDetail.duration
+//        setBackdropImage(movieDetail.backdrop_path)
+//        movieDetailLayout.detail = movieDetail
+//        playButton.visibility =
+//            if (movieDetail.videos.isNotEmpty()) View.VISIBLE else View.GONE
+//        ratingView.setRatingScore(movieDetail.vote_average)
+//        genresAdapter.updateItems(movieDetail.genres)
+    }
+
+    private fun setBackdropImage(imageUrl: String) {
+        val cd = ColorDrawable(this.resources.getColor(R.color.grey, null))
+
+        Glide
+            .with(this)
+            .load(imageUrl)
+            .centerCrop()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .placeholder(cd)
+            .into(backdropImage)
     }
 
 
     private fun initView() {
 
         genresAdapter = MovieGenresAdapter()
-        binding.genreList.layoutManager = NoScrollHorizontalLayoutManager(this)
-        binding.genreList.adapter = genresAdapter
+        genreList.layoutManager = NoScrollHorizontalLayoutManager(this)
+        genreList.adapter = genresAdapter
 
-        binding.fabBackButton.setOnClickListener {
+        fabBackButton.setOnClickListener {
             onBackPressed()
         }
 
         recommendedMoviesAdapter = MoviesAdapter(this, this)
-        binding.recommendedLayout.setCustomLabelListView(
+        recommendedLayout.setCustomLabelListView(
             getString(R.string.recommended_movies),
             recommendedMoviesAdapter
         )
 
         similarMoviesAdapter = MoviesAdapter(this, this)
-        binding.similarMoviesLayout.setCustomLabelListView(
+        similarMoviesLayout.setCustomLabelListView(
             getString(R.string.similar_movies),
             similarMoviesAdapter
         )
 
         castAdapter = MovieCastAdapter(this)
-        binding.castLayout.setCustomLabelListView(getString(R.string.the_cast), castAdapter)
+        castLayout.setCustomLabelListView(getString(R.string.the_cast), castAdapter)
 
-        binding.playButton.setOnClickListener {
+        playButton.setOnClickListener {
 
-            youtube_container.visibility = View.VISIBLE
+            youtubeContainer.visibility = View.VISIBLE
 
             val youtubeFragment =
                 YoutubeFragment.newInstance(viewModel.movieDetail?.videos?.first()?.key!!)
@@ -142,7 +176,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
 
         }
 
-        binding.fabCheckbox.setOnCheckedChangeListener { _, isChecked ->
+        fabCheckbox.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
                 //viewModel.addFavCharacter(viewModel.character)
             } else {
@@ -160,7 +194,7 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
 
     override fun onActorClicked(actor: ActorDomainModel, view: View) {
 
-        val img = view.actor_image as ImageView
+        val img = view.findViewById<ImageView>(R.id.actor_image)
 
         val options = ActivityOptions.makeSceneTransitionAnimation(
             this,

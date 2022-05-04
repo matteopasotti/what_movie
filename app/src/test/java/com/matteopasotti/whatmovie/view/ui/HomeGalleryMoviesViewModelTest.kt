@@ -10,11 +10,16 @@ import com.matteopasotti.whatmovie.util.TestMainCoroutineRule
 import com.matteopasotti.whatmovie.view.ui.home.HomeGalleryMoviesViewModel
 import com.matteopasotti.whatmovie.view.ui.home.HomeMovieGalleryState
 import com.nhaarman.mockitokotlin2.whenever
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,17 +30,30 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class HomeGalleryMoviesViewModelTest {
 
-    @get:Rule
-    var rule = InstantTaskExecutorRule()
-
     @ExperimentalCoroutinesApi
     @get:Rule
     val coroutineRule = TestMainCoroutineRule()
+
+    @get:Rule
+    var instantExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: HomeGalleryMoviesViewModel
 
     @Mock
     internal lateinit var useCase: GetPopularMoviesUseCase
+
+    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
+
+    @Before
+    fun setUp() {
+        Dispatchers.setMain(mainThreadSurrogate)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain() // reset the main dispatcher to the original Main dispatcher
+        mainThreadSurrogate.close()
+    }
 
 
     private fun createViewModel() {

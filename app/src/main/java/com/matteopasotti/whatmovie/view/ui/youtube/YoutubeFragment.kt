@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment
 import com.matteopasotti.whatmovie.R
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
-import kotlinx.android.synthetic.main.container_youtube_view.*
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 class YoutubeFragment : Fragment() {
+
+    private lateinit var youtubeView: YouTubePlayerView
 
     companion object {
 
@@ -35,6 +37,8 @@ class YoutubeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        youtubeView = view.findViewById(R.id.youtubeView)
 
         lifecycle.addObserver(youtubeView)
         val videoKey = arguments?.getString(VIDEO_KEY)

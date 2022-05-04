@@ -3,12 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/compose-model-1651325779091.xml" value="0.28055555555555556" />
+        <entry key="../../../../../layout/compose-model-1651325954883.xml" value="0.75" />
+        <entry key="../../../../../layout/compose-model-1651349862016.xml" value="0.9" />
+        <entry key="../../../../../layout/custom_preview.xml" value="0.328125" />
         <entry key="app/src/main/res/drawable/heart_icon.xml" value="0.1125" />
         <entry key="app/src/main/res/drawable/ic_heart_full_vector.xml" value="0.1125" />
+        <entry key="app/src/main/res/layout/about_movie_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_actor_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_movie_detail.xml" value="0.1580547112462006" />
+        <entry key="app/src/main/res/layout/carousel_image_item.xml" value="0.24954710144927536" />
+        <entry key="app/src/main/res/layout/container_youtube_view.xml" value="0.11068895643363728" />
         <entry key="app/src/main/res/layout/custom_actor_motion_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home_movies.xml" value="0.2477355072463768" />
+        <entry key="app/src/main/res/layout/movie_cast_item_layout.xml" value="0.1033434650455927" />
+        <entry key="app/src/main/res/layout/movie_item_home.xml" value="0.13905775075987842" />
+        <entry key="app/src/main/res/layout/movie_item_home_layout.xml" value="0.13905775075987842" />
+        <entry key="app/src/main/res/layout/movie_vertical_layout.xml" value="0.1" />
       </map>
     </option>
   </component>
