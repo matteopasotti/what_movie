@@ -14,7 +14,7 @@ data class Actor(
 )
 
 fun Actor.toDomainModel(): ActorDomainModel {
-    val image : String = "https://image.tmdb.org/t/p/w185${this.profile_path}"
+    val image = "https://image.tmdb.org/t/p/w185${this.profile_path}"
     return ActorDomainModel(this.id ,this.name, image)
 }
 
@@ -22,5 +22,5 @@ fun Actor.toDomainModel(): ActorDomainModel {
 data class ActorDomainModel(
     val id: Int,
     val name: String,
-    val profileImage: String?
+    val profileImage: String
 ) : Parcelable

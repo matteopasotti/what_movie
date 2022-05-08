@@ -2,55 +2,51 @@ package com.matteopasotti.whatmovie.view.ui.movie_detail
 
 import android.app.ActivityOptions
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
-import android.widget.*
+import android.widget.ImageView
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import com.matteopasotti.core.BackButton
+import com.matteopasotti.core.CircleImage
+import com.matteopasotti.core.MovieCard
+import com.matteopasotti.core.MovieImage
 import com.matteopasotti.whatmovie.R
-import com.matteopasotti.whatmovie.databinding.ActivityMovieDetailBinding
+import com.matteopasotti.whatmovie.compose.Pink
+import com.matteopasotti.whatmovie.compose.Typography
+import com.matteopasotti.whatmovie.compose.WhatMovieComposeTheme
+import com.matteopasotti.whatmovie.compose.ui.AboutLayout
+import com.matteopasotti.whatmovie.compose.ui.IconText
+import com.matteopasotti.whatmovie.compose.ui.MoviesList
+import com.matteopasotti.whatmovie.compose.ui.RatingView
 import com.matteopasotti.whatmovie.model.ActorDomainModel
-import com.matteopasotti.whatmovie.model.MovieDetailDomainModel
 import com.matteopasotti.whatmovie.model.MovieDomainModel
-import com.matteopasotti.whatmovie.view.adapter.MovieCastAdapter
-import com.matteopasotti.whatmovie.view.adapter.MovieGenresAdapter
-import com.matteopasotti.whatmovie.view.adapter.MoviesAdapter
-import com.matteopasotti.whatmovie.view.custom.*
 import com.matteopasotti.whatmovie.view.ui.actor_detail.ActorDetailActivity
-import com.matteopasotti.whatmovie.view.ui.youtube.YoutubeFragment
 import com.matteopasotti.whatmovie.view.viewholder.MovieCastViewHolder
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
+class MovieDetailActivity : AppCompatActivity(),
     MovieCastViewHolder.Delegate {
 
     private val viewModel: MovieDetailViewModel by viewModel()
-
-    private lateinit var recommendedMoviesAdapter: MoviesAdapter
-    private lateinit var similarMoviesAdapter: MoviesAdapter
-    private lateinit var castAdapter: MovieCastAdapter
-    private lateinit var genresAdapter: MovieGenresAdapter
-
-    private lateinit var youtubeContainer: FrameLayout
-    private lateinit var castLayout: CustomLabelListView
-    private lateinit var similarMoviesLayout: CustomLabelListView
-    private lateinit var recommendedLayout: CustomLabelListView
-    private lateinit var movieDuration: TextView
-    private lateinit var movieDetailLayout: LinearLayout
-    private lateinit var playButton: ImageView
-    private lateinit var ratingView: RatingView
-    private lateinit var genreList: NoScrollRecyclerView
-    private lateinit var fabBackButton: CustomFabButton
-    private lateinit var fabCheckbox: CheckBox
-    private lateinit var backdropImage: AppCompatImageView
 
     companion object {
         const val MOVIE = "movie"
@@ -58,135 +54,168 @@ class MovieDetailActivity : AppCompatActivity(), MovieViewHolder.Delegate,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_detail)
+        setContent {
+            WhatMovieComposeTheme {
+                intent.getParcelableExtra<MovieDomainModel>(MOVIE)?.let { movie ->
+                    viewModel.initScreen(movie)
+                    val state by viewModel.viewState.observeAsState(initial = MovieDetailState.Idle)
+                    when (state) {
+                        is MovieDetailState.Idle -> {
+                            //progress.visibility = View.VISIBLE
+                        }
+                        is MovieDetailState.Error -> {
+                            //progress.visibility = View.GONE
+                        }
+                        is MovieDetailState.Content -> {
+                            MovieDetailScreen(state as MovieDetailState.Content)
+                        }
+                    }
+                }
 
-        youtubeContainer = findViewById(R.id.youtube_container)
-        castLayout = findViewById(R.id.cast_layout)
-        similarMoviesLayout = findViewById(R.id.similar_movies_layout)
-        recommendedLayout = findViewById(R.id.recommended_layout)
-        movieDuration = findViewById(R.id.movie_duration)
-        movieDetailLayout = findViewById(R.id.movie_detail_layout)
-        playButton = findViewById(R.id.play_button)
-        ratingView = findViewById(R.id.rating_view)
-        genreList = findViewById(R.id.genre_list)
-        fabBackButton = findViewById(R.id.fab_back_button)
-        fabCheckbox = findViewById(R.id.fab_checkbox)
-        backdropImage = findViewById(R.id.backdrop_image)
-
-        if (savedInstanceState == null) {
-            viewModel.movie = intent.getParcelableExtra(MOVIE)
-            viewModel.movie?.let {
-                initView()
-                observeViewModel()
             }
-
         }
 
     }
 
-    private fun observeViewModel() {
+    @Composable
+    fun MovieDetailScreen(content: MovieDetailState.Content) {
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            viewModel.movie?.let { movie ->
+                HeaderMovieDetail(
+                    vote = content.moviesDetail.vote_average,
+                    duration = content.moviesDetail.duration,
+                    movie.title!!,
+                    movie.backdrop_path)
 
-        viewModel.viewState.observe(this, Observer { state ->
-            when(state) {
-                is MovieDetailState.Idle -> {
+                Spacer(
+                    modifier = Modifier
+                        .height(20.dp)
+                        .fillMaxWidth()
+                )
 
+                CastLayout(cast = content.cast) {}
+                Spacer(
+                    modifier = Modifier
+                        .height(20.dp)
+                        .fillMaxWidth()
+                )
+                AboutLayout(movieDetail = content.moviesDetail)
+                Spacer(
+                    modifier = Modifier
+                        .height(16.dp)
+                        .fillMaxWidth()
+                )
+                MoviesList("Similar Movies", content.similarMovies) {
+                    onItemClick(it)
                 }
-
-                is MovieDetailState.Error -> {
-
-                }
-
-                is MovieDetailState.Content -> {
-                    updateView(state.moviesDetail)
-                    //cast
-                    castLayout.addItems(state.cast)
-                    castLayout.visibility = View.VISIBLE
-                    //similar movies
-                    similarMoviesLayout.addItems(state.similarMovies)
-                    similarMoviesLayout.visibility = View.VISIBLE
-                    //recommended movies
-                    recommendedLayout.addItems(state.recommendedMovies)
-                    recommendedLayout.visibility = View.VISIBLE
+                Spacer(
+                    modifier = Modifier
+                        .height(16.dp)
+                        .fillMaxWidth()
+                )
+                MoviesList("Recommended Movies", content.recommendedMovies) {
+                    onItemClick(it)
                 }
             }
 
-        })
-
-        viewModel.getData()
-    }
-
-    private fun updateView(movieDetail: MovieDetailDomainModel) {
-//        viewModel.movieDetail = movieDetail
-//        movieDuration.text = movieDetail.duration
-//        setBackdropImage(movieDetail.backdrop_path)
-//        movieDetailLayout.detail = movieDetail
-//        playButton.visibility =
-//            if (movieDetail.videos.isNotEmpty()) View.VISIBLE else View.GONE
-//        ratingView.setRatingScore(movieDetail.vote_average)
-//        genresAdapter.updateItems(movieDetail.genres)
-    }
-
-    private fun setBackdropImage(imageUrl: String) {
-        val cd = ColorDrawable(this.resources.getColor(R.color.grey, null))
-
-        Glide
-            .with(this)
-            .load(imageUrl)
-            .centerCrop()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .placeholder(cd)
-            .into(backdropImage)
-    }
-
-
-    private fun initView() {
-
-        genresAdapter = MovieGenresAdapter()
-        genreList.layoutManager = NoScrollHorizontalLayoutManager(this)
-        genreList.adapter = genresAdapter
-
-        fabBackButton.setOnClickListener {
-            onBackPressed()
         }
+    }
 
-        recommendedMoviesAdapter = MoviesAdapter(this, this)
-        recommendedLayout.setCustomLabelListView(
-            getString(R.string.recommended_movies),
-            recommendedMoviesAdapter
+    @Composable
+    private fun HeaderMovieDetail(vote: Float, duration: String, title: String, img: String?) {
+        ConstraintLayout(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+
+            val (backdropImage, titleRef, rating, backBtn, durationRef) = createRefs()
+
+
+            MovieImage(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .aspectRatio(1f)
+                    .constrainAs(backdropImage) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                        width = Dimension.fillToConstraints
+                    }, imageUrl = img.orEmpty()
+            )
+
+            BackButton(modifier = Modifier.constrainAs(backBtn) {
+                start.linkTo(parent.start, 16.dp)
+                top.linkTo(parent.top, 16.dp)
+            }) {
+                onBackPressed()
+            }
+
+            Text(
+                text = title,
+                color = Color.White,
+                style = Typography.h1,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .constrainAs(titleRef) {
+                        end.linkTo(rating.start)
+                        start.linkTo(parent.start, 16.dp)
+                        top.linkTo(rating.top)
+                        width = Dimension.fillToConstraints
+                    })
+
+            RatingView(
+                rating = vote,
+                modifier = Modifier.constrainAs(rating) {
+                    end.linkTo(parent.end, 16.dp)
+                    bottom.linkTo(backdropImage.bottom, 16.dp)
+                })
+
+            IconText(
+                text = duration,
+                drawable = R.drawable.ic_clock,
+                textColor = Pink,
+                modifier = Modifier.constrainAs(durationRef) {
+                    top.linkTo(titleRef.bottom)
+                    start.linkTo(parent.start, 16.dp)
+                    bottom.linkTo(parent.bottom, 3.dp)
+                }
+            )
+
+//                    BlurryBackground(modifier = Modifier
+//                        .fillMaxSize()
+//                        .constrainAs(blurryBg) {
+//                            start.linkTo(parent.start)
+//                            top.linkTo(parent.top)
+//                            end.linkTo(parent.end)
+//                            bottom.linkTo(backdropImage.bottom)
+//                        })
+
+
+        }
+    }
+
+    @Composable
+    private fun CastLayout(cast: List<ActorDomainModel>, onActorClicked: (ActorDomainModel) -> Unit) {
+        Text(text = "The Cast", color = Color.White, style = Typography.body1, modifier = Modifier.padding(start = 16.dp))
+        Spacer(
+            modifier = Modifier
+                .height(16.dp)
+                .fillMaxWidth()
         )
-
-        similarMoviesAdapter = MoviesAdapter(this, this)
-        similarMoviesLayout.setCustomLabelListView(
-            getString(R.string.similar_movies),
-            similarMoviesAdapter
-        )
-
-        castAdapter = MovieCastAdapter(this)
-        castLayout.setCustomLabelListView(getString(R.string.the_cast), castAdapter)
-
-        playButton.setOnClickListener {
-
-            youtubeContainer.visibility = View.VISIBLE
-
-            val youtubeFragment =
-                YoutubeFragment.newInstance(viewModel.movieDetail?.videos?.first()?.key!!)
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container_movie_detail, youtubeFragment)
-                .commit()
-
-        }
-
-        fabCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked) {
-                //viewModel.addFavCharacter(viewModel.character)
-            } else {
-                //viewModel.removeFavCharacter(viewModel.character)
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(start = 16.dp)
+        ) {
+            items(cast) {
+                CircleImage(imageUrl = it.profileImage)
             }
         }
-
     }
 
-    override fun onItemClick(movie: MovieDomainModel) {
+
+    private fun onItemClick(movie: MovieDomainModel) {
         val intent = Intent(this, MovieDetailActivity::class.java)
         intent.putExtra(MovieDetailActivity.MOVIE, movie as Parcelable)
         startActivity(intent)

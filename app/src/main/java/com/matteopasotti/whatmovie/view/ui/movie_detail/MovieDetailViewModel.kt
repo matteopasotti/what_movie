@@ -44,6 +44,11 @@ class MovieDetailViewModel(private val movieDetailsUseCase: MovieDetailsUseCase)
 
     }
 
+    fun initScreen(movie: MovieDomainModel) {
+        this.movie = movie
+        getMovieDetails(movie.id)
+    }
+
     private fun getMovieDetails(movieId: Int) {
 
         viewModelScope.launch {

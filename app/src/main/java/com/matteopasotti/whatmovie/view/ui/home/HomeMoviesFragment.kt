@@ -6,6 +6,9 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -23,20 +26,29 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.fontResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.matteopasotti.core.AutoSlider
 import com.matteopasotti.core.MovieCard
 import com.matteopasotti.whatmovie.R
-import com.matteopasotti.whatmovie.compose.WhatMovieComposeTheme
+import com.matteopasotti.whatmovie.compose.*
+import com.matteopasotti.whatmovie.compose.ui.MoviesList
 import com.matteopasotti.whatmovie.model.MovieDomainModel
+import com.matteopasotti.whatmovie.view.adapter.CarouselAdapter
+import com.matteopasotti.whatmovie.view.custom.AutoScrollableRecyclerView
 import com.matteopasotti.whatmovie.view.ui.movie_detail.MovieDetailActivity
 import com.matteopasotti.whatmovie.view.viewholder.MovieViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class HomeMoviesFragment : Fragment(), MovieViewHolder.Delegate {
+class HomeMoviesFragment : Fragment() {
 
     private val viewModel: HomeGalleryMoviesViewModel by viewModel()
+
+    private val carouselAdapter = CarouselAdapter(::carouselItemClicked)
 
     companion object {
 
@@ -83,38 +95,54 @@ class HomeMoviesFragment : Fragment(), MovieViewHolder.Delegate {
     fun HomeMoviesScreen(
         state: HomeMovieGalleryState.Content
     ) {
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            AutoSlider(state.trendingMovies.map { it.poster_path }) {}
-            MoviesList("Popular Movies", state.popularMovies)
-            Spacer(modifier = Modifier
-                .height(16.dp)
-                .fillMaxWidth())
-            MoviesList("At Cinema", state.moviesAtCinema)
-        }
-    }
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .background(color = primaryColor)
+        ) {
+            AndroidView(factory = { ctx ->
+                AutoScrollableRecyclerView(ctx).apply {
+                    layoutParams = RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                    layoutManager = LinearLayoutManager(ctx).apply {
+                        orientation = LinearLayoutManager.HORIZONTAL
+                    }
+                    adapter = carouselAdapter
+                    PagerSnapHelper().attachToRecyclerView(this)
 
-    @Composable
-    fun MoviesList(label: String, movies: List<MovieDomainModel>) {
-        Column {
-            Text(text = label, color = Color.White, style = MaterialTheme.typography.body1)
-            Spacer(modifier = Modifier
-                .height(16.dp)
-                .fillMaxWidth())
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                items(movies) {
-                    MovieCard(imageUrl = it.poster_path) {}
                 }
+            })
+
+            carouselAdapter.setItems(state.trendingMovies)
+
+            Spacer(
+                modifier = Modifier
+                    .height(16.dp)
+                    .fillMaxWidth()
+            )
+            MoviesList("Popular Movies", state.popularMovies) {
+                onMovieClicked(it)
+            }
+            Spacer(
+                modifier = Modifier
+                    .height(16.dp)
+                    .fillMaxWidth()
+            )
+            MoviesList("At Cinema", state.moviesAtCinema) {
+                onMovieClicked(it)
             }
         }
-        
     }
 
-
-    override fun onItemClick(movie: MovieDomainModel) {
+    private fun carouselItemClicked(movie: MovieDomainModel) {
         val intent = Intent(context, MovieDetailActivity::class.java)
         intent.putExtra(MovieDetailActivity.MOVIE, movie as Parcelable)
         startActivity(intent)
     }
+
+    private fun onMovieClicked(movie: MovieDomainModel) {
+        val intent = Intent(context, MovieDetailActivity::class.java)
+        intent.putExtra(MovieDetailActivity.MOVIE, movie as Parcelable)
+        startActivity(intent)
+    }
+
 }

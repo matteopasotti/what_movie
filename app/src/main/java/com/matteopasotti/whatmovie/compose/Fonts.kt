@@ -14,7 +14,7 @@ val fonts = FontFamily(
     Font(R.font.product_sans_italic, weight = FontWeight.Light)
 )
 
-val typography = Typography(
+val Typography = Typography(
     body1 = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Bold,
@@ -23,11 +23,11 @@ val typography = Typography(
     h1 = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Bold,
-        fontSize = 18.sp
+        fontSize = 24.sp
     ),
     body2 = TextStyle(
         fontFamily = fonts,
-        fontWeight = FontWeight.Light,
+        fontWeight = FontWeight.Bold,
         fontSize = 14.sp
     )
 )

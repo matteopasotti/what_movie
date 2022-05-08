@@ -8,9 +8,10 @@ import com.matteopasotti.whatmovie.model.CarouselEntity
 import com.matteopasotti.whatmovie.view.viewholder.CarouselHolder
 
 class CarouselAdapter<T : CarouselEntity>(
-    private val clicked: (T) -> Unit
+    private val clicked: (T) -> Unit,
+    private val items: MutableList<T> = mutableListOf<T>()
 ) : RecyclerView.Adapter<CarouselHolder<T>>() {
-    private var items: List<T> = listOf()
+
     val actualItemCount
         get() = items.size
 
@@ -27,7 +28,8 @@ class CarouselAdapter<T : CarouselEntity>(
     }
 
     fun setItems(value: List<T>) {
-        items = value
+        items.clear()
+        items.addAll(value)
         notifyDataSetChanged()
     }
 }
